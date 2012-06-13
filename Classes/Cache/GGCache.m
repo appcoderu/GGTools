@@ -12,13 +12,15 @@ static const NSUInteger GGCacheDefaultCountLimit = 0;
 static const NSTimeInterval GGCacheSaveDelay = 5.0;
 
 static NSString * const GGCacheDefaultFolder = @"shared";
+static NSString * const GGCacheMetaExtension = @"meta";
+
 static GGCache *sharedInstance = nil;
 
 static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NULL, NULL, NULL};
 
 #pragma mark -
 
-@interface GGCacheItemProxy : NSObject
+@interface GGCacheItemProxy : NSProxy
 
 @property(nonatomic, retain, readonly) GGCacheItem *cacheItem;
 @property(nonatomic, retain, readonly) GGCache *cache;
@@ -34,7 +36,7 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 @property(nonatomic, retain) NSString *key;
 @property(nonatomic, assign) id proxy;
 
-- (void)write;
+- (BOOL)write;
 - (void)delete;
 
 - (void)dehydrate;
@@ -108,7 +110,7 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 		cacheItems = CFDictionaryCreateMutable(NULL, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
 		cacheItemsList = [[NSMutableArray alloc] initWithCapacity:_countLimit + 10];
 		
-		[self prepareCacheDirectory:nil];
+		[self initCache];
     }
     return self;
 }
@@ -116,7 +118,7 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 - (void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
-	[self save:nil];
+	[self save];
 	
 	[self _clearCacheItems];
 	
@@ -188,42 +190,53 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 }
 
 - (void)delayedSave {
-	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(save:) object:nil];
-	[self performSelector:@selector(save:) withObject:nil afterDelay:GGCacheSaveDelay];
+	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(save) object:nil];
+	[self performSelector:@selector(save) withObject:nil afterDelay:GGCacheSaveDelay];
 }
 
-- (BOOL)save:(NSError **)error {
-	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(save:) object:nil];
-	
-	BOOL result = YES;
+- (BOOL)save {
+	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(save) object:nil];
 	
 	for (GGCacheItem *cacheItem in cacheItemsList) {
 		if (![cacheItem hasUnsavedChanges]) {
 			continue;
 		}
 		
-#warning check for errors as folder migth not exist
-		[cacheItem write];
+		if (![cacheItem write]) {
+			if ([self isCacheDirectoryExists]) {
+				return NO;
+			} else if (![self createCacheDirectory]) {
+				return NO;
+			}
+			
+			if (![cacheItem write]) {
+				return NO;
+			}
+		}
 		
 		if (![cacheItem inUse]) {
 			[cacheItem dehydrate];
 		}
 	}
 	
-	return result;
+	return YES;
 }
 
 - (void)clear {
 	[self _clearCacheItems];
 	[fileManager removeItemAtPath:_dirPath error:nil];
 	
-	[self prepareCacheDirectory:nil];
+	[self initCache];
+}
+
+- (NSString *)path {
+	return [[_dirPath retain] autorelease];
 }
 
 #pragma mark -
 
 - (void)didReceiveMemoryWarning {
-	[self save:nil];
+	[self save];
 }
 
 #pragma mark - Cache
@@ -272,8 +285,6 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 	}
 	
 	proxy.cacheItem.proxy = nil;
-	
-#warning rotate cache?
 }
 
 - (void)_addCacheItem:(GGCacheItem *)cacheItem {
@@ -350,21 +361,49 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 	}
 }
 
-- (BOOL)prepareCacheDirectory:(NSError **)error {
+- (BOOL)isCacheDirectoryExists {
+	if (!_dirPath) {
+		return NO;
+	}
+	
+	BOOL isDir = NO;	
+	if ([fileManager fileExistsAtPath:_dirPath isDirectory:&isDir] && isDir) {
+		return YES;
+	}
+	
+	return NO;
+}
+
+- (BOOL)isCacheDirectoryWritable {
+	if (!_dirPath) {
+		return NO;
+	}
+	
+	return [fileManager isWritableFileAtPath:_dirPath];
+}
+
+- (BOOL)createCacheDirectory {
+	if (!_dirPath) {
+		return NO;
+	}
+	
+	return [fileManager createDirectoryAtPath:_dirPath 
+				  withIntermediateDirectories:YES 
+								   attributes:nil 
+										error:nil];
+}
+
+- (BOOL)initCache {
 	if (!_dirPath) {
 		return NO;
 	}
 			
-	BOOL isDir = NO;	
-	if ([fileManager fileExistsAtPath:_dirPath isDirectory:&isDir]) {
-		if (!isDir || ![fileManager isWritableFileAtPath:_dirPath]) {
+	if ([self isCacheDirectoryExists]) {
+		if (![self isCacheDirectoryWritable]) {
 			return NO;
 		}
-	} else {
-		return [fileManager createDirectoryAtPath:_dirPath 
-			 withIntermediateDirectories:YES 
-							  attributes:nil 
-								   error:error];
+	} else if (![self createCacheDirectory]) {
+		return NO;
 	}
 	
 	[self updateCacheItemsList];
@@ -381,8 +420,7 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 	}
 	
 	for (NSString *fileName in files) {
-#warning replace "meta" with constant
-		if ([[fileName pathExtension] isEqualToString:@"meta"]) {
+		if ([[fileName pathExtension] isEqualToString:GGCacheMetaExtension]) {
 			continue;
 		}
 		
@@ -409,11 +447,9 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 @synthesize cacheItem, cache;
 
 - (id)initWithCacheItem:(GGCacheItem *)aCacheItem cache:(GGCache *)aCache {
-	self = [super init];
-	if (self) {
-		cacheItem = [aCacheItem retain];
-		cache = [aCache retain];
-	}
+	cacheItem = [aCacheItem retain];
+	cache = [aCache retain];
+
 	return self;
 }
 

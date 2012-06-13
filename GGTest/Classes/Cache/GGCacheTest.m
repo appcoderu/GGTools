@@ -60,11 +60,9 @@
 			GHAssertNotNil(cacheItem, nil);
 		}
 		
-		NSError *error = nil;
-		BOOL result = [cache save:&error];
+		BOOL result = [cache save];
 		
 		GHAssertTrue(result, @"Save result");
-		GHAssertNil(error, @"Save error");
 	}
 	
 	[cache release];
@@ -110,11 +108,9 @@
 			GHAssertNotNil(cacheItem, nil);
 		}
 		
-		NSError *error = nil;
-		BOOL result = [cache save:&error];
+		BOOL result = [cache save];
 		
 		GHAssertTrue(result, @"Save result");
-		GHAssertNil(error, @"Save error");
 	}
 	[cache release];
 	
@@ -137,6 +133,7 @@
 }
 
 - (void)testIntegratedCache {
+#warning implement
 	// every time we alloc cache with the same folder it should be the same object
 	/*
 	GGCache *cache1 = [[GGCache alloc] initWithFolder:@"test"];
@@ -192,11 +189,9 @@
 		
 		GHAssertNotNil(cacheItem, nil);
 		
-		NSError *error = nil;
-		BOOL result = [cache save:&error];
+		BOOL result = [cache save];
 		
 		GHAssertTrue(result, @"Save result");
-		GHAssertNil(error, @"Save error");
 		
 		[cache release];
 	}
@@ -246,11 +241,9 @@
 		}
 	}
 	
-	NSError *error = nil;
-	BOOL result = [cache save:&error];
+	BOOL result = [cache save];
 	
 	GHAssertTrue(result, @"Save result");
-	GHAssertNil(error, @"Save error");
 	
 	[cache release];
 	
@@ -296,11 +289,9 @@
 			GHAssertNotNil(cacheItem, nil);
 		}
 		
-		NSError *error = nil;
-		BOOL result = [cache save:&error];
+		BOOL result = [cache save];
 		
 		GHAssertTrue(result, @"Save result");
-		GHAssertNil(error, @"Save error");
 	}
 	
 	GGCacheItem *itemInUse = [cache cachedItemForKey:[testKey stringByAppendingFormat:@"_%lu", 0]];
@@ -331,8 +322,100 @@
 	[cache release];
 }
 
-- (void)testCacheDirectoryAbsenseDuringWork {
-	// delete directory in the middle of caching
+- (void)testCacheDirectoryAbsenseDuringWork1 {
+	NSUInteger cacheItemsCount = 10;
+	
+	NSData *testData = [@"test" dataUsingEncoding:NSUTF8StringEncoding];
+	NSDictionary *testMeta = nil;
+	NSString *testKey = @"key";
+	
+	@autoreleasepool {
+		GGCache *cache = [[GGCache alloc] initWithFolder:@"test"];
+		GHAssertNotNil(cache, nil);
+		[cache clear];
+		
+		for (NSUInteger i = 0; i < cacheItemsCount; ++i) {
+			GGCacheItem *cacheItem = [cache storeData:testData 
+											 withMeta:testMeta 
+											   forKey:[testKey stringByAppendingFormat:@"_%lu", i]];
+			
+			GHAssertNotNil(cacheItem, nil);
+		}
+		
+		[[NSFileManager defaultManager] removeItemAtPath:cache.path error:nil];
+		
+		BOOL result = [cache save];
+		
+		GHAssertTrue(result, @"Save result");
+		
+		[cache release];
+	}
+	
+	
+	@autoreleasepool {
+		GGCache *cache = [[GGCache alloc] initWithFolder:@"test"];
+		GHAssertNotNil(cache, nil);
+		
+		for (NSUInteger i = 0; i < cacheItemsCount; ++i) {
+			GGCacheItem *cacheItem = [cache cachedItemForKey:[testKey stringByAppendingFormat:@"_%lu", i]];
+			GHAssertNotNil(cacheItem, nil);
+		}
+		
+		[cache release];
+	}
+}
+
+- (void)testCacheDirectoryAbsenseDuringWork2 {
+	NSUInteger cacheItemsCount = 10;
+	
+	NSData *testData = [@"test" dataUsingEncoding:NSUTF8StringEncoding];
+	NSDictionary *testMeta = nil;
+	NSString *testKey = @"key";
+	
+	@autoreleasepool {
+		GGCache *cache = [[GGCache alloc] initWithFolder:@"test"];
+		GHAssertNotNil(cache, nil);
+		[cache clear];
+		
+		for (NSUInteger i = 0; i < cacheItemsCount; ++i) {
+			if (i == cacheItemsCount / 2) {
+				BOOL result = [cache save];
+				
+				GHAssertTrue(result, @"Save result");
+			
+				[[NSFileManager defaultManager] removeItemAtPath:cache.path error:nil];
+			}
+			
+			GGCacheItem *cacheItem = [cache storeData:testData 
+											 withMeta:testMeta 
+											   forKey:[testKey stringByAppendingFormat:@"_%lu", i]];
+			
+			GHAssertNotNil(cacheItem, nil);
+		}
+				
+		BOOL result = [cache save];
+		
+		GHAssertTrue(result, @"Save result");
+		
+		[cache release];
+	}
+	
+	
+	@autoreleasepool {
+		GGCache *cache = [[GGCache alloc] initWithFolder:@"test"];
+		GHAssertNotNil(cache, nil);
+		
+		for (NSUInteger i = 0; i < cacheItemsCount; ++i) {
+			GGCacheItem *cacheItem = [cache cachedItemForKey:[testKey stringByAppendingFormat:@"_%lu", i]];
+			if (i < cacheItemsCount / 2) {
+				GHAssertNil(cacheItem, nil);
+			} else {
+				GHAssertNotNil(cacheItem, nil);
+			}
+		}
+		
+		[cache release];
+	}
 }
 
 - (void)testPermanentCache {

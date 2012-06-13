@@ -8,9 +8,9 @@
 #import "GGCacheItem.h"
 
 enum {
-	GGCacheItemOK = 0,
-	GGCacheItemNeedsWriteMeta = 1 << 0,
-	GGCacheItemNeedsWriteData = 1 << 1
+	GGCacheItemOK = 0U,
+	GGCacheItemNeedsWriteMeta = 1U << 0,
+	GGCacheItemNeedsWriteData = 1U << 1
 };
 
 @interface GGCacheItem ()
@@ -71,20 +71,30 @@ enum {
 
 #pragma mark -
 
-- (void)write {
+- (BOOL)write {
 	if ((state & GGCacheItemNeedsWriteData)) {
 		state &= ~GGCacheItemNeedsWriteData;
-		[_data writeToFile:_dataPath atomically:YES];
+		if (![_data writeToFile:_dataPath atomically:YES]) {
+			state |= GGCacheItemNeedsWriteData;
+			return NO;
+		}
 	}
 	
 	if ((state & GGCacheItemNeedsWriteMeta)) {
 		state &= ~GGCacheItemNeedsWriteMeta;
 		if (_meta && [_meta count] > 0) {
-			[_meta writeToFile:_metaPath atomically:YES];
+			if (![_meta writeToFile:_metaPath atomically:YES]) {
+				state |= GGCacheItemNeedsWriteMeta;
+				return NO;
+			}
 		} else {
-			[[NSFileManager defaultManager] removeItemAtPath:_metaPath error:nil];
+			if (![[NSFileManager defaultManager] removeItemAtPath:_metaPath error:nil]) {
+				state |= GGCacheItemNeedsWriteMeta;
+				return NO;
+			}
 		}
 	}
+	return YES;
 }
 
 - (void)delete {

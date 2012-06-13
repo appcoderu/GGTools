@@ -23,10 +23,12 @@
 				  withMeta:(NSDictionary *)meta 
 					forKey:(NSString *)key;
 
-- (BOOL)save:(NSError **)error;
+- (BOOL)save;
 - (void)clear;
 
 - (NSUInteger)countLimit;
 - (void)setCountLimit:(NSUInteger)countLimit;
+
+- (NSString *)path;
 
 @end
