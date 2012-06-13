@@ -15,6 +15,7 @@ enum {
 
 @interface GGCacheItem ()
 @property(nonatomic, retain) NSString *key;
+@property(nonatomic, assign) id proxy;
 @end
 
 @implementation GGCacheItem {
@@ -25,10 +26,13 @@ enum {
 	NSMutableDictionary *_meta;
 
 	unsigned int state;
+	
+	id _proxy;
 }
 
 @synthesize data=_data;
 @synthesize key=_key;
+@synthesize proxy=_proxy;
 
 + (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key {
 	return NO;
@@ -54,6 +58,8 @@ enum {
 }
 
 - (void)dealloc {
+	_proxy = nil;
+	
 	[_key release];
     [_dataPath release];
 	[_metaPath release];
@@ -86,7 +92,25 @@ enum {
 	[[NSFileManager defaultManager] removeItemAtPath:_metaPath error:nil];
 }
 
+- (BOOL)hasUnsavedChanges {
+	return (state != GGCacheItemOK);
+}
+
+- (BOOL)inUse {
+	return (_proxy != nil);
+}
+
 #pragma mark -
+
+- (void)dehydrate {
+	state = GGCacheItemOK;
+	
+	[_data release];
+	_data = nil;
+	
+	[_meta release];
+	_meta = nil;
+}
 
 - (NSData *)data {
 	if (!_data) {
@@ -166,12 +190,15 @@ enum {
 	if ((state & GGCacheItemNeedsWriteMeta)) {
 		return;
 	}
+		
+	if (state == GGCacheItemOK) {
+		[self willChangeValueForKey:@"state"];
+		state |= GGCacheItemNeedsWriteMeta;
+		[self didChangeValueForKey:@"state"];
+	} else {
+		state |= GGCacheItemNeedsWriteMeta;
+	}
 	
-	state |= GGCacheItemNeedsWriteMeta;
-	
-	[self willChangeValueForKey:@"state"];
-	state |= GGCacheItemNeedsWriteData;
-	[self didChangeValueForKey:@"state"];
 }
 
 - (void)setNeedsWriteData {
@@ -179,9 +206,13 @@ enum {
 		return;
 	}
 	
-	[self willChangeValueForKey:@"state"];
-	state |= GGCacheItemNeedsWriteData;
-	[self didChangeValueForKey:@"state"];
+	if (state == GGCacheItemOK) {
+		[self willChangeValueForKey:@"state"];
+		state |= GGCacheItemNeedsWriteData;
+		[self didChangeValueForKey:@"state"];
+	} else {
+		state |= GGCacheItemNeedsWriteData;
+	}
 }
 
 - (NSMutableDictionary *)_meta {

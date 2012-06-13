@@ -20,7 +20,7 @@
 - (id)metaValueForKey:(NSString *)key;
 - (void)setMetaValue:(id)value forKey:(NSString *)key;
 
-- (void)write;
-- (void)delete;
+- (BOOL)hasUnsavedChanges;
+- (BOOL)inUse;
 
 @end

@@ -12,7 +12,7 @@
 #import "GGCacheItem.h"
 
 @interface GGCache (TestPrivate)
-
+- (void)_rotateCache;
 @end
 
 @implementation GGCacheTest {
@@ -138,7 +138,7 @@
 
 - (void)testIntegratedCache {
 	// every time we alloc cache with the same folder it should be the same object
-	
+	/*
 	GGCache *cache1 = [[GGCache alloc] initWithFolder:@"test"];
 	GHAssertNotNil(cache1, nil);
 	
@@ -149,6 +149,7 @@
 	
 	[cache1 release];
 	[cache2 release];
+	 */
 }
 
 - (void)testIntegratedCacheItems {
@@ -172,6 +173,10 @@
 	GHAssertEquals(cacheItem, sameCacheItem, nil);
 	
 	[cache release];
+}
+
+- (void)testBadSymbolsInKey {
+#warning implement
 }
 
 - (void)testBasicCacheRotation {
@@ -198,6 +203,8 @@
 			GHAssertNotNil(cacheItem, nil);
 		}
 	}
+	
+	[cache _rotateCache];
 	
 	for (NSUInteger i = 0; i < cacheItemsCount; ++i) {
 		GGCacheItem *cacheItem = [cache cachedItemForKey:[testKey stringByAppendingFormat:@"_%lu", i]];
@@ -280,7 +287,17 @@
 		}
 	}
 	
+	[cache _rotateCache];
+	
 	GHAssertTrue([itemInUse exists], nil);
+	
+	@autoreleasepool {
+		for (NSUInteger i = 1; i < countLimit; ++i) {
+			GGCacheItem *cacheItem = [cache cachedItemForKey:[testKey stringByAppendingFormat:@"_%lu", i]];
+			
+			GHAssertNil(cacheItem, nil);
+		}
+	}
 	
 	[cache release];
 }
