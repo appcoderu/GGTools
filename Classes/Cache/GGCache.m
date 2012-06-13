@@ -146,6 +146,7 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 #pragma mark -
 
 - (GGCacheItem *)cachedItemForKey:(NSString *)key {	
+	key = [self makeValidKey:key];
 	if (!key) {
 		return nil;
 	}
@@ -157,6 +158,8 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 	if (!data || [data length] == 0) {
 		return nil;
 	}
+	
+	key = [self makeValidKey:key];
 	
 	GGCacheItem *cacheItem = [self _cacheItemForKey:key];
 	
@@ -243,7 +246,6 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 }
 
 - (NSString *)pathForCacheKey:(NSString *)cacheKey {
-	cacheKey = [self makeValidKey:cacheKey];
 	if (!cacheKey) {
 		return nil;
 	}

@@ -175,8 +175,37 @@
 	[cache release];
 }
 
-- (void)testBadSymbolsInKey {
-#warning implement
+- (void)testBadSymbolsInKey {	
+	NSData *testData = [@"test" dataUsingEncoding:NSUTF8StringEncoding];
+	NSDictionary *testMeta = nil;
+	NSString *testKey = @"my_key_?_and_\"some_%*_symbols_|\\";
+	
+	@autoreleasepool {
+		GGCache *cache = [[GGCache alloc] initWithFolder:@"test"];
+		GHAssertNotNil(cache, nil);
+		
+		[cache clear];
+		
+		GGCacheItem *cacheItem = [cache storeData:testData 
+										 withMeta:testMeta 
+										   forKey:testKey];
+		
+		GHAssertNotNil(cacheItem, nil);
+		
+		NSError *error = nil;
+		BOOL result = [cache save:&error];
+		
+		GHAssertTrue(result, @"Save result");
+		GHAssertNil(error, @"Save error");
+		
+		[cache release];
+	}
+	
+	GGCache *cache = [[GGCache alloc] initWithFolder:@"test"];
+	GHAssertNotNil(cache, nil);
+	
+	GGCacheItem *cacheItem = [cache cachedItemForKey:testKey];
+	GHAssertNotNil(cacheItem, nil);
 }
 
 - (void)testBasicCacheRotation {
