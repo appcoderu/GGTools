@@ -28,21 +28,21 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1C087AA61580FB1E001C4060 /* GG.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GG.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1C087AA61580FB1E001C4060 /* GGFramework.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GGFramework.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1C087AAA1580FB1E001C4060 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		1C087AAC1580FB1E001C4060 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1C087AAE1580FB1E001C4060 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		1C087AB21580FB1E001C4060 /* GG-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GG-Info.plist"; sourceTree = "<group>"; };
+		1C087AB21580FB1E001C4060 /* GGFramework-Info.plist */ = {isa = PBXFileReference; path = "GGFramework-Info.plist"; sourceTree = "<group>"; };
 		1C087AB41580FB1E001C4060 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1C087AB61580FB1E001C4060 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		1C087AB81580FB1E001C4060 /* GG-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GG-Prefix.pch"; sourceTree = "<group>"; };
+		1C087AB81580FB1E001C4060 /* GGFramework-Prefix.pch */ = {isa = PBXFileReference; path = "GGFramework-Prefix.pch"; sourceTree = "<group>"; };
 		1C087AB91580FB1E001C4060 /* GGAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GGAppDelegate.h; sourceTree = "<group>"; };
 		1C087ABA1580FB1E001C4060 /* GGAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GGAppDelegate.m; sourceTree = "<group>"; };
-		1C087AC51580FB66001C4060 /* GGTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GGTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		1C087ACC1580FB66001C4060 /* GGTest-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GGTest-Info.plist"; sourceTree = "<group>"; };
+		1C087AC51580FB66001C4060 /* GGFrameworkTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GGFrameworkTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1C087ACC1580FB66001C4060 /* GGFrameworkTest-Info.plist */ = {isa = PBXFileReference; path = "GGFrameworkTest-Info.plist"; sourceTree = "<group>"; };
 		1C087ACE1580FB66001C4060 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1C087AD01580FB66001C4060 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		1C087AD21580FB66001C4060 /* GGTest-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GGTest-Prefix.pch"; sourceTree = "<group>"; };
+		1C087AD21580FB66001C4060 /* GGFrameworkTest-Prefix.pch */ = {isa = PBXFileReference; path = "GGFrameworkTest-Prefix.pch"; sourceTree = "<group>"; };
 		1C087AD91580FBBB001C4060 /* GHUnitIOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GHUnitIOS.framework; path = GGTest/GHUnitIOS.framework; sourceTree = "<group>"; };
 		1C087ADB1580FC52001C4060 /* RunTests.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = RunTests.sh; sourceTree = SOURCE_ROOT; };
 		1C087AE01580FDC5001C4060 /* GGCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGCache.h; sourceTree = "<group>"; };
@@ -81,9 +81,8 @@
 		1C087A9B1580FB1D001C4060 = {
 			isa = PBXGroup;
 			children = (
-				1C087ADE1580FDC5001C4060 /* Classes */,
-				1C087AB01580FB1E001C4060 /* GG */,
-				1C087ACA1580FB66001C4060 /* GGTest */,
+				1C087AB01580FB1E001C4060 /* Framework */,
+				1C087ACA1580FB66001C4060 /* Tests */,
 				1C087AA91580FB1E001C4060 /* Frameworks */,
 				1C087AA71580FB1E001C4060 /* Products */,
 			);
@@ -92,8 +91,8 @@
 		1C087AA71580FB1E001C4060 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1C087AA61580FB1E001C4060 /* GG.app */,
-				1C087AC51580FB66001C4060 /* GGTest.app */,
+				1C087AA61580FB1E001C4060 /* GGFramework.app */,
+				1C087AC51580FB66001C4060 /* GGFrameworkTest.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -109,33 +108,36 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		1C087AB01580FB1E001C4060 /* GG */ = {
+		1C087AB01580FB1E001C4060 /* Framework */ = {
 			isa = PBXGroup;
 			children = (
+				1C087ADE1580FDC5001C4060 /* Classes */,
 				1C087AB91580FB1E001C4060 /* GGAppDelegate.h */,
 				1C087ABA1580FB1E001C4060 /* GGAppDelegate.m */,
 				1C087AB11580FB1E001C4060 /* Supporting Files */,
 			);
+			name = Framework;
 			path = GG;
 			sourceTree = "<group>";
 		};
 		1C087AB11580FB1E001C4060 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				1C087AB21580FB1E001C4060 /* GG-Info.plist */,
+				1C087AB21580FB1E001C4060 /* GGFramework-Info.plist */,
 				1C087AB31580FB1E001C4060 /* InfoPlist.strings */,
 				1C087AB61580FB1E001C4060 /* main.m */,
-				1C087AB81580FB1E001C4060 /* GG-Prefix.pch */,
+				1C087AB81580FB1E001C4060 /* GGFramework-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		1C087ACA1580FB66001C4060 /* GGTest */ = {
+		1C087ACA1580FB66001C4060 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
 				1C087AE91580FF09001C4060 /* Cache */,
 				1C087ACB1580FB66001C4060 /* Supporting Files */,
 			);
+			name = Tests;
 			path = GGTest;
 			sourceTree = "<group>";
 		};
@@ -143,10 +145,10 @@
 			isa = PBXGroup;
 			children = (
 				1C087ADB1580FC52001C4060 /* RunTests.sh */,
-				1C087ACC1580FB66001C4060 /* GGTest-Info.plist */,
+				1C087ACC1580FB66001C4060 /* GGFrameworkTest-Info.plist */,
 				1C087ACD1580FB66001C4060 /* InfoPlist.strings */,
 				1C087AD01580FB66001C4060 /* main.m */,
-				1C087AD21580FB66001C4060 /* GGTest-Prefix.pch */,
+				1C087AD21580FB66001C4060 /* GGFrameworkTest-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -156,7 +158,8 @@
 			children = (
 				1C087ADF1580FDC5001C4060 /* Cache */,
 			);
-			path = Classes;
+			name = Classes;
+			path = ../Classes;
 			sourceTree = "<group>";
 		};
 		1C087ADF1580FDC5001C4060 /* Cache */ = {
@@ -183,9 +186,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1C087AA51580FB1E001C4060 /* GG */ = {
+		1C087AA51580FB1E001C4060 /* GGFramework */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1C087ABE1580FB1E001C4060 /* Build configuration list for PBXNativeTarget "GG" */;
+			buildConfigurationList = 1C087ABE1580FB1E001C4060 /* Build configuration list for PBXNativeTarget "GGFramework" */;
 			buildPhases = (
 				1C087AA21580FB1E001C4060 /* Sources */,
 				1C087AA31580FB1E001C4060 /* Frameworks */,
@@ -195,14 +198,14 @@
 			);
 			dependencies = (
 			);
-			name = GG;
+			name = GGFramework;
 			productName = GG;
-			productReference = 1C087AA61580FB1E001C4060 /* GG.app */;
+			productReference = 1C087AA61580FB1E001C4060 /* GGFramework.app */;
 			productType = "com.apple.product-type.application";
 		};
-		1C087AC41580FB66001C4060 /* GGTest */ = {
+		1C087AC41580FB66001C4060 /* GGFrameworkTest */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1C087AD61580FB66001C4060 /* Build configuration list for PBXNativeTarget "GGTest" */;
+			buildConfigurationList = 1C087AD61580FB66001C4060 /* Build configuration list for PBXNativeTarget "GGFrameworkTest" */;
 			buildPhases = (
 				1C087AC11580FB66001C4060 /* Sources */,
 				1C087AC21580FB66001C4060 /* Frameworks */,
@@ -213,9 +216,9 @@
 			);
 			dependencies = (
 			);
-			name = GGTest;
+			name = GGFrameworkTest;
 			productName = GGTest;
-			productReference = 1C087AC51580FB66001C4060 /* GGTest.app */;
+			productReference = 1C087AC51580FB66001C4060 /* GGFrameworkTest.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -228,7 +231,7 @@
 				LastUpgradeCheck = 0430;
 				ORGANIZATIONNAME = "Evgeniy Shurakov";
 			};
-			buildConfigurationList = 1C087AA01580FB1D001C4060 /* Build configuration list for PBXProject "GG" */;
+			buildConfigurationList = 1C087AA01580FB1D001C4060 /* Build configuration list for PBXProject "GGFramework" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -240,8 +243,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				1C087AA51580FB1E001C4060 /* GG */,
-				1C087AC41580FB66001C4060 /* GGTest */,
+				1C087AA51580FB1E001C4060 /* GGFramework */,
+				1C087AC41580FB66001C4060 /* GGFrameworkTest */,
 			);
 		};
 /* End PBXProject section */
@@ -375,9 +378,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "GG/GG-Prefix.pch";
-				INFOPLIST_FILE = "GG/GG-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "GG/GGFramework-Prefix.pch";
+				INFOPLIST_FILE = "GG/GGFramework-Info.plist";
+				PRODUCT_NAME = GGFramework;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -386,9 +389,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "GG/GG-Prefix.pch";
-				INFOPLIST_FILE = "GG/GG-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "GG/GGFramework-Prefix.pch";
+				INFOPLIST_FILE = "GG/GGFramework-Info.plist";
+				PRODUCT_NAME = GGFramework;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -402,13 +405,13 @@
 					"\"$(SRCROOT)/GGTest\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "GGTest/GGTest-Prefix.pch";
-				INFOPLIST_FILE = "GGTest/GGTest-Info.plist";
+				GCC_PREFIX_HEADER = "GGTest/GGFrameworkTest-Prefix.pch";
+				INFOPLIST_FILE = "GGTest/GGFrameworkTest-Info.plist";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = GGFrameworkTest;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -422,13 +425,13 @@
 					"\"$(SRCROOT)/GGTest\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "GGTest/GGTest-Prefix.pch";
-				INFOPLIST_FILE = "GGTest/GGTest-Info.plist";
+				GCC_PREFIX_HEADER = "GGTest/GGFrameworkTest-Prefix.pch";
+				INFOPLIST_FILE = "GGTest/GGFrameworkTest-Info.plist";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = GGFrameworkTest;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -436,7 +439,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1C087AA01580FB1D001C4060 /* Build configuration list for PBXProject "GG" */ = {
+		1C087AA01580FB1D001C4060 /* Build configuration list for PBXProject "GGFramework" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1C087ABC1580FB1E001C4060 /* Debug */,
@@ -445,21 +448,23 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1C087ABE1580FB1E001C4060 /* Build configuration list for PBXNativeTarget "GG" */ = {
+		1C087ABE1580FB1E001C4060 /* Build configuration list for PBXNativeTarget "GGFramework" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1C087ABF1580FB1E001C4060 /* Debug */,
 				1C087AC01580FB1E001C4060 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
-		1C087AD61580FB66001C4060 /* Build configuration list for PBXNativeTarget "GGTest" */ = {
+		1C087AD61580FB66001C4060 /* Build configuration list for PBXNativeTarget "GGFrameworkTest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1C087AD71580FB66001C4060 /* Debug */,
 				1C087AD81580FB66001C4060 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
