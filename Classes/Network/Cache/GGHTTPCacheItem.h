@@ -1,6 +1,6 @@
 //
 //  GGHTTPCacheItem.h
-//  RuRu
+//  GGFramework
 //
 //  Created by Evgeniy Shurakov on 05.05.12.
 //  Copyright (c) 2012 AppCode. All rights reserved.
@@ -14,10 +14,10 @@
 
 - (id)initWithCacheItem:(GGCacheItem *)item;
 
-@property(nonatomic, readonly) NSString *lastModified;
-@property(nonatomic, readonly) NSString *eTag;
+@property(weak, nonatomic, readonly) NSString *lastModified;
+@property(weak, nonatomic, readonly) NSString *eTag;
 @property(nonatomic, readonly) NSTimeInterval age;
-@property(nonatomic, readonly) NSData *data;
+@property(weak, nonatomic, readonly) NSData *data;
 
 - (BOOL)canBeUsedWithoutRevalidation;
 

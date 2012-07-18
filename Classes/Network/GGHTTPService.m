@@ -1,5 +1,6 @@
 //
 //  GGHTTPService.m
+//  GGFramework
 //
 //  Created by Evgeniy Shurakov on 09.04.12.
 //  Copyright (c) 2012 AppCode. All rights reserved.
@@ -16,11 +17,9 @@
 #import "GGHTTPCache.h"
 #import "GGHTTPCacheItem.h"
 
+#import "GGHTTPFetcherProtocol.h"
 #import "GGAuthorizationProtocol.h"
 #import "GGHTTPCacheProtocol.h"
-
-#import "GTMHTTPFetcher.h"
-#import "GTMHTTPFetcherService.h"
 
 #import "UIDevice+UUID.h"
 #import "NSError+Extra.h"
@@ -34,7 +33,7 @@ const NSInteger GGHTTPServiceErrorInvalidResponseData	= -1;
 const NSInteger GGHTTPServiceErrorQueryFailed			= -2;
 const NSInteger GGHTTPServiceErrorUnauthorized			= -3;
 const NSInteger GGHTTPServiceErrorInvalidRequestBody	= -4;
-const NSInteger GGHTTPServiceErrorUnableToConstructRequest = 5;
+const NSInteger GGHTTPServiceErrorUnableToConstructRequest = -5;
 
 static NSString * const kFetcherTicketKey				= @"ticket";
 static NSString * const kFetcherCompletionHandlerKey	= @"completionHandler";
@@ -42,17 +41,12 @@ static NSString * const kFetcherCacheItemKey			= @"cacheItem";
 
 static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
 
-@interface GGHTTPService ()
-@property(nonatomic, retain) GTMHTTPFetcherService *fetcherService;
-@end
-
 @implementation GGHTTPService {
-	GTMHTTPFetcherService *fetcherService_;
+
 }
 
 @synthesize userAgent=userAgent_;
 @synthesize baseURL=baseURL_;
-@synthesize fetcherService=fetcherService_;
 @synthesize additionalHTTPHeaders=additionalHTTPHeaders_;
 
 @synthesize cache=cache_;
@@ -79,24 +73,13 @@ static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
 - (id)initWithBaseURL:(NSURL *)baseURL {
 	self = [super init];
     if (self) {
-        baseURL_ = [baseURL retain];
+        baseURL_ = baseURL;
     }
     return self;
 }
 
 #pragma mark -
 
-- (void)dealloc {
-    [userAgent_ release];
-    [baseURL_ release];
-    [fetcherService_ release];
-	[additionalHTTPHeaders_ release];
-	[cache_ release];
-	[persistentCache_ release];
-	[authorizer_ release];
-	
-    [super dealloc];
-}
 
 #pragma mark -
 
@@ -127,7 +110,6 @@ static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
 		
 	NSMutableURLRequest *request = [self requestForQuery:query];
 	if (!request) {
-		GGLog(@"Failed to create Request for Query: %@", query);
 		if (handler) {
 			NSError *error = [NSError errorWithDomain:GGHTTPServiceErrorDomain 
 												 code:GGHTTPServiceErrorUnableToConstructRequest 
@@ -189,24 +171,24 @@ static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
 	}
 #endif	
 	
-	GTMHTTPFetcher *fetcher = [self.fetcherService fetcherWithRequest:request];
-	[fetcher setCookieStorageMethod:kGTMHTTPFetcherCookieStorageMethodNone];
+	NSObject <GGHTTPFetcherProtocol> *fetcher = [self fetcherWithRequest:request];
+	//[fetcher setCookieStorageMethod:kGTMHTTPFetcherCookieStorageMethodNone];
 	
 	if (!query.suppressAuthorization) {
 		fetcher.authorizer = self.authorizer;
 	}
 	
-	fetcher.retryEnabled = YES;
-	fetcher.maxRetryInterval = 15.0;
+	//fetcher.retryEnabled = YES;
+	//fetcher.maxRetryInterval = 15.0;
 	
-	GGHTTPServiceTicket *ticket = [[[GGHTTPServiceTicket alloc] init] autorelease];
+	GGHTTPServiceTicket *ticket = [[GGHTTPServiceTicket alloc] init];
 	ticket.query = query;
 	ticket.fetcher = fetcher;
 	ticket.cacheItem = cacheItem;
 	
 	[fetcher setProperty:ticket forKey:kFetcherTicketKey];
 	if (handler) {
-		[fetcher setProperty:[[handler copy] autorelease] forKey:kFetcherCompletionHandlerKey];
+		[fetcher setProperty:[handler copy] forKey:kFetcherCompletionHandlerKey];
 	}
 			
 	BOOL didFetch = [fetcher beginFetchWithDelegate:self
@@ -231,6 +213,13 @@ static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
 	ticket.fetcher = nil;
 }
 
+#pragma mark -
+
+- (NSObject <GGHTTPFetcherProtocol> *)fetcherWithRequest:(NSMutableURLRequest *)request {
+#warning TODO
+	return nil;
+}
+
 #pragma mark - Construct Request
 
 - (NSMutableURLRequest *)requestForQuery:(GGQuery *)query {
@@ -243,9 +232,9 @@ static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
 		return nil;
 	}
 	
-	NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] initWithURL:url 
+	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url 
 																 cachePolicy:NSURLRequestReloadIgnoringCacheData
-															 timeoutInterval:GGHTTPServiceDefaultTimeout] autorelease];
+															 timeoutInterval:GGHTTPServiceDefaultTimeout];
 	
 	if (!query.httpMethod || [query.httpMethod length] == 0)  {
 		query.httpMethod = GGQueryHTTPMethodGET;
@@ -307,7 +296,6 @@ static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
 			
 			result = [NSURL URLWithString:[pathComponents componentsJoinedByString:@"/"] relativeToURL:self.baseURL];
 			
-			[pathComponents release];
 		}
 	}
 	
@@ -376,25 +364,14 @@ static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
 		return userAgent_;
 	}
 	
-	userAgent_ = GTMApplicationIdentifier([NSBundle mainBundle]);
-	[userAgent_ retain];
-		
+#warning TODO
+	
 	return userAgent_;
-}
-
-- (GTMHTTPFetcherService *)fetcherService {
-	if (fetcherService_) {
-		return fetcherService_;
-	}
-	
-	fetcherService_ = [[GTMHTTPFetcherService alloc] init];
-	
-	return fetcherService_;
 }
 
 #pragma mark - Fetcher callback
 
-- (void)fetcher:(GTMHTTPFetcher *)fetcher finishedWithData:(NSData *)data error:(NSError *)error {
+- (void)fetcher:(NSObject <GGHTTPFetcherProtocol> *)fetcher finishedWithData:(NSData *)data error:(NSError *)error {
 #if DEBUG_HTTP_SERVICE
 	GGLog(@"%d: %@", [fetcher statusCode], [[fetcher mutableRequest] URL]);
 #endif
@@ -408,7 +385,6 @@ static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
 #endif
 	
 	GGHTTPServiceTicket *ticket = [fetcher propertyForKey:kFetcherTicketKey];
-	[[ticket retain] autorelease];
 	ticket.used = YES;
 	
 	void(^handler)(GGHTTPServiceTicket *ticket, id object, NSError *error) = nil;
@@ -422,8 +398,8 @@ static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
 	id object = nil;
 	
 	if (error || [fetcher statusCode] >= 300) {
-		if ([error domain] == kGTMHTTPFetcherStatusDomain && 
-			[error code] == kGTMHTTPFetcherStatusNotModified && 
+		if ([error domain] == kGGHTTPFetcherStatusDomain &&
+			[error code] == kGGHTTPFetcherStatusNotModified &&
 			ticket.cacheItem) {
 			
 			[[self cacheForQuery:ticket.query] bumpAgeOfCachedItem:ticket.cacheItem];
@@ -436,7 +412,7 @@ static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
 	} else {
 		object = [self objectWithResponseData:data ticket:ticket error:&error];
 		if (object && !error) {
-			[[self cacheForQuery:ticket.query] storeData:data forRequest:fetcher.mutableRequest response:fetcher.response];
+			[[self cacheForQuery:ticket.query] storeData:data forRequest:fetcher.request response:fetcher.response];
 		}
 	}
 
@@ -478,14 +454,14 @@ static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
 }
 
 - (NSString *)errorMessageFromData:(NSData *)data {
-	return [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+	return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
 
 - (NSError *)errorWithError:(NSError *)error data:(NSData *)data ticket:(GGHTTPServiceTicket *)ticket {
 	NSString *domain = GGHTTPServiceErrorDomain;
 	NSInteger code;
 	
-	if (([error domain] == kGTMHTTPFetcherStatusDomain && [error code] == kGTMHTTPFetcherStatusUnauthorized) || 
+	if (([error domain] == kGGHTTPFetcherStatusDomain && [error code] == kGGHTTPFetcherStatusUnauthorized) || 
 		([error domain] == GGAuthorizationErrorDomain)) {
 		code = GGHTTPServiceErrorUnauthorized;
 	} else {

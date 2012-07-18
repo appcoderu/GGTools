@@ -1,6 +1,6 @@
 //
 //  GGHTTPCacheProtocol.h
-//  RuRu
+//  GGFramework
 //
 //  Created by Evgeniy Shurakov on 04.05.12.
 //  Copyright (c) 2012 AppCode. All rights reserved.

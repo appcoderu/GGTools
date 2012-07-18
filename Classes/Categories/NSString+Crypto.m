@@ -1,5 +1,6 @@
 //
 //  NSString+Crypto.m
+//  GGFramework
 //
 //  Created by Evgeniy Shurakov on 05.04.12.
 //  Copyright (c) 2012 AppCode. All rights reserved.

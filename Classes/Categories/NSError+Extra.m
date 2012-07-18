@@ -1,6 +1,6 @@
 //
 //  NSError+Extra.m
-//  RuRu
+//  GGFramework
 //
 //  Created by Evgeniy Shurakov on 04.08.11.
 //  Copyright 2011 Evgeniy Shurakov. All rights reserved.

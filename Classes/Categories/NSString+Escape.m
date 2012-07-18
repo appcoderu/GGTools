@@ -1,5 +1,6 @@
 //
 //  NSString+Escape.m
+//  GGFramework
 //
 //  Created by Evgeniy Shurakov on 29.12.10.
 //  Copyright 2010 Evgeniy Shurakov. All rights reserved.
@@ -24,21 +25,20 @@ const CFStringRef kCharsToForceEscape = CFSTR("!*'();:@&=+$,/?%#[]");
 
 + (NSString *)stringByURLEncodingForURI:(NSString *)str {
 	
-	NSString *resultStr = str;
-	
-	CFStringRef originalString = (CFStringRef) str;
 	CFStringRef leaveUnescaped = NULL;
 	
 	CFStringRef escapedStr;
 	escapedStr = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
-														 originalString,
+														 (__bridge CFStringRef)str,
 														 leaveUnescaped,
 														 kCharsToForceEscape,
-														 kCFStringEncodingUTF8);
+														kCFStringEncodingUTF8);
+	
 	if (escapedStr) {
-		resultStr = [(id)CFMakeCollectable(escapedStr) autorelease];
+		return (NSString *)CFBridgingRelease(escapedStr);
 	}
-	return resultStr;
+	
+	return str;
 }
 
 @end

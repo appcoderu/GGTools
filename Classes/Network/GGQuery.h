@@ -1,5 +1,6 @@
 //
 //  GGQuery.h
+//  GGFramework
 //
 //  Created by Evgeniy Shurakov on 09.04.12.
 //  Copyright (c) 2012 AppCode. All rights reserved.
@@ -25,26 +26,26 @@ extern NSString * const GGQueryHTTPMethodDELETE;
 
 - (void)addQueryPathComponent:(NSString *)component;
 
-@property (nonatomic, retain) NSString *methodName;
-@property (nonatomic, retain) NSURL *url;
+@property (nonatomic, strong) NSString *methodName;
+@property (nonatomic, strong) NSURL *url;
 
-@property (nonatomic, retain) NSString *httpMethod;
-@property (nonatomic, retain) NSString *etag;
-@property (nonatomic, retain) NSDate *lastModified;
+@property (nonatomic, strong) NSString *httpMethod;
+@property (nonatomic, strong) NSString *etag;
+@property (nonatomic, strong) NSDate *lastModified;
 
 @property (nonatomic, assign) NSTimeInterval revalidateInterval;
 @property (nonatomic, assign) BOOL cachePersistently;
 
-@property (nonatomic, retain) id bodyObject;
-@property (nonatomic, assign) Class bodyDecoder;
-@property (nonatomic, assign) Class bodyEncoder;
+@property (nonatomic, strong) id bodyObject;
+@property (nonatomic, weak) Class bodyDecoder;
+@property (nonatomic, weak) Class bodyEncoder;
 
-@property (nonatomic, assign) Class expectedResultClass;
+@property (nonatomic, weak) Class expectedResultClass;
 
 @property (nonatomic, assign) BOOL suppressAuthorization;
 
-@property(nonatomic, retain) NSDictionary *httpHeaders;
-@property(nonatomic, retain) NSDictionary *queryParameters;
-@property(nonatomic, retain) NSArray *queryPathComponents;
+@property(nonatomic, strong) NSDictionary *httpHeaders;
+@property(nonatomic, strong) NSDictionary *queryParameters;
+@property(nonatomic, strong) NSArray *queryPathComponents;
 
 @end

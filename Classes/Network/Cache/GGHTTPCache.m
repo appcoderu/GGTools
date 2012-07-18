@@ -1,6 +1,6 @@
 //
 //  GGHTTPCache.m
-//  RuRu
+//  GGFramework
 //
 //  Created by Evgeniy Shurakov on 04.05.12.
 //  Copyright (c) 2012 AppCode. All rights reserved.
@@ -35,19 +35,14 @@
 	self = [super init];
 	if (self) {
 		if (!aCache) {
-			[self release];
 			return nil;
 		}
-		cache = [aCache retain];
+		cache = aCache;
 	}
 	
 	return self;
 }
 
-- (void)dealloc {
-    [cache release];
-    [super dealloc];
-}
 
 - (BOOL)canCacheRequest:(NSURLRequest *)request {
 	if (!request) {
@@ -71,7 +66,7 @@
 	}
 	
 	GGCacheItem *item = [cache cachedItemForKey:[self cacheKeyForRequest:request]];
-	return [[[GGHTTPCacheItem alloc] initWithCacheItem:item] autorelease];
+	return [[GGHTTPCacheItem alloc] initWithCacheItem:item];
 }
 
 - (void)storeData:(NSData *)data forRequest:(NSURLRequest *)request response:(NSURLResponse *)response {

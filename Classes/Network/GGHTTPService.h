@@ -1,5 +1,6 @@
 //
 //  GGHTTPService.h
+//  GGFramework
 //
 //  Created by Evgeniy Shurakov on 09.04.12.
 //  Copyright (c) 2012 AppCode. All rights reserved.
@@ -46,13 +47,13 @@ extern const NSInteger GGHTTPServiceErrorUnauthorized;
 
 #pragma mark -
 
-@property(nonatomic, retain) NSString *userAgent;
-@property(nonatomic, retain) NSURL *baseURL;
+@property(nonatomic, strong) NSString *userAgent;
+@property(nonatomic, strong) NSURL *baseURL;
 @property(nonatomic, copy) NSDictionary *additionalHTTPHeaders;
 
-@property(nonatomic, retain) NSObject <GGHTTPCacheProtocol> *cache;
-@property(nonatomic, retain) NSObject <GGHTTPCacheProtocol> *persistentCache;
+@property(nonatomic, strong) NSObject <GGHTTPCacheProtocol> *cache;
+@property(nonatomic, strong) NSObject <GGHTTPCacheProtocol> *persistentCache;
 
-@property(nonatomic, retain) NSObject <GGAuthorizationProtocol> *authorizer;
+@property(nonatomic, strong) NSObject <GGAuthorizationProtocol> *authorizer;
 
 @end

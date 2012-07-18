@@ -14,8 +14,8 @@ enum {
 };
 
 @interface GGCacheItem ()
-@property(nonatomic, retain) NSString *key;
-@property(nonatomic, assign) id proxy;
+@property(nonatomic, strong) NSString *key;
+@property(nonatomic, weak) id proxy;
 @end
 
 @implementation GGCacheItem {
@@ -29,7 +29,7 @@ enum {
 	
 	unsigned int state;
 	
-	id _proxy;
+	id __weak _proxy;
 }
 
 @synthesize data=_data;
@@ -48,14 +48,13 @@ enum {
 	self = [super init];
 	if (self) {
 		if (!path || [path length] == 0) {
-			[self release];
 			return nil;
 		}
 		
-		_dataPath = [path retain];
+		_dataPath = path;
 		
 		if (metaExtension && [metaExtension length] > 0) {
-			_metaPath = [[_dataPath stringByAppendingPathExtension:metaExtension] retain];
+			_metaPath = [_dataPath stringByAppendingPathExtension:metaExtension];
 		}
 	}
 	return self;
@@ -63,15 +62,6 @@ enum {
 
 - (void)dealloc {
 	_proxy = nil;
-	
-	[_key release];
-    [_dataPath release];
-	[_metaPath release];
-	[_data release];
-	[_meta release];
-	[_modificationDate release];
-	
-    [super dealloc];
 }
 
 #pragma mark -
@@ -84,7 +74,6 @@ enum {
 			return NO;
 		}
 		
-		[_modificationDate release];
 		_modificationDate = nil;
 	}
 	
@@ -112,7 +101,6 @@ enum {
 	[[NSFileManager defaultManager] removeItemAtPath:_dataPath error:nil];
 	[[NSFileManager defaultManager] removeItemAtPath:_metaPath error:nil];
 	
-	[_modificationDate release];
 	_modificationDate = nil;
 }
 
@@ -129,10 +117,8 @@ enum {
 - (void)dehydrate {
 	state = GGCacheItemOK;
 	
-	[_data release];
 	_data = nil;
 	
-	[_meta release];
 	_meta = nil;
 }
 
@@ -141,7 +127,7 @@ enum {
 		_data = [[NSData alloc] initWithContentsOfFile:_dataPath];
 	}
 	
-	return [[_data retain] autorelease];
+	return _data;
 }
 
 - (void)setData:(NSData *)data {
@@ -149,8 +135,6 @@ enum {
 		return;
 	}
 	
-	[data retain];
-	[_data release];
 	_data = data;
 	
 	[self setNeedsWriteData];
@@ -161,7 +145,7 @@ enum {
 		if (!_modificationDate) {
 			NSFileManager *fm = [NSFileManager defaultManager];
 			NSDictionary *fileAttrs = [fm attributesOfItemAtPath:_dataPath error:NULL];
-			_modificationDate = [[fileAttrs objectForKey:NSFileModificationDate] retain];
+			_modificationDate = [fileAttrs objectForKey:NSFileModificationDate];
 		}
 				
 		return -[_modificationDate timeIntervalSinceNow];
@@ -175,8 +159,7 @@ enum {
 		return;
 	}
 	
-	[_modificationDate release];
-	_modificationDate = [[NSDate dateWithTimeIntervalSinceNow:-age] retain];
+	_modificationDate = [NSDate dateWithTimeIntervalSinceNow:-age];
 	
 	NSFileManager *fm = [NSFileManager defaultManager];
 	NSMutableDictionary *fileAttrs = [[NSMutableDictionary alloc] initWithObjectsAndKeys:_modificationDate, NSFileModificationDate, nil];
@@ -185,7 +168,6 @@ enum {
 		 ofItemAtPath:_dataPath 
 				error:nil];
 	
-	[fileAttrs release];
 }
 
 - (BOOL)exists {
@@ -265,7 +247,7 @@ enum {
 		}
 	}
 	
-	return [[_meta retain] autorelease];
+	return _meta;
 }
 
 @end

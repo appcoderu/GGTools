@@ -1,6 +1,6 @@
 //
 //  GGQueryBodyDecoder.h
-//  RuRu
+//  GGFramework
 //
 //  Created by Evgeniy Shurakov on 03.05.12.
 //  Copyright (c) 2012 AppCode. All rights reserved.

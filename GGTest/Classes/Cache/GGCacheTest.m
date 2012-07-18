@@ -55,7 +55,7 @@
 		for (NSUInteger i = 0; i < cacheItemsCount; ++i) {
 			GGCacheItem *cacheItem = [cache storeData:testData 
 											 withMeta:testMeta 
-											   forKey:[testKey stringByAppendingFormat:@"_%lu", i]];
+											   forKey:[testKey stringByAppendingFormat:@"_%u", i]];
 			
 			GHAssertNotNil(cacheItem, nil);
 		}
@@ -65,7 +65,6 @@
 		GHAssertTrue(result, @"Save result");
 	}
 	
-	[cache release];
 	
 	// ---
 
@@ -73,7 +72,7 @@
 	GHAssertNotNil(cache, nil);
 	
 	for (NSUInteger i = 0; i < cacheItemsCount; ++i) {
-		GGCacheItem *cacheItem = [cache cachedItemForKey:[testKey stringByAppendingFormat:@"_%lu", i]];
+		GGCacheItem *cacheItem = [cache cachedItemForKey:[testKey stringByAppendingFormat:@"_%u", i]];
 		GHAssertNotNil(cacheItem, nil);
 		GHAssertNotNil(cacheItem.data, nil);
 		GHAssertEqualObjects(cacheItem.data, testData, nil);
@@ -84,7 +83,6 @@
 		}
 	}
 	
-	[cache release];
 }
 
 - (void)testMetaData {
@@ -103,7 +101,7 @@
 		for (NSUInteger i = 0; i < cacheItemsCount; ++i) {
 			GGCacheItem *cacheItem = [cache storeData:testData 
 											 withMeta:testMeta 
-											   forKey:[testKey stringByAppendingFormat:@"_%lu", i]];
+											   forKey:[testKey stringByAppendingFormat:@"_%u", i]];
 			
 			GHAssertNotNil(cacheItem, nil);
 		}
@@ -112,7 +110,6 @@
 		
 		GHAssertTrue(result, @"Save result");
 	}
-	[cache release];
 	
 	// ---
 	
@@ -120,7 +117,7 @@
 	GHAssertNotNil(cache, nil);
 	
 	for (NSUInteger i = 0; i < cacheItemsCount; ++i) {
-		GGCacheItem *cacheItem = [cache cachedItemForKey:[testKey stringByAppendingFormat:@"_%lu", i]];
+		GGCacheItem *cacheItem = [cache cachedItemForKey:[testKey stringByAppendingFormat:@"_%u", i]];
 		GHAssertNotNil(cacheItem, nil);
 		GHAssertNotNil(cacheItem.data, nil);
 		GHAssertEqualObjects(cacheItem.data, testData, nil);
@@ -129,7 +126,6 @@
 		GHAssertEqualObjects(cacheItem.meta, testMeta, nil);
 	}
 	
-	[cache release];
 }
 
 - (void)testIntegratedCache {
@@ -169,7 +165,6 @@
 	GHAssertNotNil(sameCacheItem, nil);
 	GHAssertEquals(cacheItem, sameCacheItem, nil);
 	
-	[cache release];
 }
 
 - (void)testBadSymbolsInKey {	
@@ -193,7 +188,6 @@
 		
 		GHAssertTrue(result, @"Save result");
 		
-		[cache release];
 	}
 	
 	GGCache *cache = [[GGCache alloc] initWithFolder:@"test" countLimit:0];
@@ -222,7 +216,7 @@
 		for (NSUInteger i = 0; i < cacheItemsCount; ++i) {
 			GGCacheItem *cacheItem = [cache storeData:testData 
 											 withMeta:testMeta 
-											   forKey:[testKey stringByAppendingFormat:@"_%lu", i]];
+											   forKey:[testKey stringByAppendingFormat:@"_%u", i]];
 			
 			GHAssertNotNil(cacheItem, nil);
 		}
@@ -231,7 +225,7 @@
 	[cache _rotateCache];
 	
 	for (NSUInteger i = 0; i < cacheItemsCount; ++i) {
-		GGCacheItem *cacheItem = [cache cachedItemForKey:[testKey stringByAppendingFormat:@"_%lu", i]];
+		GGCacheItem *cacheItem = [cache cachedItemForKey:[testKey stringByAppendingFormat:@"_%u", i]];
 		if (i < countLimit) {
 			GHAssertNil(cacheItem, nil);
 		} else {
@@ -245,7 +239,6 @@
 	
 	GHAssertTrue(result, @"Save result");
 	
-	[cache release];
 	
 	// ---
 	
@@ -253,7 +246,7 @@
 	GHAssertNotNil(cache, nil);
 	
 	for (NSUInteger i = 0; i < cacheItemsCount; ++i) {
-		GGCacheItem *cacheItem = [cache cachedItemForKey:[testKey stringByAppendingFormat:@"_%lu", i]];
+		GGCacheItem *cacheItem = [cache cachedItemForKey:[testKey stringByAppendingFormat:@"_%u", i]];
 		if (i < countLimit) {
 			GHAssertNil(cacheItem, nil);
 		} else {
@@ -263,7 +256,6 @@
 		}
 	}
 	
-	[cache release];
 }
 
 - (void)testCacheRotationWithCacheItemsInUse {	
@@ -285,7 +277,7 @@
 		for (NSUInteger i = 0; i < cacheItemsCount; ++i) {
 			GGCacheItem *cacheItem = [cache storeData:testData 
 											 withMeta:testMeta 
-											   forKey:[testKey stringByAppendingFormat:@"_%lu", i]];
+											   forKey:[testKey stringByAppendingFormat:@"_%u", i]];
 			
 			GHAssertNotNil(cacheItem, nil);
 		}
@@ -295,14 +287,14 @@
 		GHAssertTrue(result, @"Save result");
 	}
 	
-	GGCacheItem *itemInUse = [cache cachedItemForKey:[testKey stringByAppendingFormat:@"_%lu", 0]];
+	GGCacheItem *itemInUse = [cache cachedItemForKey:[testKey stringByAppendingFormat:@"_%u", 0]];
 	GHAssertNotNil(itemInUse, nil);
 		
 	@autoreleasepool {
 		for (NSUInteger i = cacheItemsCount; i < 2 * cacheItemsCount; ++i) {
 			GGCacheItem *cacheItem = [cache storeData:testData 
 											 withMeta:testMeta 
-											   forKey:[testKey stringByAppendingFormat:@"_%lu", i]];
+											   forKey:[testKey stringByAppendingFormat:@"_%u", i]];
 			
 			GHAssertNotNil(cacheItem, nil);
 		}
@@ -314,13 +306,12 @@
 	
 	@autoreleasepool {
 		for (NSUInteger i = 1; i < countLimit; ++i) {
-			GGCacheItem *cacheItem = [cache cachedItemForKey:[testKey stringByAppendingFormat:@"_%lu", i]];
+			GGCacheItem *cacheItem = [cache cachedItemForKey:[testKey stringByAppendingFormat:@"_%u", i]];
 			
 			GHAssertNil(cacheItem, nil);
 		}
 	}
 	
-	[cache release];
 }
 
 - (void)testCacheDirectoryAbsenseDuringWork1 {
@@ -338,7 +329,7 @@
 		for (NSUInteger i = 0; i < cacheItemsCount; ++i) {
 			GGCacheItem *cacheItem = [cache storeData:testData 
 											 withMeta:testMeta 
-											   forKey:[testKey stringByAppendingFormat:@"_%lu", i]];
+											   forKey:[testKey stringByAppendingFormat:@"_%u", i]];
 			
 			GHAssertNotNil(cacheItem, nil);
 		}
@@ -349,7 +340,6 @@
 		
 		GHAssertTrue(result, @"Save result");
 		
-		[cache release];
 	}
 	
 	
@@ -358,11 +348,10 @@
 		GHAssertNotNil(cache, nil);
 		
 		for (NSUInteger i = 0; i < cacheItemsCount; ++i) {
-			GGCacheItem *cacheItem = [cache cachedItemForKey:[testKey stringByAppendingFormat:@"_%lu", i]];
+			GGCacheItem *cacheItem = [cache cachedItemForKey:[testKey stringByAppendingFormat:@"_%u", i]];
 			GHAssertNotNil(cacheItem, nil);
 		}
 		
-		[cache release];
 	}
 }
 
@@ -389,7 +378,7 @@
 			
 			GGCacheItem *cacheItem = [cache storeData:testData 
 											 withMeta:testMeta 
-											   forKey:[testKey stringByAppendingFormat:@"_%lu", i]];
+											   forKey:[testKey stringByAppendingFormat:@"_%u", i]];
 			
 			GHAssertNotNil(cacheItem, nil);
 		}
@@ -398,7 +387,6 @@
 		
 		GHAssertTrue(result, @"Save result");
 		
-		[cache release];
 	}
 	
 	
@@ -407,7 +395,7 @@
 		GHAssertNotNil(cache, nil);
 		
 		for (NSUInteger i = 0; i < cacheItemsCount; ++i) {
-			GGCacheItem *cacheItem = [cache cachedItemForKey:[testKey stringByAppendingFormat:@"_%lu", i]];
+			GGCacheItem *cacheItem = [cache cachedItemForKey:[testKey stringByAppendingFormat:@"_%u", i]];
 			if (i < cacheItemsCount / 2) {
 				GHAssertNil(cacheItem, nil);
 			} else {
@@ -415,7 +403,6 @@
 			}
 		}
 		
-		[cache release];
 	}
 }
 

@@ -16,14 +16,12 @@ static NSString * const GGCacheMetaExtension = @"meta";
 
 static GGCache *sharedInstance = nil;
 
-static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NULL, NULL, NULL};
-
 #pragma mark -
 
 @interface GGCacheItemProxy : NSProxy
 
-@property(nonatomic, retain, readonly) GGCacheItem *cacheItem;
-@property(nonatomic, retain, readonly) GGCache *cache;
+@property(nonatomic, strong, readonly) GGCacheItem *cacheItem;
+@property(nonatomic, strong, readonly) GGCache *cache;
 
 - (id)initWithCacheItem:(GGCacheItem *)aCacheItem cache:(GGCache *)aCache;
 
@@ -33,8 +31,8 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 
 @interface GGCacheItem (Private)
 
-@property(nonatomic, retain) NSString *key;
-@property(nonatomic, assign) id proxy;
+@property(nonatomic, strong) NSString *key;
+@property(nonatomic, weak) id proxy;
 @property(nonatomic, assign, readwrite) NSTimeInterval age;
 
 - (BOOL)write;
@@ -61,12 +59,10 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 		sharedInstance = [[[self class] alloc] init];
 	}
 	
-	return [[sharedInstance retain] autorelease];
+	return sharedInstance;
 }
 
 + (void)setSharedCache:(GGCache *)cache {
-	[cache retain];
-	[sharedInstance release];
 	sharedInstance = cache;
 }
 
@@ -80,7 +76,7 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 	NSString *path = nil;
 	
 	if (folder) {
-		fileManager = [[NSFileManager defaultManager] retain];
+		fileManager = [NSFileManager defaultManager];
 		path = [[[[fileManager URLsForDirectory:NSCachesDirectory 
 									  inDomains:NSUserDomainMask] lastObject] URLByAppendingPathComponent:folder] path];
 	}
@@ -92,7 +88,6 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 	self = [super init];
 	if (self) {
         if (!path || [path length] == 0) {
-			[self release];
 			return nil;
 		}
 				
@@ -106,7 +101,7 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 		}
 		
 		_countLimit = countLimit;
-		_dirPath = [path retain];
+		_dirPath = path;
 		
 		cacheItems = CFDictionaryCreateMutable(NULL, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
 		cacheItemsList = [[NSMutableArray alloc] initWithCapacity:_countLimit + 10];
@@ -124,12 +119,6 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 	[self _clearCacheItems];
 	
 	CFRelease(cacheItems);
-	[cacheItemsList release];
-	
-	[_dirPath release];
-	[fileManager release];
-	
-    [super dealloc];
 }
 
 #pragma mark -
@@ -174,7 +163,7 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 			return nil;
 		}
 		
-		cacheItem = [[[GGCacheItem alloc] initWithPath:path metaExtension:GGCacheMetaExtension] autorelease];
+		cacheItem = [[GGCacheItem alloc] initWithPath:path metaExtension:GGCacheMetaExtension];
 		cacheItem.key = key;
 		
 		[self _addCacheItem:cacheItem];
@@ -244,7 +233,7 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 }
 
 - (NSString *)path {
-	return [[_dirPath retain] autorelease];
+	return _dirPath;
 }
 
 #pragma mark -
@@ -259,22 +248,22 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 	[self delayedSave];
 }
 
-- (BOOL)initCache {
+- (void)initCache {
 	if (!_dirPath) {
-		return NO;
+		return;
 	}
 	
 	if ([self isCacheDirectoryExists]) {
 		if (![self isCacheDirectoryWritable]) {
-			return NO;
+			return;
 		}
 	} else if (![self createCacheDirectory]) {
-		return NO;
+		return;
 	}
 	
 	[self updateCacheItemsList];
 	
-	return YES;
+	return;
 }
 
 - (void)updateCacheItemsList {
@@ -297,7 +286,6 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 		
 		[self _addCacheItem:cacheItem];
 		
-		[cacheItem release];
 	}
 	
 	[self _sortCacheItems];
@@ -312,7 +300,7 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 	
 	static NSCharacterSet *illegalFileNameCharacters = nil;
 	if (!illegalFileNameCharacters) {
-		illegalFileNameCharacters = [[NSCharacterSet characterSetWithCharactersInString:@"/:\\?%*|\"<>"] retain];
+		illegalFileNameCharacters = [NSCharacterSet characterSetWithCharactersInString:@"/:\\?%*|\"<>"];
 	}
 	
     return [[key componentsSeparatedByCharactersInSet:illegalFileNameCharacters] componentsJoinedByString:@"_"];
@@ -365,12 +353,16 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 		return nil;
 	}
 	
+	GGCacheItemProxy *proxy = nil;
+	
 	if (!cacheItem.proxy) {
-		GGCacheItemProxy *proxy = [[[GGCacheItemProxy alloc] initWithCacheItem:cacheItem cache:self] autorelease];
+		proxy = [[GGCacheItemProxy alloc] initWithCacheItem:cacheItem cache:self];
 		cacheItem.proxy = proxy;
+	} else {
+		proxy = cacheItem.proxy;
 	}
 
-	return [[cacheItem.proxy retain] autorelease];
+	return (GGCacheItem *)proxy;
 }
 
 - (void)_removeProxyItem:(GGCacheItemProxy *)proxy {
@@ -386,7 +378,7 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 		return;
 	}
 	
-	CFDictionarySetValue(cacheItems, cacheItem.key, cacheItem);
+	CFDictionarySetValue(cacheItems, (__bridge const void *)(cacheItem.key), (__bridge const void *)(cacheItem));
 	[cacheItemsList addObject:cacheItem];
 	
 	[cacheItem addObserver:self forKeyPath:@"state" options:0 context:nil];
@@ -399,7 +391,7 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 	
 	[cacheItem removeObserver:self forKeyPath:@"state"];
 	
-	CFDictionaryRemoveValue(cacheItems, cacheItem.key);
+	CFDictionaryRemoveValue(cacheItems, (__bridge const void *)(cacheItem.key));
 	[cacheItemsList removeObject:cacheItem];
 }
 
@@ -425,12 +417,11 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 	if (!key) {
 		return nil;
 	}
-	GGCacheItem *cacheItem = CFDictionaryGetValue(cacheItems, key);
-	return [[cacheItem retain] autorelease];
+	return (__bridge GGCacheItem *)CFDictionaryGetValue(cacheItems, (__bridge const void *)(key));
 }
 
 - (void)_clearCacheItems {
-	[(NSDictionary *)cacheItems enumerateKeysAndObjectsUsingBlock:^(id key, GGCacheItem *cacheItem, BOOL *stop) {
+	[(__bridge NSDictionary *)cacheItems enumerateKeysAndObjectsUsingBlock:^(id key, GGCacheItem *cacheItem, BOOL *stop) {
 		[cacheItem removeObserver:self forKeyPath:@"state"];
 	}];
 	CFDictionaryRemoveAllValues(cacheItems);
@@ -470,8 +461,8 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 @synthesize cacheItem, cache;
 
 - (id)initWithCacheItem:(GGCacheItem *)aCacheItem cache:(GGCache *)aCache {
-	cacheItem = [aCacheItem retain];
-	cache = [aCache retain];
+	cacheItem = aCacheItem;
+	cache = aCache;
 
 	return self;
 }
@@ -479,11 +470,7 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 - (void)dealloc {
 	[cache _removeProxyItem:self];
 	
-	[cache release];
-	cache = nil;
 	
-    [cacheItem release];
-    [super dealloc];
 }
 
 - (id)forwardingTargetForSelector:(SEL)sel {

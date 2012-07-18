@@ -14,8 +14,8 @@
 @property(nonatomic, readonly) BOOL exists;
 @property(nonatomic, readonly) NSTimeInterval age;
 
-@property(nonatomic, retain) NSData *data;
-@property(nonatomic, retain) NSDictionary *meta;
+@property(nonatomic, strong) NSData *data;
+@property(nonatomic, strong) NSDictionary *meta;
 
 - (id)metaValueForKey:(NSString *)key;
 - (void)setMetaValue:(id)value forKey:(NSString *)key;

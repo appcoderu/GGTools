@@ -1,6 +1,6 @@
 //
 //  GGQueryBodyDataTransformer.m
-//  RuRu
+//  GGFramework
 //
 //  Created by Evgeniy Shurakov on 03.05.12.
 //  Copyright (c) 2012 AppCode. All rights reserved.
@@ -37,7 +37,7 @@
 	body.data = bodyObject;
 	body.contentType = @"application/octet-stream";
 	
-	return [body autorelease];
+	return body;
 }
 
 @end

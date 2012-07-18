@@ -1,6 +1,6 @@
 //
 //  GGQueryBodyFormTransformer.m
-//  RuRu
+//  GGFramework
 //
 //  Created by Evgeniy Shurakov on 02.05.12.
 //  Copyright (c) 2012 AppCode. All rights reserved.
@@ -35,7 +35,7 @@
 	body.data = [[bodyObject componentsAsParameterString] dataUsingEncoding:NSUTF8StringEncoding];
 	body.contentType = @"application/x-www-form-urlencoded";
 	
-	return [body autorelease];
+	return body;
 }
 
 @end

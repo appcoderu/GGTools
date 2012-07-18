@@ -1,6 +1,6 @@
 //
 //  GGHTTPCacheItem.m
-//  RuRu
+//  GGFramework
 //
 //  Created by Evgeniy Shurakov on 05.05.12.
 //  Copyright (c) 2012 AppCode. All rights reserved.
@@ -23,21 +23,16 @@
 	self = [super init];
 	if (self) {
 		if (!aCacheItem) {
-			[self release];
 			return nil;
 		}
-		cacheItem = [aCacheItem retain];
+		cacheItem = aCacheItem;
 	}
 	return self;
 }
 
-- (void)dealloc {
-    [cacheItem release];
-    [super dealloc];
-}
 
 - (GGCacheItem *)cacheItem {
-	return [[cacheItem retain] autorelease];
+	return cacheItem;
 }
 
 #pragma mark -

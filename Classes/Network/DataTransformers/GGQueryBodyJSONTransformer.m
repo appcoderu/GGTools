@@ -1,6 +1,6 @@
 //
 //  GGQueryBodyJSONTransformer.m
-//  RuRu
+//  GGFramework
 //
 //  Created by Evgeniy Shurakov on 02.05.12.
 //  Copyright (c) 2012 AppCode. All rights reserved.
@@ -19,7 +19,7 @@
 @implementation GGQueryBodyJSONTransformer
 
 + (id)decode:(NSData *)data error:(NSError **)error {	
-	SBJsonParser *parser = [[[SBJsonParser alloc] init] autorelease];
+	SBJsonParser *parser = [[SBJsonParser alloc] init];
 	id object = [parser objectWithData:data];
 	if (!object) {
 		if (error) {
@@ -38,7 +38,7 @@
 		return nil;
 	}
 		
-	SBJsonWriter *writer = [[[SBJsonWriter alloc] init] autorelease];
+	SBJsonWriter *writer = [[SBJsonWriter alloc] init];
 	NSData *data = [writer dataWithObject:bodyObject];
 	
 	if (!data || [data length] == 0) {
@@ -55,7 +55,7 @@
 	body.data = data;
 	body.contentType = @"application/json";
 	
-	return [body autorelease];
+	return body;
 }
 
 @end

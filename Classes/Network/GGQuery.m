@@ -1,5 +1,6 @@
 //
 //  GGQuery.m
+//  GGFramework
 //
 //  Created by Evgeniy Shurakov on 09.04.12.
 //  Copyright (c) 2012 AppCode. All rights reserved.
@@ -49,7 +50,7 @@ NSString * const GGQueryHTTPMethodDELETE	= @"DELETE";
 + (id)queryForMethodName:(NSString *)methodName {
 	GGQuery *query = [[[self class] alloc] init];
 	query.methodName = methodName;
-	return [query autorelease];
+	return query;
 }
 
 + (id)queryForURL:(NSURL *)url {
@@ -60,7 +61,7 @@ NSString * const GGQueryHTTPMethodDELETE	= @"DELETE";
 	GGQuery *query = [[[self class] alloc] init];
 	query.url = url;
 	query.revalidateInterval = revalidateInterval;
-	return [query autorelease];
+	return query;
 }
 
 #pragma mark -
@@ -73,20 +74,6 @@ NSString * const GGQueryHTTPMethodDELETE	= @"DELETE";
 	return self;
 }
 
-- (void)dealloc {
-    [methodName_ release];
-	[httpMethod_ release];
-	[bodyObject_ release];
-	
-	[etag_ release];
-	[lastModified_ release];
-	[httpHeaders_ release];
-	[queryParameters_ release];
-	[queryPathComponents_ release];
-	[url_ release];
-	
-    [super dealloc];
-}
 
 #pragma mark -
 
@@ -138,7 +125,6 @@ NSString * const GGQueryHTTPMethodDELETE	= @"DELETE";
 	if (httpHeaders) {
 		tmp = [[NSMutableDictionary alloc] initWithDictionary:httpHeaders];
 	}
-	[httpHeaders_ release];
 	httpHeaders_ = tmp;
 }
 
@@ -147,7 +133,6 @@ NSString * const GGQueryHTTPMethodDELETE	= @"DELETE";
 	if (queryParameters) {
 		tmp = [[NSMutableDictionary alloc] initWithDictionary:queryParameters];
 	}
-	[queryParameters_ release];
 	queryParameters_ = tmp;
 }
 
@@ -156,7 +141,6 @@ NSString * const GGQueryHTTPMethodDELETE	= @"DELETE";
 	if (queryPathComponents) {
 		tmp = [[NSMutableArray alloc] initWithArray:queryPathComponents];
 	}
-	[queryPathComponents_ release];
 	queryPathComponents_ = tmp;
 }
 
