@@ -8,7 +8,7 @@
 #import "GGCache.h"
 #import "GGCacheItem.h"
 
-static const NSUInteger GGCacheDefaultCountLimit = 0;
+static const NSUInteger GGCacheDefaultCountLimit = 30;
 static const NSTimeInterval GGCacheSaveDelay = 5.0;
 
 static NSString * const GGCacheDefaultFolder = @"shared";
@@ -35,6 +35,7 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 
 @property(nonatomic, retain) NSString *key;
 @property(nonatomic, assign) id proxy;
+@property(nonatomic, assign, readwrite) NSTimeInterval age;
 
 - (BOOL)write;
 - (void)delete;
@@ -72,10 +73,10 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 #pragma mark -
 
 - (id)init {
-	return [self initWithFolder:GGCacheDefaultFolder];
+	return [self initWithFolder:GGCacheDefaultFolder countLimit:GGCacheDefaultCountLimit];
 }
 
-- (id)initWithFolder:(NSString *)folder {
+- (id)initWithFolder:(NSString *)folder countLimit:(NSUInteger)countLimit {
 	NSString *path = nil;
 	
 	if (folder) {
@@ -84,10 +85,10 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 									  inDomains:NSUserDomainMask] lastObject] URLByAppendingPathComponent:folder] path];
 	}
 		
-	return [self initWithPath:path];
+	return [self initWithPath:path countLimit:countLimit];
 }
 
-- (id)initWithPath:(NSString *)path {
+- (id)initWithPath:(NSString *)path countLimit:(NSUInteger)countLimit {
 	self = [super init];
 	if (self) {
         if (!path || [path length] == 0) {
@@ -104,7 +105,7 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 			fileManager = [[NSFileManager alloc] init];
 		}
 		
-		_countLimit = GGCacheDefaultCountLimit;
+		_countLimit = countLimit;
 		_dirPath = [path retain];
 		
 		cacheItems = CFDictionaryCreateMutable(NULL, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
@@ -143,6 +144,8 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 	}
 	
 	_countLimit = countLimit;
+	
+	[self _rotateCache];
 }
 
 #pragma mark -
@@ -171,7 +174,7 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 			return nil;
 		}
 		
-		cacheItem = [[[GGCacheItem alloc] initWithPath:path] autorelease];
+		cacheItem = [[[GGCacheItem alloc] initWithPath:path metaExtension:GGCacheMetaExtension] autorelease];
 		cacheItem.key = key;
 		
 		[self _addCacheItem:cacheItem];
@@ -187,6 +190,17 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 	[self _rotateCache];
 	
 	return _proxy;
+}
+
+- (void)bumpAgeOfCachedItem:(GGCacheItem *)_cacheItem {
+	GGCacheItem *cacheItem = [self _cacheItemForKey:_cacheItem.key];	
+	if (!cacheItem) {
+		return;
+	}
+	
+	[self _bringCacheItemFront:cacheItem];
+	
+	cacheItem.age = 0.0;
 }
 
 - (void)delayedSave {
@@ -245,6 +259,52 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 	[self delayedSave];
 }
 
+- (BOOL)initCache {
+	if (!_dirPath) {
+		return NO;
+	}
+	
+	if ([self isCacheDirectoryExists]) {
+		if (![self isCacheDirectoryWritable]) {
+			return NO;
+		}
+	} else if (![self createCacheDirectory]) {
+		return NO;
+	}
+	
+	[self updateCacheItemsList];
+	
+	return YES;
+}
+
+- (void)updateCacheItemsList {
+	[self _clearCacheItems];
+	
+	NSArray *files = [fileManager contentsOfDirectoryAtPath:_dirPath error:nil];
+	if (!files || [files count] == 0) {
+		return;
+	}
+	
+	for (NSString *fileName in files) {
+		if ([[fileName pathExtension] isEqualToString:GGCacheMetaExtension]) {
+			continue;
+		}
+		
+		NSString *filePath = [_dirPath stringByAppendingPathComponent:fileName];
+		
+		GGCacheItem *cacheItem = [[GGCacheItem alloc] initWithPath:filePath metaExtension:GGCacheMetaExtension];
+		cacheItem.key = fileName;
+		
+		[self _addCacheItem:cacheItem];
+		
+		[cacheItem release];
+	}
+	
+	[self _sortCacheItems];
+	
+	[self performSelector:@selector(_rotateCache) withObject:nil afterDelay:0.1];
+}
+
 - (NSString *)makeValidKey:(NSString *)key {
 	if (!key) {
 		return nil;
@@ -265,6 +325,40 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 	
 	return [_dirPath stringByAppendingPathComponent:cacheKey];
 }
+
+- (BOOL)isCacheDirectoryExists {
+	if (!_dirPath) {
+		return NO;
+	}
+	
+	BOOL isDir = NO;	
+	if ([fileManager fileExistsAtPath:_dirPath isDirectory:&isDir] && isDir) {
+		return YES;
+	}
+	
+	return NO;
+}
+
+- (BOOL)isCacheDirectoryWritable {
+	if (!_dirPath) {
+		return NO;
+	}
+	
+	return [fileManager isWritableFileAtPath:_dirPath];
+}
+
+- (BOOL)createCacheDirectory {
+	if (!_dirPath) {
+		return NO;
+	}
+	
+	return [fileManager createDirectoryAtPath:_dirPath 
+				  withIntermediateDirectories:YES 
+								   attributes:nil 
+										error:nil];
+}
+
+#pragma mark - Cache utilities
 
 - (GGCacheItem *)_proxyCacheItem:(GGCacheItem *)cacheItem {
 	if (!cacheItem) {
@@ -328,6 +422,9 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 }
 
 - (GGCacheItem *)_cacheItemForKey:(NSString *)key {
+	if (!key) {
+		return nil;
+	}
 	GGCacheItem *cacheItem = CFDictionaryGetValue(cacheItems, key);
 	return [[cacheItem retain] autorelease];
 }
@@ -345,6 +442,8 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 }
 
 - (void)_rotateCache {
+	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(_rotateCache) object:nil];
+	
 	if (_countLimit == 0) {
 		return;
 	}
@@ -359,82 +458,6 @@ static const CFDictionaryValueCallBacks dictionaryValuesCallbacks = {0, NULL, NU
 		
 		[self _deleteCacheItem:cacheItem];
 	}
-}
-
-- (BOOL)isCacheDirectoryExists {
-	if (!_dirPath) {
-		return NO;
-	}
-	
-	BOOL isDir = NO;	
-	if ([fileManager fileExistsAtPath:_dirPath isDirectory:&isDir] && isDir) {
-		return YES;
-	}
-	
-	return NO;
-}
-
-- (BOOL)isCacheDirectoryWritable {
-	if (!_dirPath) {
-		return NO;
-	}
-	
-	return [fileManager isWritableFileAtPath:_dirPath];
-}
-
-- (BOOL)createCacheDirectory {
-	if (!_dirPath) {
-		return NO;
-	}
-	
-	return [fileManager createDirectoryAtPath:_dirPath 
-				  withIntermediateDirectories:YES 
-								   attributes:nil 
-										error:nil];
-}
-
-- (BOOL)initCache {
-	if (!_dirPath) {
-		return NO;
-	}
-			
-	if ([self isCacheDirectoryExists]) {
-		if (![self isCacheDirectoryWritable]) {
-			return NO;
-		}
-	} else if (![self createCacheDirectory]) {
-		return NO;
-	}
-	
-	[self updateCacheItemsList];
-	
-	return YES;
-}
-
-- (void)updateCacheItemsList {
-	[self _clearCacheItems];
-	
-	NSArray *files = [fileManager contentsOfDirectoryAtPath:_dirPath error:nil];
-	if (!files || [files count] == 0) {
-		return;
-	}
-	
-	for (NSString *fileName in files) {
-		if ([[fileName pathExtension] isEqualToString:GGCacheMetaExtension]) {
-			continue;
-		}
-		
-		NSString *filePath = [_dirPath stringByAppendingPathComponent:fileName];
-		
-		GGCacheItem *cacheItem = [[GGCacheItem alloc] initWithPath:filePath];
-		cacheItem.key = fileName;
-		
-		[self _addCacheItem:cacheItem];
-		
-		[cacheItem release];
-	}
-	
-	[self _sortCacheItems];
 }
 
 @end

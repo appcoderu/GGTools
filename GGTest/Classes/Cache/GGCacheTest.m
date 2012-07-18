@@ -40,7 +40,7 @@
 }
 
 - (void)testCache {	
-	GGCache *cache = [[GGCache alloc] initWithFolder:@"test"];
+	GGCache *cache = [[GGCache alloc] initWithFolder:@"test" countLimit:0];
 	GHAssertNotNil(cache, nil);
 	
 	[cache clear];
@@ -69,7 +69,7 @@
 	
 	// ---
 
-	cache = [[GGCache alloc] initWithFolder:@"test"];
+	cache = [[GGCache alloc] initWithFolder:@"test" countLimit:0];
 	GHAssertNotNil(cache, nil);
 	
 	for (NSUInteger i = 0; i < cacheItemsCount; ++i) {
@@ -88,7 +88,7 @@
 }
 
 - (void)testMetaData {
-	GGCache *cache = [[GGCache alloc] initWithFolder:@"test"];
+	GGCache *cache = [[GGCache alloc] initWithFolder:@"test" countLimit:0];
 	GHAssertNotNil(cache, nil);
 	
 	[cache clear];
@@ -116,7 +116,7 @@
 	
 	// ---
 	
-	cache = [[GGCache alloc] initWithFolder:@"test"];
+	cache = [[GGCache alloc] initWithFolder:@"test" countLimit:0];
 	GHAssertNotNil(cache, nil);
 	
 	for (NSUInteger i = 0; i < cacheItemsCount; ++i) {
@@ -150,7 +150,7 @@
 }
 
 - (void)testIntegratedCacheItems {
-	GGCache *cache = [[GGCache alloc] initWithFolder:@"test"];
+	GGCache *cache = [[GGCache alloc] initWithFolder:@"test" countLimit:0];
 	GHAssertNotNil(cache, nil);
 	
 	[cache clear];
@@ -178,7 +178,7 @@
 	NSString *testKey = @"my_key_?_and_\"some_%*_symbols_|\\";
 	
 	@autoreleasepool {
-		GGCache *cache = [[GGCache alloc] initWithFolder:@"test"];
+		GGCache *cache = [[GGCache alloc] initWithFolder:@"test" countLimit:0];
 		GHAssertNotNil(cache, nil);
 		
 		[cache clear];
@@ -196,7 +196,7 @@
 		[cache release];
 	}
 	
-	GGCache *cache = [[GGCache alloc] initWithFolder:@"test"];
+	GGCache *cache = [[GGCache alloc] initWithFolder:@"test" countLimit:0];
 	GHAssertNotNil(cache, nil);
 	
 	GGCacheItem *cacheItem = [cache cachedItemForKey:testKey];
@@ -204,12 +204,12 @@
 }
 
 - (void)testBasicCacheRotation {
-	GGCache *cache = [[GGCache alloc] initWithFolder:@"test"];
+	NSUInteger countLimit = 10;
+	GGCache *cache = [[GGCache alloc] initWithFolder:@"test" countLimit:countLimit];
 	GHAssertNotNil(cache, nil);
 	
 	[cache clear];
-	
-	NSUInteger countLimit = 10;
+
 	NSUInteger cacheItemsCount = 20;
 	
 	[cache setCountLimit:countLimit];
@@ -249,7 +249,7 @@
 	
 	// ---
 	
-	cache = [[GGCache alloc] initWithFolder:@"test"];
+	cache = [[GGCache alloc] initWithFolder:@"test" countLimit:countLimit];
 	GHAssertNotNil(cache, nil);
 	
 	for (NSUInteger i = 0; i < cacheItemsCount; ++i) {
@@ -267,13 +267,14 @@
 }
 
 - (void)testCacheRotationWithCacheItemsInUse {	
-	GGCache *cache = [[GGCache alloc] initWithFolder:@"test"];
+	NSUInteger countLimit = 10;	
+	
+	GGCache *cache = [[GGCache alloc] initWithFolder:@"test" countLimit:countLimit];
 	GHAssertNotNil(cache, nil);
 	
 	[cache clear];
 	
 	NSUInteger cacheItemsCount = 10;
-	NSUInteger countLimit = 10;	
 	[cache setCountLimit:countLimit];
 	
 	NSData *testData = [@"test" dataUsingEncoding:NSUTF8StringEncoding];
@@ -330,7 +331,7 @@
 	NSString *testKey = @"key";
 	
 	@autoreleasepool {
-		GGCache *cache = [[GGCache alloc] initWithFolder:@"test"];
+		GGCache *cache = [[GGCache alloc] initWithFolder:@"test" countLimit:0];
 		GHAssertNotNil(cache, nil);
 		[cache clear];
 		
@@ -353,7 +354,7 @@
 	
 	
 	@autoreleasepool {
-		GGCache *cache = [[GGCache alloc] initWithFolder:@"test"];
+		GGCache *cache = [[GGCache alloc] initWithFolder:@"test" countLimit:0];
 		GHAssertNotNil(cache, nil);
 		
 		for (NSUInteger i = 0; i < cacheItemsCount; ++i) {
@@ -373,7 +374,7 @@
 	NSString *testKey = @"key";
 	
 	@autoreleasepool {
-		GGCache *cache = [[GGCache alloc] initWithFolder:@"test"];
+		GGCache *cache = [[GGCache alloc] initWithFolder:@"test" countLimit:0];
 		GHAssertNotNil(cache, nil);
 		[cache clear];
 		
@@ -402,7 +403,7 @@
 	
 	
 	@autoreleasepool {
-		GGCache *cache = [[GGCache alloc] initWithFolder:@"test"];
+		GGCache *cache = [[GGCache alloc] initWithFolder:@"test" countLimit:0];
 		GHAssertNotNil(cache, nil);
 		
 		for (NSUInteger i = 0; i < cacheItemsCount; ++i) {

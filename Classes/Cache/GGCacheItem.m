@@ -24,7 +24,9 @@ enum {
 	
 	NSData *_data;
 	NSMutableDictionary *_meta;
-
+	
+	NSDate *_modificationDate;
+	
 	unsigned int state;
 	
 	id _proxy;
@@ -39,10 +41,10 @@ enum {
 }
 
 - (id)init {
-	return [self initWithPath:nil];
+	return [self initWithPath:nil metaExtension:nil];
 }
 
-- (id)initWithPath:(NSString *)path {
+- (id)initWithPath:(NSString *)path metaExtension:(NSString *)metaExtension {
 	self = [super init];
 	if (self) {
 		if (!path || [path length] == 0) {
@@ -51,8 +53,10 @@ enum {
 		}
 		
 		_dataPath = [path retain];
-#warning replace "meta" with constant
-		_metaPath = [[_dataPath stringByAppendingPathExtension:@"meta"] retain];
+		
+		if (metaExtension && [metaExtension length] > 0) {
+			_metaPath = [[_dataPath stringByAppendingPathExtension:metaExtension] retain];
+		}
 	}
 	return self;
 }
@@ -65,6 +69,7 @@ enum {
 	[_metaPath release];
 	[_data release];
 	[_meta release];
+	[_modificationDate release];
 	
     [super dealloc];
 }
@@ -78,19 +83,25 @@ enum {
 			state |= GGCacheItemNeedsWriteData;
 			return NO;
 		}
+		
+		[_modificationDate release];
+		_modificationDate = nil;
 	}
 	
 	if ((state & GGCacheItemNeedsWriteMeta)) {
 		state &= ~GGCacheItemNeedsWriteMeta;
-		if (_meta && [_meta count] > 0) {
-			if (![_meta writeToFile:_metaPath atomically:YES]) {
-				state |= GGCacheItemNeedsWriteMeta;
-				return NO;
-			}
-		} else {
-			if (![[NSFileManager defaultManager] removeItemAtPath:_metaPath error:nil]) {
-				state |= GGCacheItemNeedsWriteMeta;
-				return NO;
+		
+		if (_metaPath) {
+			if (_meta && [_meta count] > 0) {
+				if (![_meta writeToFile:_metaPath atomically:YES]) {
+					state |= GGCacheItemNeedsWriteMeta;
+					return NO;
+				}
+			} else {
+				if (![[NSFileManager defaultManager] removeItemAtPath:_metaPath error:nil]) {
+					state |= GGCacheItemNeedsWriteMeta;
+					return NO;
+				}
 			}
 		}
 	}
@@ -100,6 +111,9 @@ enum {
 - (void)delete {
 	[[NSFileManager defaultManager] removeItemAtPath:_dataPath error:nil];
 	[[NSFileManager defaultManager] removeItemAtPath:_metaPath error:nil];
+	
+	[_modificationDate release];
+	_modificationDate = nil;
 }
 
 - (BOOL)hasUnsavedChanges {
@@ -142,18 +156,36 @@ enum {
 	[self setNeedsWriteData];
 }
 
-- (NSTimeInterval)age {
-#warning cache modification time?
-	
+- (NSTimeInterval)age {	
 	if ([self exists]) {
-		NSFileManager *fm = [NSFileManager defaultManager];
-		NSDictionary *fileAttrs = [fm attributesOfItemAtPath:_dataPath error:NULL];
-		NSDate *modificationDate = [fileAttrs objectForKey:NSFileModificationDate];
-		
-		return -[modificationDate timeIntervalSinceNow];
+		if (!_modificationDate) {
+			NSFileManager *fm = [NSFileManager defaultManager];
+			NSDictionary *fileAttrs = [fm attributesOfItemAtPath:_dataPath error:NULL];
+			_modificationDate = [[fileAttrs objectForKey:NSFileModificationDate] retain];
+		}
+				
+		return -[_modificationDate timeIntervalSinceNow];
 	} else {
 		return DBL_MAX;
 	}
+}
+
+- (void)setAge:(NSTimeInterval)age {
+	if (![self exists]) {
+		return;
+	}
+	
+	[_modificationDate release];
+	_modificationDate = [[NSDate dateWithTimeIntervalSinceNow:-age] retain];
+	
+	NSFileManager *fm = [NSFileManager defaultManager];
+	NSMutableDictionary *fileAttrs = [[NSMutableDictionary alloc] initWithObjectsAndKeys:_modificationDate, NSFileModificationDate, nil];
+	
+	[fm setAttributes:fileAttrs 
+		 ofItemAtPath:_dataPath 
+				error:nil];
+	
+	[fileAttrs release];
 }
 
 - (BOOL)exists {
@@ -226,7 +258,7 @@ enum {
 }
 
 - (NSMutableDictionary *)_meta {
-	if (!_meta) {
+	if (!_meta && _metaPath) {
 		_meta = [[NSMutableDictionary alloc] initWithContentsOfFile:_metaPath];
 		if (!_meta) {
 			_meta = [[NSMutableDictionary alloc] initWithCapacity:10];

@@ -14,14 +14,16 @@
 + (GGCache *)sharedCache;
 + (void)setSharedCache:(GGCache *)cache;
 
-- (id)initWithFolder:(NSString *)folder;
-- (id)initWithPath:(NSString *)path;
+- (id)initWithFolder:(NSString *)folder countLimit:(NSUInteger)countLimit;
+- (id)initWithPath:(NSString *)path countLimit:(NSUInteger)countLimit;
 
 - (GGCacheItem *)cachedItemForKey:(NSString *)key;
 
 - (GGCacheItem *)storeData:(NSData *)data 
 				  withMeta:(NSDictionary *)meta 
 					forKey:(NSString *)key;
+
+- (void)bumpAgeOfCachedItem:(GGCacheItem *)cacheItem;
 
 - (BOOL)save;
 - (void)clear;
