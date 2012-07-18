@@ -25,11 +25,12 @@ enum {
 	kGGHTTPFetcherStatusPreconditionFailed = 412
 };
 
-@protocol GGAuthorizationProtocol;
+@protocol GGHTTPAuthorizationProtocol;
+@protocol GGHTTPFetcherDelegate;
 
 @protocol GGHTTPFetcherProtocol <NSObject>
 
-@property(nonatomic, strong) NSObject <GGAuthorizationProtocol> *authorizer;
+@property(nonatomic, strong) NSObject <GGHTTPAuthorizationProtocol> *authorizer;
 @property(nonatomic, copy) NSMutableDictionary *properties;
 
 @property(nonatomic, strong, readonly) NSURLRequest *request;
@@ -37,7 +38,7 @@ enum {
 
 @property (nonatomic, assign, readonly) NSInteger statusCode;
 
-- (BOOL)beginFetchWithDelegate:(id)delegate
+- (BOOL)beginFetchWithDelegate:(NSObject <GGHTTPFetcherDelegate> *)delegate
              didFinishSelector:(SEL)finishedSEL;
 
 - (BOOL)beginFetchWithCompletionHandler:(void (^)(NSData *data, NSError *error))handler;

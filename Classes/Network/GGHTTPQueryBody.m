@@ -1,14 +1,14 @@
 //
-//  GGQueryBody.m
+//  GGHTTPQueryBody.m
 //  GGFramework
 //
 //  Created by Evgeniy Shurakov on 02.05.12.
 //  Copyright (c) 2012 AppCode. All rights reserved.
 //
 
-#import "GGQueryBody.h"
+#import "GGHTTPQueryBody.h"
 
-@implementation GGQueryBody
+@implementation GGHTTPQueryBody
 
 @synthesize data;
 @synthesize contentType;

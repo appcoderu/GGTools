@@ -1,13 +1,13 @@
 //
-//  GGQueryBodyJSONTransformer.m
+//  GGHTTPQueryBodyJSONTransformer.m
 //  GGFramework
 //
 //  Created by Evgeniy Shurakov on 02.05.12.
 //  Copyright (c) 2012 AppCode. All rights reserved.
 //
 
-#import "GGQueryBodyJSONTransformer.h"
-#import "GGQueryBody.h"
+#import "GGHTTPQueryBodyJSONTransformer.h"
+#import "GGHTTPQueryBody.h"
 
 #import "GGHTTPService.h"
 
@@ -16,15 +16,15 @@
 
 #import "NSError+Extra.h"
 
-@implementation GGQueryBodyJSONTransformer
+@implementation GGHTTPQueryBodyJSONTransformer
 
 + (id)decode:(NSData *)data error:(NSError **)error {	
 	SBJsonParser *parser = [[SBJsonParser alloc] init];
 	id object = [parser objectWithData:data];
 	if (!object) {
 		if (error) {
-			*error = [NSError errorWithDomain:GGHTTPServiceErrorDomain 
-										 code:GGHTTPServiceErrorInvalidResponseData 
+			*error = [NSError errorWithDomain:kGGHTTPServiceErrorDomain
+										 code:kGGHTTPServiceErrorInvalidResponseData
 								  description:NSLocalizedString(@"Error", nil) 
 								failureReason:parser.error];
 		}
@@ -33,7 +33,7 @@
 	return object;
 }
 
-+ (GGQueryBody *)encode:(id)bodyObject error:(NSError **)error {
++ (GGHTTPQueryBody *)encode:(id)bodyObject error:(NSError **)error {
 	if (!bodyObject) {
 		return nil;
 	}
@@ -43,15 +43,15 @@
 	
 	if (!data || [data length] == 0) {
 		if (error) {
-			*error = [NSError errorWithDomain:GGHTTPServiceErrorDomain 
-										 code:GGHTTPServiceErrorInvalidRequestBody 
+			*error = [NSError errorWithDomain:kGGHTTPServiceErrorDomain
+										 code:kGGHTTPServiceErrorInvalidRequestBody
 								  description:NSLocalizedString(@"Error", nil) 
 								failureReason:writer.error];
 		}
 		return nil;
 	}
 	
-	GGQueryBody *body = [[GGQueryBody alloc] init];
+	GGHTTPQueryBody *body = [[GGHTTPQueryBody alloc] init];
 	body.data = data;
 	body.contentType = @"application/json";
 	

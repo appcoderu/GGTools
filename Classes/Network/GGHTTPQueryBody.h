@@ -1,5 +1,5 @@
 //
-//  GGQueryBodyFormTransformer.h
+//  GGHTTPQueryBody.h
 //  GGFramework
 //
 //  Created by Evgeniy Shurakov on 02.05.12.
@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-#import "GGQueryBodyEncoder.h"
+@interface GGHTTPQueryBody : NSObject
 
-@interface GGQueryBodyFormTransformer : NSObject <GGQueryBodyEncoder>
+@property (nonatomic, strong) NSData *data;
+@property (nonatomic, strong) NSString *contentType;
 
 @end

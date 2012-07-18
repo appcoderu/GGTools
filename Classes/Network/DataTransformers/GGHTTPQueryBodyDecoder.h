@@ -1,5 +1,5 @@
 //
-//  GGQueryBodyEncoder.h
+//  GGHTTPQueryBodyDecoder.h
 //  GGFramework
 //
 //  Created by Evgeniy Shurakov on 03.05.12.
@@ -8,8 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@class GGQueryBody;
-
-@protocol GGQueryBodyEncoder <NSObject>
-+ (GGQueryBody *)encode:(id)bodyObject error:(NSError **)error;
+@protocol GGHTTPQueryBodyDecoder <NSObject>
++ (id)decode:(NSData *)data error:(NSError **)error;
 @end

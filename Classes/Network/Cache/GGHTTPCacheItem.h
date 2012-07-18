@@ -14,10 +14,10 @@
 
 - (id)initWithCacheItem:(GGCacheItem *)item;
 
-@property(weak, nonatomic, readonly) NSString *lastModified;
-@property(weak, nonatomic, readonly) NSString *eTag;
+@property(nonatomic, strong, readonly) NSString *lastModified;
+@property(nonatomic, strong, readonly) NSString *eTag;
 @property(nonatomic, readonly) NSTimeInterval age;
-@property(weak, nonatomic, readonly) NSData *data;
+@property(nonatomic, strong, readonly) NSData *data;
 
 - (BOOL)canBeUsedWithoutRevalidation;
 

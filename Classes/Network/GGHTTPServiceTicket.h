@@ -10,13 +10,13 @@
 
 @protocol GGHTTPFetcherProtocol;
 
-@class GGQuery;
+@class GGHTTPQuery;
 @class GTMHTTPFetcher;
 @class GGHTTPCacheItem;
 
 @interface GGHTTPServiceTicket : NSObject
 
-@property(nonatomic, strong) GGQuery *query;
+@property(nonatomic, strong) GGHTTPQuery *query;
 @property(nonatomic, strong) GGHTTPCacheItem *cacheItem;
 @property(nonatomic, assign, getter = isUsed) BOOL used;
 @property(nonatomic, strong) NSObject <GGHTTPFetcherProtocol> *fetcher;

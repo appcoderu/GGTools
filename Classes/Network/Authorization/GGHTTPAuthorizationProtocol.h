@@ -1,5 +1,5 @@
 //
-//  GGAuthorizationProtocol.h
+//  GGHTTPAuthorizationProtocol.h
 //  RuRu
 //
 //  Created by Evgeniy Shurakov on 04.05.12.
@@ -10,12 +10,14 @@
 
 #import <Foundation/Foundation.h>
 
-NSString * const GGAuthorizationErrorDomain = @"ru.ruru.authorization";
-NSString * const GGAuthorizationErrorRequestKey = @"request";
+NSString * const kGGHTTPAuthorizationErrorDomain = @"ru.ruru.http.authorization";
+NSString * const kGGHTTPAuthorizationErrorRequestKey = @"request";
 
-static const NSUInteger GGAuthorizationErrorAuthorizationFailed = -1001;
+enum {
+	kGGHTTPAuthorizationErrorAuthorizationFailed = -1001
+};
 
-@protocol GGAuthorizationProtocol <NSObject>
+@protocol GGHTTPAuthorizationProtocol <NSObject>
 
 @required
 // This protocol allows us to call the authorizer without requiring its sources

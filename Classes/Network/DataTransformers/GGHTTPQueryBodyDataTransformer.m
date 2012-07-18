@@ -1,39 +1,40 @@
 //
-//  GGQueryBodyDataTransformer.m
+//  GGHTTPQueryBodyDataTransformer.m
 //  GGFramework
 //
 //  Created by Evgeniy Shurakov on 03.05.12.
 //  Copyright (c) 2012 AppCode. All rights reserved.
 //
 
-#import "GGQueryBodyDataTransformer.h"
+#import "GGHTTPQueryBodyDataTransformer.h"
 
-#import "GGQueryBody.h"
+#import "GGHTTPQueryBody.h"
 #import "GGHTTPService.h"
+
 #import "NSError+Extra.h"
 
-@implementation GGQueryBodyDataTransformer
+@implementation GGHTTPQueryBodyDataTransformer
 
 + (id)decode:(NSData *)data error:(NSError **)error {
 	return data;
 }
 
-+ (GGQueryBody *)encode:(id)bodyObject error:(NSError **)error {
++ (GGHTTPQueryBody *)encode:(id)bodyObject error:(NSError **)error {
 	if (!bodyObject) {
 		return nil;
 	}
 	
 	if (![bodyObject isKindOfClass:[NSData class]]) {
 		if (error) {
-			*error = [NSError errorWithDomain:GGHTTPServiceErrorDomain 
-										 code:GGHTTPServiceErrorInvalidRequestBody 
+			*error = [NSError errorWithDomain:kGGHTTPServiceErrorDomain
+										 code:kGGHTTPServiceErrorInvalidRequestBody
 								  description:NSLocalizedString(@"Error", nil) 
 								failureReason:nil];
 		}
 		return nil;
 	}
 		
-	GGQueryBody *body = [[GGQueryBody alloc] init];
+	GGHTTPQueryBody *body = [[GGHTTPQueryBody alloc] init];
 	body.data = bodyObject;
 	body.contentType = @"application/octet-stream";
 	

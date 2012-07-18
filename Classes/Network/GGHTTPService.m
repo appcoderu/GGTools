@@ -9,16 +9,17 @@
 #import "GGHTTPService.h"
 #import "GGHTTPServiceTicket.h"
 
-#import "GGQuery.h"
-#import "GGQueryBody.h"
-#import "GGQueryBodyDecoder.h"
-#import "GGQueryBodyEncoder.h"
+#import "GGHTTPQuery.h"
+#import "GGHTTPQueryBody.h"
+#import "GGHTTPQueryBodyDecoder.h"
+#import "GGHTTPQueryBodyEncoder.h"
 
 #import "GGHTTPCache.h"
 #import "GGHTTPCacheItem.h"
 
+#import "GGHTTPFetcherDelegate.h"
 #import "GGHTTPFetcherProtocol.h"
-#import "GGAuthorizationProtocol.h"
+#import "GGHTTPAuthorizationProtocol.h"
 #import "GGHTTPCacheProtocol.h"
 
 #import "UIDevice+UUID.h"
@@ -28,18 +29,17 @@
 #import "NSDictionary+URL.h"
 #import "NSURL+QueryParameters.h"
 
-NSString * const GGHTTPServiceErrorDomain				= @"ru.appcode.serviceError";
-const NSInteger GGHTTPServiceErrorInvalidResponseData	= -1;
-const NSInteger GGHTTPServiceErrorQueryFailed			= -2;
-const NSInteger GGHTTPServiceErrorUnauthorized			= -3;
-const NSInteger GGHTTPServiceErrorInvalidRequestBody	= -4;
-const NSInteger GGHTTPServiceErrorUnableToConstructRequest = -5;
+NSString * const kGGHTTPServiceErrorDomain				= @"ru.appcode.httpService.error";
 
 static NSString * const kFetcherTicketKey				= @"ticket";
 static NSString * const kFetcherCompletionHandlerKey	= @"completionHandler";
 static NSString * const kFetcherCacheItemKey			= @"cacheItem";
 
 static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
+
+@interface GGHTTPService () <GGHTTPFetcherDelegate>
+
+@end
 
 @implementation GGHTTPService {
 
@@ -91,16 +91,16 @@ static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
 - (GGHTTPServiceTicket *)loadURL:(NSURL *)url
 			  revalidateInterval:(NSTimeInterval)revalidateInterval
 			   completionHandler:(void (^)(GGHTTPServiceTicket *ticket, id object, NSError *error))handler {
-	GGQuery *query = [GGQuery queryForURL:url revalidateInterval:revalidateInterval];
+	GGHTTPQuery *query = [GGHTTPQuery queryForURL:url revalidateInterval:revalidateInterval];
 	return [self executeQuery:query completionHandler:handler];
 }
 
-- (GGHTTPServiceTicket *)executeQuery:(GGQuery *)query
+- (GGHTTPServiceTicket *)executeQuery:(GGHTTPQuery *)query
    completionHandler:(void (^)(GGHTTPServiceTicket *ticket, id object, NSError *error))handler {
 	if (!query) {
 		if (handler) {
-			NSError *error = [NSError errorWithDomain:GGHTTPServiceErrorDomain 
-												 code:GGHTTPServiceErrorUnableToConstructRequest 
+			NSError *error = [NSError errorWithDomain:kGGHTTPServiceErrorDomain
+												 code:kGGHTTPServiceErrorUnableToConstructRequest
 										  description:NSLocalizedString(@"Error", nil) 
 										failureReason:NSLocalizedString(@"Unable to construct request", nil)];
 			handler(nil, nil, error);
@@ -111,8 +111,8 @@ static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
 	NSMutableURLRequest *request = [self requestForQuery:query];
 	if (!request) {
 		if (handler) {
-			NSError *error = [NSError errorWithDomain:GGHTTPServiceErrorDomain 
-												 code:GGHTTPServiceErrorUnableToConstructRequest 
+			NSError *error = [NSError errorWithDomain:kGGHTTPServiceErrorDomain
+												 code:kGGHTTPServiceErrorUnableToConstructRequest
 										  description:NSLocalizedString(@"Error", nil) 
 										failureReason:NSLocalizedString(@"Unable to construct request", nil)];
 			handler(nil, nil, error);
@@ -222,7 +222,7 @@ static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
 
 #pragma mark - Construct Request
 
-- (NSMutableURLRequest *)requestForQuery:(GGQuery *)query {
+- (NSMutableURLRequest *)requestForQuery:(GGHTTPQuery *)query {
 	if (!query) {
 		return nil;
 	}
@@ -237,12 +237,12 @@ static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
 															 timeoutInterval:GGHTTPServiceDefaultTimeout];
 	
 	if (!query.httpMethod || [query.httpMethod length] == 0)  {
-		query.httpMethod = GGQueryHTTPMethodGET;
+		query.httpMethod = GGHTTPQueryMethodGET;
 	}
 	request.HTTPMethod = query.httpMethod;
 	
 	NSError *error = nil;
-	GGQueryBody *body = [self requestBodyForQuery:query error:&error];
+	GGHTTPQueryBody *body = [self requestBodyForQuery:query error:&error];
 	
 	if (error) {
 		return nil;
@@ -278,7 +278,7 @@ static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
 	return request;
 }
 
-- (NSURL *)URLForQuery:(GGQuery *)query {	
+- (NSURL *)URLForQuery:(GGHTTPQuery *)query {	
 	NSURL *result = nil;
 	
 	if (query.url) {
@@ -331,15 +331,15 @@ static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
 }
 
 
-- (GGQueryBody *)requestBodyForQuery:(GGQuery *)query error:(NSError **)error {
+- (GGHTTPQueryBody *)requestBodyForQuery:(GGHTTPQuery *)query error:(NSError **)error {
 	if (!query.bodyObject) {
 		return nil;
 	}
 	
 	if (!query.bodyEncoder) {
 		if (error) {
-			*error = [NSError errorWithDomain:GGHTTPServiceErrorDomain 
-										 code:GGHTTPServiceErrorInvalidRequestBody 
+			*error = [NSError errorWithDomain:kGGHTTPServiceErrorDomain
+										 code:kGGHTTPServiceErrorInvalidRequestBody
 								  description:NSLocalizedString(@"Error", nil) 
 								failureReason:nil];
 		}
@@ -349,7 +349,7 @@ static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
 	return [query.bodyEncoder encode:query.bodyObject error:error];
 }
 
-- (NSObject <GGHTTPCacheProtocol> *)cacheForQuery:(GGQuery *)query {
+- (NSObject <GGHTTPCacheProtocol> *)cacheForQuery:(GGHTTPQuery *)query {
 	if (query.cachePersistently && self.persistentCache) {
 		return self.persistentCache;
 	} else {
@@ -425,7 +425,7 @@ static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
 		return nil;
 	}
 	
-	GGQuery *query = ticket.query;
+	GGHTTPQuery *query = ticket.query;
 	
 	id result = nil;
 	
@@ -440,8 +440,8 @@ static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
 		
 	if (query.expectedResultClass && ![result isKindOfClass:query.expectedResultClass]) {
 		if (error) {
-			*error = [NSError errorWithDomain:GGHTTPServiceErrorDomain 
-										 code:GGHTTPServiceErrorInvalidResponseData 
+			*error = [NSError errorWithDomain:kGGHTTPServiceErrorDomain
+										 code:kGGHTTPServiceErrorInvalidResponseData
 								  description:NSLocalizedString(@"Error", nil) 
 								failureReason:nil];
 		}
@@ -458,14 +458,14 @@ static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
 }
 
 - (NSError *)errorWithError:(NSError *)error data:(NSData *)data ticket:(GGHTTPServiceTicket *)ticket {
-	NSString *domain = GGHTTPServiceErrorDomain;
+	NSString *domain = kGGHTTPServiceErrorDomain;
 	NSInteger code;
 	
 	if (([error domain] == kGGHTTPFetcherStatusDomain && [error code] == kGGHTTPFetcherStatusUnauthorized) || 
-		([error domain] == GGAuthorizationErrorDomain)) {
-		code = GGHTTPServiceErrorUnauthorized;
+		([error domain] == kGGHTTPAuthorizationErrorDomain)) {
+		code = kGGHTTPServiceErrorUnauthorized;
 	} else {
-		code = GGHTTPServiceErrorQueryFailed;
+		code = kGGHTTPServiceErrorQueryFailed;
 	}
 	
 	return [NSError errorWithDomain:domain 

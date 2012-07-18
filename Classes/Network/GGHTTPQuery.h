@@ -1,5 +1,5 @@
 //
-//  GGQuery.h
+//  GGHTTPQuery.h
 //  GGFramework
 //
 //  Created by Evgeniy Shurakov on 09.04.12.
@@ -8,13 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString * const GGQueryHTTPMethodGET;
-extern NSString * const GGQueryHTTPMethodPUT;
-extern NSString * const GGQueryHTTPMethodPOST;
-extern NSString * const GGQueryHTTPMethodPATCH;
-extern NSString * const GGQueryHTTPMethodDELETE;
+extern NSString * const GGHTTPQueryMethodGET;
+extern NSString * const GGHTTPQueryMethodPUT;
+extern NSString * const GGHTTPQueryMethodPOST;
+extern NSString * const GGHTTPQueryMethodPATCH;
+extern NSString * const GGHTTPQueryMethodDELETE;
 
-@interface GGQuery : NSObject
+@interface GGHTTPQuery : NSObject
 
 + (id)queryForMethodName:(NSString *)methodName;
 

@@ -42,20 +42,20 @@
 		1C3131B315B69B770099B037 /* GGHTTPCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C31319D15B69B770099B037 /* GGHTTPCache.m */; };
 		1C3131B415B69B770099B037 /* GGHTTPCacheItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C31319F15B69B770099B037 /* GGHTTPCacheItem.m */; };
 		1C3131B515B69B770099B037 /* GGHTTPCacheItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C31319F15B69B770099B037 /* GGHTTPCacheItem.m */; };
-		1C3131B615B69B770099B037 /* GGQueryBodyDataTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3131A315B69B770099B037 /* GGQueryBodyDataTransformer.m */; };
-		1C3131B715B69B770099B037 /* GGQueryBodyDataTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3131A315B69B770099B037 /* GGQueryBodyDataTransformer.m */; };
-		1C3131B815B69B770099B037 /* GGQueryBodyFormTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3131A715B69B770099B037 /* GGQueryBodyFormTransformer.m */; };
-		1C3131B915B69B770099B037 /* GGQueryBodyFormTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3131A715B69B770099B037 /* GGQueryBodyFormTransformer.m */; };
-		1C3131BA15B69B770099B037 /* GGQueryBodyJSONTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3131A915B69B770099B037 /* GGQueryBodyJSONTransformer.m */; };
-		1C3131BB15B69B770099B037 /* GGQueryBodyJSONTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3131A915B69B770099B037 /* GGQueryBodyJSONTransformer.m */; };
+		1C3131B615B69B770099B037 /* GGHTTPQueryBodyDataTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3131A315B69B770099B037 /* GGHTTPQueryBodyDataTransformer.m */; };
+		1C3131B715B69B770099B037 /* GGHTTPQueryBodyDataTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3131A315B69B770099B037 /* GGHTTPQueryBodyDataTransformer.m */; };
+		1C3131B815B69B770099B037 /* GGHTTPQueryBodyFormTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3131A715B69B770099B037 /* GGHTTPQueryBodyFormTransformer.m */; };
+		1C3131B915B69B770099B037 /* GGHTTPQueryBodyFormTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3131A715B69B770099B037 /* GGHTTPQueryBodyFormTransformer.m */; };
+		1C3131BA15B69B770099B037 /* GGHTTPQueryBodyJSONTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3131A915B69B770099B037 /* GGHTTPQueryBodyJSONTransformer.m */; };
+		1C3131BB15B69B770099B037 /* GGHTTPQueryBodyJSONTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3131A915B69B770099B037 /* GGHTTPQueryBodyJSONTransformer.m */; };
 		1C3131BC15B69B770099B037 /* GGHTTPService.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3131AB15B69B770099B037 /* GGHTTPService.m */; };
 		1C3131BD15B69B770099B037 /* GGHTTPService.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3131AB15B69B770099B037 /* GGHTTPService.m */; };
 		1C3131BE15B69B770099B037 /* GGHTTPServiceTicket.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3131AD15B69B770099B037 /* GGHTTPServiceTicket.m */; };
 		1C3131BF15B69B770099B037 /* GGHTTPServiceTicket.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3131AD15B69B770099B037 /* GGHTTPServiceTicket.m */; };
-		1C3131C015B69B770099B037 /* GGQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3131AF15B69B770099B037 /* GGQuery.m */; };
-		1C3131C115B69B770099B037 /* GGQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3131AF15B69B770099B037 /* GGQuery.m */; };
-		1C3131C215B69B770099B037 /* GGQueryBody.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3131B115B69B770099B037 /* GGQueryBody.m */; };
-		1C3131C315B69B770099B037 /* GGQueryBody.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3131B115B69B770099B037 /* GGQueryBody.m */; };
+		1C3131C015B69B770099B037 /* GGHTTPQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3131AF15B69B770099B037 /* GGHTTPQuery.m */; };
+		1C3131C115B69B770099B037 /* GGHTTPQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3131AF15B69B770099B037 /* GGHTTPQuery.m */; };
+		1C3131C215B69B770099B037 /* GGHTTPQueryBody.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3131B115B69B770099B037 /* GGHTTPQueryBody.m */; };
+		1C3131C315B69B770099B037 /* GGHTTPQueryBody.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3131B115B69B770099B037 /* GGHTTPQueryBody.m */; };
 		1C3131C815B6AA690099B037 /* About.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1C3131C515B6AA690099B037 /* About.txt */; };
 		1C3131C915B6AA690099B037 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3131C715B6AA690099B037 /* GCDAsyncSocket.m */; };
 		1C3131DC15B6AA7C0099B037 /* About.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1C3131CB15B6AA7C0099B037 /* About.txt */; };
@@ -168,28 +168,28 @@
 		1C31318715B69B4C0099B037 /* HTTPRedirectResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTTPRedirectResponse.m; sourceTree = "<group>"; };
 		1C31318815B69B4C0099B037 /* WebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebSocket.h; sourceTree = "<group>"; };
 		1C31318915B69B4C0099B037 /* WebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebSocket.m; sourceTree = "<group>"; };
-		1C31319A15B69B770099B037 /* GGAuthorizationProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGAuthorizationProtocol.h; sourceTree = "<group>"; };
+		1C31319A15B69B770099B037 /* GGHTTPAuthorizationProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGHTTPAuthorizationProtocol.h; sourceTree = "<group>"; };
 		1C31319C15B69B770099B037 /* GGHTTPCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGHTTPCache.h; sourceTree = "<group>"; };
 		1C31319D15B69B770099B037 /* GGHTTPCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGHTTPCache.m; sourceTree = "<group>"; };
 		1C31319E15B69B770099B037 /* GGHTTPCacheItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGHTTPCacheItem.h; sourceTree = "<group>"; };
 		1C31319F15B69B770099B037 /* GGHTTPCacheItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGHTTPCacheItem.m; sourceTree = "<group>"; };
 		1C3131A015B69B770099B037 /* GGHTTPCacheProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGHTTPCacheProtocol.h; sourceTree = "<group>"; };
-		1C3131A215B69B770099B037 /* GGQueryBodyDataTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGQueryBodyDataTransformer.h; sourceTree = "<group>"; };
-		1C3131A315B69B770099B037 /* GGQueryBodyDataTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGQueryBodyDataTransformer.m; sourceTree = "<group>"; };
-		1C3131A415B69B770099B037 /* GGQueryBodyDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGQueryBodyDecoder.h; sourceTree = "<group>"; };
-		1C3131A515B69B770099B037 /* GGQueryBodyEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGQueryBodyEncoder.h; sourceTree = "<group>"; };
-		1C3131A615B69B770099B037 /* GGQueryBodyFormTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGQueryBodyFormTransformer.h; sourceTree = "<group>"; };
-		1C3131A715B69B770099B037 /* GGQueryBodyFormTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGQueryBodyFormTransformer.m; sourceTree = "<group>"; };
-		1C3131A815B69B770099B037 /* GGQueryBodyJSONTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGQueryBodyJSONTransformer.h; sourceTree = "<group>"; };
-		1C3131A915B69B770099B037 /* GGQueryBodyJSONTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGQueryBodyJSONTransformer.m; sourceTree = "<group>"; };
+		1C3131A215B69B770099B037 /* GGHTTPQueryBodyDataTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGHTTPQueryBodyDataTransformer.h; sourceTree = "<group>"; };
+		1C3131A315B69B770099B037 /* GGHTTPQueryBodyDataTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGHTTPQueryBodyDataTransformer.m; sourceTree = "<group>"; };
+		1C3131A415B69B770099B037 /* GGHTTPQueryBodyDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGHTTPQueryBodyDecoder.h; sourceTree = "<group>"; };
+		1C3131A515B69B770099B037 /* GGHTTPQueryBodyEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGHTTPQueryBodyEncoder.h; sourceTree = "<group>"; };
+		1C3131A615B69B770099B037 /* GGHTTPQueryBodyFormTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGHTTPQueryBodyFormTransformer.h; sourceTree = "<group>"; };
+		1C3131A715B69B770099B037 /* GGHTTPQueryBodyFormTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGHTTPQueryBodyFormTransformer.m; sourceTree = "<group>"; };
+		1C3131A815B69B770099B037 /* GGHTTPQueryBodyJSONTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGHTTPQueryBodyJSONTransformer.h; sourceTree = "<group>"; };
+		1C3131A915B69B770099B037 /* GGHTTPQueryBodyJSONTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGHTTPQueryBodyJSONTransformer.m; sourceTree = "<group>"; };
 		1C3131AA15B69B770099B037 /* GGHTTPService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGHTTPService.h; sourceTree = "<group>"; };
 		1C3131AB15B69B770099B037 /* GGHTTPService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGHTTPService.m; sourceTree = "<group>"; };
 		1C3131AC15B69B770099B037 /* GGHTTPServiceTicket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGHTTPServiceTicket.h; sourceTree = "<group>"; };
 		1C3131AD15B69B770099B037 /* GGHTTPServiceTicket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGHTTPServiceTicket.m; sourceTree = "<group>"; };
-		1C3131AE15B69B770099B037 /* GGQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGQuery.h; sourceTree = "<group>"; };
-		1C3131AF15B69B770099B037 /* GGQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGQuery.m; sourceTree = "<group>"; };
-		1C3131B015B69B770099B037 /* GGQueryBody.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGQueryBody.h; sourceTree = "<group>"; };
-		1C3131B115B69B770099B037 /* GGQueryBody.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGQueryBody.m; sourceTree = "<group>"; };
+		1C3131AE15B69B770099B037 /* GGHTTPQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGHTTPQuery.h; sourceTree = "<group>"; };
+		1C3131AF15B69B770099B037 /* GGHTTPQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGHTTPQuery.m; sourceTree = "<group>"; };
+		1C3131B015B69B770099B037 /* GGHTTPQueryBody.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGHTTPQueryBody.h; sourceTree = "<group>"; };
+		1C3131B115B69B770099B037 /* GGHTTPQueryBody.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGHTTPQueryBody.m; sourceTree = "<group>"; };
 		1C3131C515B6AA690099B037 /* About.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = About.txt; sourceTree = "<group>"; };
 		1C3131C615B6AA690099B037 /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncSocket.h; sourceTree = "<group>"; };
 		1C3131C715B6AA690099B037 /* GCDAsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncSocket.m; sourceTree = "<group>"; };
@@ -470,10 +470,10 @@
 				1C3131AB15B69B770099B037 /* GGHTTPService.m */,
 				1C3131AC15B69B770099B037 /* GGHTTPServiceTicket.h */,
 				1C3131AD15B69B770099B037 /* GGHTTPServiceTicket.m */,
-				1C3131AE15B69B770099B037 /* GGQuery.h */,
-				1C3131AF15B69B770099B037 /* GGQuery.m */,
-				1C3131B015B69B770099B037 /* GGQueryBody.h */,
-				1C3131B115B69B770099B037 /* GGQueryBody.m */,
+				1C3131AE15B69B770099B037 /* GGHTTPQuery.h */,
+				1C3131AF15B69B770099B037 /* GGHTTPQuery.m */,
+				1C3131B015B69B770099B037 /* GGHTTPQueryBody.h */,
+				1C3131B115B69B770099B037 /* GGHTTPQueryBody.m */,
 			);
 			name = Network;
 			path = Classes/Network;
@@ -482,7 +482,7 @@
 		1C31319915B69B770099B037 /* Authorization */ = {
 			isa = PBXGroup;
 			children = (
-				1C31319A15B69B770099B037 /* GGAuthorizationProtocol.h */,
+				1C31319A15B69B770099B037 /* GGHTTPAuthorizationProtocol.h */,
 			);
 			path = Authorization;
 			sourceTree = "<group>";
@@ -502,14 +502,14 @@
 		1C3131A115B69B770099B037 /* DataTransformers */ = {
 			isa = PBXGroup;
 			children = (
-				1C3131A215B69B770099B037 /* GGQueryBodyDataTransformer.h */,
-				1C3131A315B69B770099B037 /* GGQueryBodyDataTransformer.m */,
-				1C3131A415B69B770099B037 /* GGQueryBodyDecoder.h */,
-				1C3131A515B69B770099B037 /* GGQueryBodyEncoder.h */,
-				1C3131A615B69B770099B037 /* GGQueryBodyFormTransformer.h */,
-				1C3131A715B69B770099B037 /* GGQueryBodyFormTransformer.m */,
-				1C3131A815B69B770099B037 /* GGQueryBodyJSONTransformer.h */,
-				1C3131A915B69B770099B037 /* GGQueryBodyJSONTransformer.m */,
+				1C3131A215B69B770099B037 /* GGHTTPQueryBodyDataTransformer.h */,
+				1C3131A315B69B770099B037 /* GGHTTPQueryBodyDataTransformer.m */,
+				1C3131A415B69B770099B037 /* GGHTTPQueryBodyDecoder.h */,
+				1C3131A515B69B770099B037 /* GGHTTPQueryBodyEncoder.h */,
+				1C3131A615B69B770099B037 /* GGHTTPQueryBodyFormTransformer.h */,
+				1C3131A715B69B770099B037 /* GGHTTPQueryBodyFormTransformer.m */,
+				1C3131A815B69B770099B037 /* GGHTTPQueryBodyJSONTransformer.h */,
+				1C3131A915B69B770099B037 /* GGHTTPQueryBodyJSONTransformer.m */,
 			);
 			path = DataTransformers;
 			sourceTree = "<group>";
@@ -744,13 +744,13 @@
 				1C087AE61580FDC5001C4060 /* GGCacheItem.m in Sources */,
 				1C3131B215B69B770099B037 /* GGHTTPCache.m in Sources */,
 				1C3131B415B69B770099B037 /* GGHTTPCacheItem.m in Sources */,
-				1C3131B615B69B770099B037 /* GGQueryBodyDataTransformer.m in Sources */,
-				1C3131B815B69B770099B037 /* GGQueryBodyFormTransformer.m in Sources */,
-				1C3131BA15B69B770099B037 /* GGQueryBodyJSONTransformer.m in Sources */,
+				1C3131B615B69B770099B037 /* GGHTTPQueryBodyDataTransformer.m in Sources */,
+				1C3131B815B69B770099B037 /* GGHTTPQueryBodyFormTransformer.m in Sources */,
+				1C3131BA15B69B770099B037 /* GGHTTPQueryBodyJSONTransformer.m in Sources */,
 				1C3131BC15B69B770099B037 /* GGHTTPService.m in Sources */,
 				1C3131BE15B69B770099B037 /* GGHTTPServiceTicket.m in Sources */,
-				1C3131C015B69B770099B037 /* GGQuery.m in Sources */,
-				1C3131C215B69B770099B037 /* GGQueryBody.m in Sources */,
+				1C3131C015B69B770099B037 /* GGHTTPQuery.m in Sources */,
+				1C3131C215B69B770099B037 /* GGHTTPQueryBody.m in Sources */,
 				1C3131E815B6AACC0099B037 /* NSString+Crypto.m in Sources */,
 				1C3131EC15B6AB170099B037 /* NSError+Extra.m in Sources */,
 				1C31320915B6AB390099B037 /* NSObject+SBJson.m in Sources */,
@@ -796,13 +796,13 @@
 				1C31319615B69B4C0099B037 /* WebSocket.m in Sources */,
 				1C3131B315B69B770099B037 /* GGHTTPCache.m in Sources */,
 				1C3131B515B69B770099B037 /* GGHTTPCacheItem.m in Sources */,
-				1C3131B715B69B770099B037 /* GGQueryBodyDataTransformer.m in Sources */,
-				1C3131B915B69B770099B037 /* GGQueryBodyFormTransformer.m in Sources */,
-				1C3131BB15B69B770099B037 /* GGQueryBodyJSONTransformer.m in Sources */,
+				1C3131B715B69B770099B037 /* GGHTTPQueryBodyDataTransformer.m in Sources */,
+				1C3131B915B69B770099B037 /* GGHTTPQueryBodyFormTransformer.m in Sources */,
+				1C3131BB15B69B770099B037 /* GGHTTPQueryBodyJSONTransformer.m in Sources */,
 				1C3131BD15B69B770099B037 /* GGHTTPService.m in Sources */,
 				1C3131BF15B69B770099B037 /* GGHTTPServiceTicket.m in Sources */,
-				1C3131C115B69B770099B037 /* GGQuery.m in Sources */,
-				1C3131C315B69B770099B037 /* GGQueryBody.m in Sources */,
+				1C3131C115B69B770099B037 /* GGHTTPQuery.m in Sources */,
+				1C3131C315B69B770099B037 /* GGHTTPQueryBody.m in Sources */,
 				1C3131C915B6AA690099B037 /* GCDAsyncSocket.m in Sources */,
 				1C3131DD15B6AA7C0099B037 /* DDASLLogger.m in Sources */,
 				1C3131DE15B6AA7C0099B037 /* DDAbstractDatabaseLogger.m in Sources */,

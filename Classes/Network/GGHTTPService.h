@@ -8,21 +8,23 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString * const GGHTTPServiceErrorDomain;
+extern NSString * const kGGHTTPServiceErrorDomain;
 
-extern const NSInteger GGHTTPServiceErrorUnableToConstructRequest;
-extern const NSInteger GGHTTPServiceErrorInvalidResponseData;
-extern const NSInteger GGHTTPServiceErrorInvalidRequestBody;
-extern const NSInteger GGHTTPServiceErrorQueryFailed;
-extern const NSInteger GGHTTPServiceErrorUnauthorized;
+enum {
+	kGGHTTPServiceErrorInvalidResponseData		= -1,
+	kGGHTTPServiceErrorQueryFailed				= -2,
+	kGGHTTPServiceErrorUnauthorized				= -3,
+	kGGHTTPServiceErrorInvalidRequestBody		= -4,
+	kGGHTTPServiceErrorUnableToConstructRequest = -5
+};
 
 @class GGHTTPServiceTicket;
 
-@class GGQuery;
+@class GGHTTPQuery;
 @class GGCache;
 @class GGCacheItem;
 
-@protocol GGAuthorizationProtocol;
+@protocol GGHTTPAuthorizationProtocol;
 @protocol GGHTTPCacheProtocol;
 
 @interface GGHTTPService : NSObject
@@ -40,7 +42,7 @@ extern const NSInteger GGHTTPServiceErrorUnauthorized;
 			  revalidateInterval:(NSTimeInterval)revalidateInterval
 			   completionHandler:(void (^)(GGHTTPServiceTicket *ticket, id object, NSError *error))handler;
 
-- (GGHTTPServiceTicket *)executeQuery:(GGQuery *)query
+- (GGHTTPServiceTicket *)executeQuery:(GGHTTPQuery *)query
 					completionHandler:(void (^)(GGHTTPServiceTicket *ticket, id object, NSError *error))handler;
 
 - (void)cancelQueryWithTicket:(GGHTTPServiceTicket *)ticket;
@@ -54,6 +56,6 @@ extern const NSInteger GGHTTPServiceErrorUnauthorized;
 @property(nonatomic, strong) NSObject <GGHTTPCacheProtocol> *cache;
 @property(nonatomic, strong) NSObject <GGHTTPCacheProtocol> *persistentCache;
 
-@property(nonatomic, strong) NSObject <GGAuthorizationProtocol> *authorizer;
+@property(nonatomic, strong) NSObject <GGHTTPAuthorizationProtocol> *authorizer;
 
 @end

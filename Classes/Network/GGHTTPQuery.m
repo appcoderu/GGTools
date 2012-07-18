@@ -1,26 +1,26 @@
 //
-//  GGQuery.m
+//  GGHTTPQuery.m
 //  GGFramework
 //
 //  Created by Evgeniy Shurakov on 09.04.12.
 //  Copyright (c) 2012 AppCode. All rights reserved.
 //
 
-#import "GGQuery.h"
+#import "GGHTTPQuery.h"
 
-#import "GGQueryBodyDecoder.h"
-#import "GGQueryBodyEncoder.h"
+#import "GGHTTPQueryBodyDecoder.h"
+#import "GGHTTPQueryBodyEncoder.h"
 
 #import <objc/runtime.h>
 #import <objc/message.h>
 
-NSString * const GGQueryHTTPMethodGET		= @"GET";
-NSString * const GGQueryHTTPMethodPUT		= @"PUT";
-NSString * const GGQueryHTTPMethodPOST		= @"POST";
-NSString * const GGQueryHTTPMethodPATCH		= @"PATCH";
-NSString * const GGQueryHTTPMethodDELETE	= @"DELETE";
+NSString * const GGHTTPQueryMethodGET		= @"GET";
+NSString * const GGHTTPQueryMethodPUT		= @"PUT";
+NSString * const GGHTTPQueryMethodPOST		= @"POST";
+NSString * const GGHTTPQueryMethodPATCH		= @"PATCH";
+NSString * const GGHTTPQueryMethodDELETE	= @"DELETE";
 
-@implementation GGQuery {
+@implementation GGHTTPQuery {
 	NSMutableDictionary *httpHeaders_;
 	NSMutableDictionary *queryParameters_;
 	NSMutableArray *queryPathComponents_;
@@ -48,7 +48,7 @@ NSString * const GGQueryHTTPMethodDELETE	= @"DELETE";
 @synthesize cachePersistently=cachePersistently_;
 
 + (id)queryForMethodName:(NSString *)methodName {
-	GGQuery *query = [[[self class] alloc] init];
+	GGHTTPQuery *query = [[[self class] alloc] init];
 	query.methodName = methodName;
 	return query;
 }
@@ -58,7 +58,7 @@ NSString * const GGQueryHTTPMethodDELETE	= @"DELETE";
 }
 
 + (id)queryForURL:(NSURL *)url revalidateInterval:(NSTimeInterval)revalidateInterval {
-	GGQuery *query = [[[self class] alloc] init];
+	GGHTTPQuery *query = [[[self class] alloc] init];
 	query.url = url;
 	query.revalidateInterval = revalidateInterval;
 	return query;
@@ -145,7 +145,7 @@ NSString * const GGQueryHTTPMethodDELETE	= @"DELETE";
 }
 
 - (void)setBodyDecoder:(Class)bodyDecoder {
-	if (bodyDecoder && !class_conformsToProtocol(bodyDecoder, @protocol(GGQueryBodyDecoder))) {
+	if (bodyDecoder && !class_conformsToProtocol(bodyDecoder, @protocol(GGHTTPQueryBodyDecoder))) {
 		return;
 	}
 	
@@ -153,7 +153,7 @@ NSString * const GGQueryHTTPMethodDELETE	= @"DELETE";
 }
 
 - (void)setBodyEncoder:(Class)bodyEncoder {
-	if (bodyEncoder && !class_conformsToProtocol(bodyEncoder, @protocol(GGQueryBodyEncoder))) {
+	if (bodyEncoder && !class_conformsToProtocol(bodyEncoder, @protocol(GGHTTPQueryBodyEncoder))) {
 		return;
 	}
 	
