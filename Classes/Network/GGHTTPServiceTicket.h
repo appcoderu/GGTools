@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "GGHTTPFetcherProtocol.h"
+@protocol GGHTTPFetcherProtocol;
 
 @class GGQuery;
 @class GTMHTTPFetcher;

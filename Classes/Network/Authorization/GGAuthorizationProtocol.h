@@ -6,10 +6,12 @@
 //  Copyright (c) 2012 AppCode. All rights reserved.
 //
 
+#pragma once
+
 #import <Foundation/Foundation.h>
 
-static NSString * const GGAuthorizationErrorDomain = @"ru.ruru.authorization";
-static NSString * const GGAuthorizationErrorRequestKey = @"request";
+NSString * const GGAuthorizationErrorDomain = @"ru.ruru.authorization";
+NSString * const GGAuthorizationErrorRequestKey = @"request";
 
 static const NSUInteger GGAuthorizationErrorAuthorizationFailed = -1001;
 

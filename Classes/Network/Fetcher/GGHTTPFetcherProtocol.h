@@ -10,19 +10,14 @@
 
 #import <Foundation/Foundation.h>
 
-static NSString * const kGGHTTPFetcherErrorDomain = @"1";
-static NSString * const kGGHTTPFetcherStatusDomain = @"2";
+NSString * const kGGHTTPFetcherErrorDomain = @"ru.appcode.http.error";
+NSString * const kGGHTTPFetcherStatusDomain = @"ru.appcode.http.status";
 
 enum {
 	kGGHTTPFetcherErrorDownloadFailed = -1,
 	kGGHTTPFetcherErrorAuthenticationChallengeFailed = -2,
-	kGGHTTPFetcherErrorChunkUploadFailed = -3,
-	kGGHTTPFetcherErrorFileHandleException = -4,
-	kGGHTTPFetcherErrorBackgroundExpiration = -6,
-	
-	// The code kGTMHTTPFetcherErrorAuthorizationFailed (-5) has been removed;
-	// look for status 401 instead.
-	
+	kGGHTTPFetcherErrorBackgroundExpiration = -3,
+		
 	kGGHTTPFetcherStatusNotModified = 304,
 	kGGHTTPFetcherStatusBadRequest = 400,
 	kGGHTTPFetcherStatusUnauthorized = 401,
