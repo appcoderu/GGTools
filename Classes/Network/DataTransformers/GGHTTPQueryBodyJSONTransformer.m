@@ -9,7 +9,7 @@
 #import "GGHTTPQueryBodyJSONTransformer.h"
 #import "GGHTTPQueryBody.h"
 
-#import "GGHTTPService.h"
+#import "GGHTTPConstants.h"
 
 #import "SBJsonWriter.h"
 #import "SBJsonParser.h"

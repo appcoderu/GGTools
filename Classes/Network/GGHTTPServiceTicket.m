@@ -7,12 +7,24 @@
 //
 
 #import "GGHTTPServiceTicket.h"
+#import "GGHTTPServiceTicket+Private.h"
 
-@implementation GGHTTPServiceTicket
+#import "GGHTTPCacheItem.h"
 
-@synthesize used=used_;
-@synthesize query=query_;
-@synthesize fetcher=fetcher_;
-@synthesize cacheItem=cacheItem_;
+@implementation GGHTTPServiceTicket {
+	GGHTTPCacheItem *_cacheItem;
+}
+
+@synthesize used=_used;
+@synthesize query=_query;
+@synthesize fetcher=_fetcher;
+
+- (GGHTTPCacheItem *)cacheItem {
+	return _cacheItem;
+}
+
+- (void)setCacheItem:(GGHTTPCacheItem *)cacheItem {
+	_cacheItem = cacheItem;
+}
 
 @end

@@ -13,3 +13,5 @@ NSString * const kGGHTTPFetcherStatusDomain = @"ru.appcode.http.status";
 
 NSString * const kGGHTTPAuthorizationErrorDomain = @"ru.ruru.http.authorization";
 NSString * const kGGHTTPAuthorizationErrorRequestKey = @"request";
+
+NSString * const kGGHTTPServiceErrorDomain = @"ru.appcode.httpService.error";

@@ -35,6 +35,10 @@
 
 #pragma mark -
 
+- (NSDictionary *)responseHeaders {
+	return [cacheItem meta];
+}
+
 - (NSString *)lastModified {
 	return [cacheItem metaValueForKey:@"last-modified"];
 }

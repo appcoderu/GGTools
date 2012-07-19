@@ -8,15 +8,15 @@
 
 #import "GGHTTPService.h"
 #import "GGHTTPServiceTicket.h"
+#import "GGHTTPServiceTicket+Private.h"
 
 #import "GGHTTPConstants.h"
 
 #import "GGHTTPQuery.h"
-#import "GGHTTPQueryBody.h"
+#import "GGHTTPQueryResult.h"
 
-#import "GGHTTPQueryBodyDecoder.h"
+#import "GGHTTPQueryBody.h"
 #import "GGHTTPQueryBodyEncoder.h"
-#import "GGHTTPQueryBodyJSONTransformer.h"
 
 #import "GGHTTPCache.h"
 #import "GGHTTPCacheItem.h"
@@ -36,8 +36,6 @@
 
 #import <objc/runtime.h>
 #import <objc/message.h>
-
-NSString * const kGGHTTPServiceErrorDomain				= @"ru.appcode.httpService.error";
 
 static NSString * const kFetcherTicketKey					= @"ticket";
 static NSString * const kFetcherCompletionHandlerKey	= @"completionHandler";
@@ -147,26 +145,27 @@ static Class GGHTTPServiceFetcherClass = nil;
 #pragma mark -
 
 - (GGHTTPServiceTicket *)loadURL:(NSURL *)url
-			   completionHandler:(void (^)(GGHTTPServiceTicket *ticket, id object, NSError *error))handler {
+			   completionHandler:(GGHTTPServiceCompletionHandler)handler {
 	return [self loadURL:url revalidateInterval:0.0 completionHandler:handler];
 }
 
 - (GGHTTPServiceTicket *)loadURL:(NSURL *)url
 			  revalidateInterval:(NSTimeInterval)revalidateInterval
-			   completionHandler:(void (^)(GGHTTPServiceTicket *ticket, id object, NSError *error))handler {
+			   completionHandler:(GGHTTPServiceCompletionHandler)handler {
 	GGHTTPQuery *query = [GGHTTPQuery queryForURL:url revalidateInterval:revalidateInterval];
 	return [self executeQuery:query completionHandler:handler];
 }
 
 - (GGHTTPServiceTicket *)executeQuery:(GGHTTPQuery *)query
-   completionHandler:(void (^)(GGHTTPServiceTicket *ticket, id object, NSError *error))handler {
+   completionHandler:(GGHTTPServiceCompletionHandler)handler {
 	if (!query) {
 		if (handler) {
 			NSError *error = [NSError errorWithDomain:kGGHTTPServiceErrorDomain
 												 code:kGGHTTPServiceErrorUnableToConstructRequest
 										  description:NSLocalizedString(@"Error", nil) 
 										failureReason:NSLocalizedString(@"Unable to construct request", nil)];
-			handler(nil, nil, error);
+			
+			handler(nil, [GGHTTPQueryResult queryResultWithError:error]);
 		}
 		return nil;
 	}
@@ -178,7 +177,7 @@ static Class GGHTTPServiceFetcherClass = nil;
 												 code:kGGHTTPServiceErrorUnableToConstructRequest
 										  description:NSLocalizedString(@"Error", nil) 
 										failureReason:NSLocalizedString(@"Unable to construct request", nil)];
-			handler(nil, nil, error);
+			handler(nil, [GGHTTPQueryResult queryResultWithError:error]);
 		}
 		return nil;
 	}
@@ -204,7 +203,11 @@ static Class GGHTTPServiceFetcherClass = nil;
 			GGLog(@"Use cached item", nil);
 #endif
 			if (handler) {
-				handler(nil, cacheItem, nil);
+				GGHTTPQueryResult *result = [[GGHTTPQueryResult alloc] init];
+				result.cacheItem = cacheItem;
+				result.query = query;
+				
+				handler(nil, result);
 			}
 			return nil;
 		}
@@ -241,17 +244,19 @@ static Class GGHTTPServiceFetcherClass = nil;
 												 code:kGGHTTPServiceErrorUnableToConstructRequest
 										  description:NSLocalizedString(@"Error", nil)
 										failureReason:NSLocalizedString(@"Unable to construct request", nil)];
-			handler(nil, nil, error);
+			handler(nil, [GGHTTPQueryResult queryResultWithError:error]);
 		}
 		return nil;
 	}
 	
+#warning implement
 	//[fetcher setCookieStorageMethod:kGTMHTTPFetcherCookieStorageMethodNone];
 	
 	if (!query.suppressAuthorization) {
 		fetcher.authorizer = self.authorizer;
 	}
-	
+
+#warning implement
 	//fetcher.retryEnabled = YES;
 	//fetcher.maxRetryInterval = 15.0;
 	
@@ -476,115 +481,49 @@ static Class GGHTTPServiceFetcherClass = nil;
 	GGHTTPServiceTicket *ticket = [fetcher propertyForKey:kFetcherTicketKey];
 	ticket.used = YES;
 	
-	void(^handler)(GGHTTPServiceTicket *ticket, id object, NSError *error) = nil;
-	handler = [fetcher propertyForKey:kFetcherCompletionHandlerKey];
+	GGHTTPServiceCompletionHandler handler = [fetcher propertyForKey:kFetcherCompletionHandlerKey];
 	
 	if (!handler) {
 		ticket.fetcher = nil;
 		return;
 	}
 	
-	id object = nil;
+	GGHTTPQueryResult *queryResult = [[GGHTTPQueryResult alloc] init];
+	queryResult.query = ticket.query;
+	queryResult.statusCode = [fetcher statusCode];
+	
 	NSHTTPURLResponse *response = nil;
+	
 	if ([fetcher.response isKindOfClass:[NSHTTPURLResponse class]]) {
 		response = (NSHTTPURLResponse *)(fetcher.response);
 	}
-	
+		
 	if ([fetcher statusCode] == kGGHTTPFetcherStatusNotModified && ticket.cacheItem) {
 		[[self cacheForQuery:ticket.query] bumpAgeOfCachedItem:ticket.cacheItem];
 		
-		object = ticket.cacheItem;
+		queryResult.cacheItem = ticket.cacheItem;
 		error = nil;
-	} else if (error || [fetcher statusCode] >= 300) {
-		object = [self objectWithResponseData:data
-								  contentType:[self contentTypeFromResponse:response]
-								  bodyDecoder:nil
-						  expectedResultClass:[NSDictionary class]
-										error:nil];
-		
-		if (!error) {
-			error = [NSError errorWithDomain:kGGHTTPFetcherStatusDomain
-										code:[fetcher statusCode]
-								 description:nil
-							   failureReason:nil];
-		}
-		
-	} else {
-		object = [self objectWithResponseData:data
-								  contentType:[self contentTypeFromResponse:response]
-								  bodyDecoder:ticket.query.bodyDecoder
-						  expectedResultClass:ticket.query.expectedResultClass
-										error:&error];
-		
-		if (object && !error) {
-			[[self cacheForQuery:ticket.query] storeData:data
-											  forRequest:fetcher.mutableRequest
-												response:response];
-		}
+	} else if (!error && [fetcher statusCode] >= 300) {
+		error = [NSError errorWithDomain:kGGHTTPFetcherStatusDomain
+									code:[fetcher statusCode]
+							 description:nil
+						   failureReason:nil];
+	} else if (!error) {
+		[[self cacheForQuery:ticket.query] storeData:data
+										  forRequest:fetcher.mutableRequest
+											response:response];
 	}
 
 	ticket.fetcher = nil;
-	handler(ticket, object, error);
+	
+	if (!queryResult.cached) {
+		queryResult.rawData = data;
+		queryResult.responseHeaders = response.allHeaderFields;
+	}
+	
+	queryResult.error = error;
+	handler(ticket, queryResult);
 }
 
-- (id)objectWithResponseData:(NSData *)data
-				 contentType:(NSString *)contentType
-				 bodyDecoder:(Class)bodyDecoder
-		 expectedResultClass:(Class)expectedResultClass
-					   error:(NSError **)error {
-	
-	if (!data || [data length] == 0) {
-		return nil;
-	}
-	
-	id result = nil;
-	
-	if (!bodyDecoder && contentType) {
-		if ([contentType caseInsensitiveCompare:@"application/json"]) {
-			bodyDecoder = [GGHTTPQueryBodyJSONTransformer class];
-		}
-	}
-		
-	if (bodyDecoder) {
-		result = [bodyDecoder decode:data error:error];
-		if (error && *error) {
-			return nil;
-		}
-		
-		if (expectedResultClass && ![result isKindOfClass:expectedResultClass]) {
-			if (error) {
-				*error = [NSError errorWithDomain:kGGHTTPServiceErrorDomain
-											 code:kGGHTTPServiceErrorInvalidResponseData
-									  description:NSLocalizedString(@"Error", nil)
-									failureReason:nil];
-			}
-			return nil;
-		}
-		
-	} else if (expectedResultClass == [UIImage class] && [contentType hasPrefix:@"image/"]) {
-		result = [[UIImage alloc] initWithData:data];
-		if (!result) {
-			result = data;
-		}
-	} else {
-		result = data;
-	}
-					
-	return result;
-}
-
-- (NSString *)contentTypeFromResponse:(NSHTTPURLResponse *)response {
-	NSDictionary *responseHeaderFields = [response allHeaderFields];
-	__block NSString *result = nil;
-	
-	[responseHeaderFields enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-		if ([key caseInsensitiveCompare:@"Content-Type"] == NSOrderedSame) {
-			result = obj;
-			*stop = YES;
-		}
-	}];
-	
-	return result;
-}
 
 @end

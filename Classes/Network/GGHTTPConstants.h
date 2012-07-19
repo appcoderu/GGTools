@@ -10,6 +10,14 @@
 
 extern NSString * const kGGHTTPFetcherErrorDomain;
 extern NSString * const kGGHTTPFetcherStatusDomain;
+extern NSString * const kGGHTTPServiceErrorDomain;
+
+enum {
+	kGGHTTPServiceErrorInvalidResponseData		= -1,
+	kGGHTTPServiceErrorUnauthorized				= -2,
+	kGGHTTPServiceErrorInvalidRequestBody		= -3,
+	kGGHTTPServiceErrorUnableToConstructRequest = -4
+};
 
 enum {
 	kGGHTTPFetcherErrorDownloadFailed = -1,

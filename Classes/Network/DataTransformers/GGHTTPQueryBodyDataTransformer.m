@@ -9,7 +9,7 @@
 #import "GGHTTPQueryBodyDataTransformer.h"
 
 #import "GGHTTPQueryBody.h"
-#import "GGHTTPService.h"
+#import "GGHTTPConstants.h"
 
 #import "NSError+Extra.h"
 

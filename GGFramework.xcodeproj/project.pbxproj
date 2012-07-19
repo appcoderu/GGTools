@@ -33,6 +33,8 @@
 		1C137C7815B7168F0033FE44 /* GTMHTTPFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C137C7615B7168F0033FE44 /* GTMHTTPFetcher.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		1C137C7B15B717B00033FE44 /* GGHTTPGoogleFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C137C7A15B717B00033FE44 /* GGHTTPGoogleFetcher.m */; };
 		1C137C7C15B717B00033FE44 /* GGHTTPGoogleFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C137C7A15B717B00033FE44 /* GGHTTPGoogleFetcher.m */; };
+		1C137C8715B828190033FE44 /* GGHTTPQueryResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C137C8615B828180033FE44 /* GGHTTPQueryResult.m */; };
+		1C137C8815B828190033FE44 /* GGHTTPQueryResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C137C8615B828180033FE44 /* GGHTTPQueryResult.m */; };
 		1C31318A15B69B4C0099B037 /* DDData.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C31316E15B69B4C0099B037 /* DDData.m */; };
 		1C31318B15B69B4C0099B037 /* DDNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C31317015B69B4C0099B037 /* DDNumber.m */; };
 		1C31318C15B69B4C0099B037 /* DDRange.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C31317215B69B4C0099B037 /* DDRange.m */; };
@@ -156,6 +158,9 @@
 		1C137C7615B7168F0033FE44 /* GTMHTTPFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMHTTPFetcher.m; sourceTree = "<group>"; };
 		1C137C7915B717B00033FE44 /* GGHTTPGoogleFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GGHTTPGoogleFetcher.h; path = Fetcher/GGHTTPGoogleFetcher.h; sourceTree = "<group>"; };
 		1C137C7A15B717B00033FE44 /* GGHTTPGoogleFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GGHTTPGoogleFetcher.m; path = Fetcher/GGHTTPGoogleFetcher.m; sourceTree = "<group>"; };
+		1C137C8515B828160033FE44 /* GGHTTPQueryResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGHTTPQueryResult.h; sourceTree = "<group>"; };
+		1C137C8615B828180033FE44 /* GGHTTPQueryResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGHTTPQueryResult.m; sourceTree = "<group>"; };
+		1C137C8915B82EB30033FE44 /* GGHTTPServiceTicket+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GGHTTPServiceTicket+Private.h"; sourceTree = "<group>"; };
 		1C31316D15B69B4C0099B037 /* DDData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDData.h; sourceTree = "<group>"; };
 		1C31316E15B69B4C0099B037 /* DDData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDData.m; sourceTree = "<group>"; };
 		1C31316F15B69B4C0099B037 /* DDNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDNumber.h; sourceTree = "<group>"; };
@@ -495,12 +500,15 @@
 				1C3131AB15B69B770099B037 /* GGHTTPService.m */,
 				1C3131AC15B69B770099B037 /* GGHTTPServiceTicket.h */,
 				1C3131AD15B69B770099B037 /* GGHTTPServiceTicket.m */,
+				1C137C8915B82EB30033FE44 /* GGHTTPServiceTicket+Private.h */,
 				1C3131AE15B69B770099B037 /* GGHTTPQuery.h */,
 				1C3131AF15B69B770099B037 /* GGHTTPQuery.m */,
 				1C3131B015B69B770099B037 /* GGHTTPQueryBody.h */,
 				1C3131B115B69B770099B037 /* GGHTTPQueryBody.m */,
 				1C137C6C15B6EB340033FE44 /* GGHTTPConstants.h */,
 				1C137C6D15B6EB350033FE44 /* GGHTTPConstants.m */,
+				1C137C8515B828160033FE44 /* GGHTTPQueryResult.h */,
+				1C137C8615B828180033FE44 /* GGHTTPQueryResult.m */,
 			);
 			name = Network;
 			path = Classes/Network;
@@ -806,6 +814,7 @@
 				1C137C6E15B6EB350033FE44 /* GGHTTPConstants.m in Sources */,
 				1C137C7715B7168F0033FE44 /* GTMHTTPFetcher.m in Sources */,
 				1C137C7B15B717B00033FE44 /* GGHTTPGoogleFetcher.m in Sources */,
+				1C137C8715B828190033FE44 /* GGHTTPQueryResult.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -870,6 +879,7 @@
 				1C137C6F15B6EB350033FE44 /* GGHTTPConstants.m in Sources */,
 				1C137C7815B7168F0033FE44 /* GTMHTTPFetcher.m in Sources */,
 				1C137C7C15B717B00033FE44 /* GGHTTPGoogleFetcher.m in Sources */,
+				1C137C8815B828190033FE44 /* GGHTTPQueryResult.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

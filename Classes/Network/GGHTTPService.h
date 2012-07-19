@@ -8,20 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString * const kGGHTTPServiceErrorDomain;
-
-enum {
-	kGGHTTPServiceErrorInvalidResponseData		= -1,
-	kGGHTTPServiceErrorUnauthorized				= -2,
-	kGGHTTPServiceErrorInvalidRequestBody		= -3,
-	kGGHTTPServiceErrorUnableToConstructRequest = -4
-};
-
 @class GGHTTPServiceTicket;
 
 @class GGHTTPQuery;
-@class GGCache;
-@class GGCacheItem;
+@class GGHTTPQueryResult;
+
+typedef void (^GGHTTPServiceCompletionHandler)(GGHTTPServiceTicket *ticket, GGHTTPQueryResult *queryResult);
 
 @protocol GGHTTPAuthorizationProtocol;
 @protocol GGHTTPCacheProtocol;
@@ -38,14 +30,14 @@ enum {
 #pragma mark -
 
 - (GGHTTPServiceTicket *)loadURL:(NSURL *)url
-			   completionHandler:(void (^)(GGHTTPServiceTicket *ticket, id object, NSError *error))handler;
+			   completionHandler:(GGHTTPServiceCompletionHandler)handler;
 
 - (GGHTTPServiceTicket *)loadURL:(NSURL *)url
 			  revalidateInterval:(NSTimeInterval)revalidateInterval
-			   completionHandler:(void (^)(GGHTTPServiceTicket *ticket, id object, NSError *error))handler;
+			   completionHandler:(GGHTTPServiceCompletionHandler)handler;
 
 - (GGHTTPServiceTicket *)executeQuery:(GGHTTPQuery *)query
-					completionHandler:(void (^)(GGHTTPServiceTicket *ticket, id object, NSError *error))handler;
+					completionHandler:(GGHTTPServiceCompletionHandler)handler;
 
 - (void)cancelQueryWithTicket:(GGHTTPServiceTicket *)ticket;
 
