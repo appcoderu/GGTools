@@ -13,7 +13,7 @@
 @protocol GGHTTPCacheProtocol <NSObject>
 
 - (GGHTTPCacheItem *)cachedItemForRequest:(NSURLRequest *)request;
-- (void)storeData:(NSData *)data forRequest:(NSURLRequest *)request response:(NSURLResponse *)response;
+- (void)storeData:(NSData *)data forRequest:(NSURLRequest *)request response:(NSHTTPURLResponse *)response;
 - (void)bumpAgeOfCachedItem:(GGHTTPCacheItem *)cacheItem;
 
 - (void)clear;

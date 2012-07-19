@@ -49,7 +49,7 @@
 		return NO;
 	}
 	
-	if (request.HTTPMethod && [request.HTTPMethod localizedCaseInsensitiveCompare:@"GET"] != NSOrderedSame) {
+	if (request.HTTPMethod && [request.HTTPMethod caseInsensitiveCompare:@"GET"] != NSOrderedSame) {
 		return NO;
 	}
 	
@@ -69,27 +69,27 @@
 	return [[GGHTTPCacheItem alloc] initWithCacheItem:item];
 }
 
-- (void)storeData:(NSData *)data forRequest:(NSURLRequest *)request response:(NSURLResponse *)response {
+- (void)storeData:(NSData *)data forRequest:(NSURLRequest *)request response:(NSHTTPURLResponse *)response {
 	if (![self canCacheRequest:request]) {
 		return;
 	}
 	
-	NSDictionary *d1 = [(NSHTTPURLResponse *)response allHeaderFields];
-	NSMutableDictionary *d2 = nil;
+	NSDictionary *rawHeaderFields = [response allHeaderFields];
+	NSMutableDictionary *headerFields = nil;
 	
-	if (d1 && [d1 count] > 0) {
-		d2 = [NSMutableDictionary dictionaryWithCapacity:[d1 count]];
-		[d1 enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-			[d2 setObject:obj forKey:[key lowercaseString]];
+	if (rawHeaderFields && [rawHeaderFields count] > 0) {
+		headerFields = [NSMutableDictionary dictionaryWithCapacity:[rawHeaderFields count]];
+		[rawHeaderFields enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+			[headerFields setObject:obj forKey:[key lowercaseString]];
 		}];
 	}
 	
-	if (![d2 objectForKey:@"last-modified"] && ![d2 objectForKey:@"etag"]) {
+	if (!headerFields[@"last-modified"] && !headerFields[@"etag"] && !headerFields[@"cache-control"]) {
 		return;
 	}
 	
 	[cache storeData:data 
-			withMeta:d2 
+			withMeta:headerFields
 			  forKey:[self cacheKeyForRequest:request]];
 }
 

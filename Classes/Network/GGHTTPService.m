@@ -13,8 +13,10 @@
 
 #import "GGHTTPQuery.h"
 #import "GGHTTPQueryBody.h"
+
 #import "GGHTTPQueryBodyDecoder.h"
 #import "GGHTTPQueryBodyEncoder.h"
+#import "GGHTTPQueryBodyJSONTransformer.h"
 
 #import "GGHTTPCache.h"
 #import "GGHTTPCacheItem.h"
@@ -483,26 +485,41 @@ static Class GGHTTPServiceFetcherClass = nil;
 	}
 	
 	id object = nil;
+	NSHTTPURLResponse *response = nil;
+	if ([fetcher.response isKindOfClass:[NSHTTPURLResponse class]]) {
+		response = (NSHTTPURLResponse *)(fetcher.response);
+	}
 	
-	if (error || [fetcher statusCode] >= 300) {
-		if ([fetcher statusCode] == kGGHTTPFetcherStatusNotModified && ticket.cacheItem) {
-			[[self cacheForQuery:ticket.query] bumpAgeOfCachedItem:ticket.cacheItem];
-			
-			object = ticket.cacheItem;
-			error = nil;
-		} else {
-			if (!error) {
-				error = [NSError errorWithDomain:kGGHTTPFetcherStatusDomain
-												code:[fetcher statusCode]
-									 description:nil
-								   failureReason:nil];
-			}
-			object = [self objectWithResponseData:data bodyDecoder:nil expectedResultClass:[NSDictionary class] error:nil];
+	if ([fetcher statusCode] == kGGHTTPFetcherStatusNotModified && ticket.cacheItem) {
+		[[self cacheForQuery:ticket.query] bumpAgeOfCachedItem:ticket.cacheItem];
+		
+		object = ticket.cacheItem;
+		error = nil;
+	} else if (error || [fetcher statusCode] >= 300) {
+		object = [self objectWithResponseData:data
+								  contentType:[self contentTypeFromResponse:response]
+								  bodyDecoder:nil
+						  expectedResultClass:[NSDictionary class]
+										error:nil];
+		
+		if (!error) {
+			error = [NSError errorWithDomain:kGGHTTPFetcherStatusDomain
+										code:[fetcher statusCode]
+								 description:nil
+							   failureReason:nil];
 		}
+		
 	} else {
-		object = [self objectWithResponseData:data bodyDecoder:ticket.query.bodyDecoder expectedResultClass:ticket.query.expectedResultClass error:&error];
+		object = [self objectWithResponseData:data
+								  contentType:[self contentTypeFromResponse:response]
+								  bodyDecoder:ticket.query.bodyDecoder
+						  expectedResultClass:ticket.query.expectedResultClass
+										error:&error];
+		
 		if (object && !error) {
-			[[self cacheForQuery:ticket.query] storeData:data forRequest:fetcher.mutableRequest response:fetcher.response];
+			[[self cacheForQuery:ticket.query] storeData:data
+											  forRequest:fetcher.mutableRequest
+												response:response];
 		}
 	}
 
@@ -510,34 +527,63 @@ static Class GGHTTPServiceFetcherClass = nil;
 	handler(ticket, object, error);
 }
 
-- (id)objectWithResponseData:(NSData *)data bodyDecoder:(Class)bodyDecoder expectedResultClass:(Class)expectedResultClass error:(NSError **)error {
+- (id)objectWithResponseData:(NSData *)data
+				 contentType:(NSString *)contentType
+				 bodyDecoder:(Class)bodyDecoder
+		 expectedResultClass:(Class)expectedResultClass
+					   error:(NSError **)error {
+	
 	if (!data || [data length] == 0) {
 		return nil;
 	}
 	
 	id result = nil;
 	
-	if (!bodyDecoder) {
-		result = data;
-	} else {
+	if (!bodyDecoder && contentType) {
+		if ([contentType caseInsensitiveCompare:@"application/json"]) {
+			bodyDecoder = [GGHTTPQueryBodyJSONTransformer class];
+		}
+	}
+		
+	if (bodyDecoder) {
 		result = [bodyDecoder decode:data error:error];
 		if (error && *error) {
 			return nil;
 		}
-	}
-	
-	if (expectedResultClass && ![result isKindOfClass:expectedResultClass]) {
-		if (error) {
-			*error = [NSError errorWithDomain:kGGHTTPServiceErrorDomain
-										 code:kGGHTTPServiceErrorInvalidResponseData
-								  description:NSLocalizedString(@"Error", nil) 
-								failureReason:nil];
-		}
-		return nil;
-	}
-	
-	// TODO: convert data to image if content-type is image/*
 		
+		if (expectedResultClass && ![result isKindOfClass:expectedResultClass]) {
+			if (error) {
+				*error = [NSError errorWithDomain:kGGHTTPServiceErrorDomain
+											 code:kGGHTTPServiceErrorInvalidResponseData
+									  description:NSLocalizedString(@"Error", nil)
+									failureReason:nil];
+			}
+			return nil;
+		}
+		
+	} else if (expectedResultClass == [UIImage class] && [contentType hasPrefix:@"image/"]) {
+		result = [[UIImage alloc] initWithData:data];
+		if (!result) {
+			result = data;
+		}
+	} else {
+		result = data;
+	}
+					
+	return result;
+}
+
+- (NSString *)contentTypeFromResponse:(NSHTTPURLResponse *)response {
+	NSDictionary *responseHeaderFields = [response allHeaderFields];
+	__block NSString *result = nil;
+	
+	[responseHeaderFields enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+		if ([key caseInsensitiveCompare:@"Content-Type"] == NSOrderedSame) {
+			result = obj;
+			*stop = YES;
+		}
+	}];
+	
 	return result;
 }
 

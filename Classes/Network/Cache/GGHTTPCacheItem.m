@@ -9,8 +9,6 @@
 #import "GGHTTPCacheItem.h"
 #import "GGCacheItem.h"
 
-#warning return transformed data instead of plain data if possible
-
 @implementation GGHTTPCacheItem {
 	GGCacheItem *cacheItem;
 }
