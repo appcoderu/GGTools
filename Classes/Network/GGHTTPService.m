@@ -9,6 +9,8 @@
 #import "GGHTTPService.h"
 #import "GGHTTPServiceTicket.h"
 
+#import "GGHTTPConstants.h"
+
 #import "GGHTTPQuery.h"
 #import "GGHTTPQueryBody.h"
 #import "GGHTTPQueryBodyDecoder.h"
@@ -19,6 +21,7 @@
 
 #import "GGHTTPFetcherDelegate.h"
 #import "GGHTTPFetcherProtocol.h"
+
 #import "GGHTTPAuthorizationProtocol.h"
 #import "GGHTTPCacheProtocol.h"
 
@@ -29,13 +32,17 @@
 #import "NSDictionary+URL.h"
 #import "NSURL+QueryParameters.h"
 
+#import <objc/runtime.h>
+#import <objc/message.h>
+
 NSString * const kGGHTTPServiceErrorDomain				= @"ru.appcode.httpService.error";
 
-static NSString * const kFetcherTicketKey				= @"ticket";
+static NSString * const kFetcherTicketKey					= @"ticket";
 static NSString * const kFetcherCompletionHandlerKey	= @"completionHandler";
-static NSString * const kFetcherCacheItemKey			= @"cacheItem";
+static NSString * const kFetcherCacheItemKey				= @"cacheItem";
 
-static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
+static NSTimeInterval const kGGHTTPServiceDefaultTimeout = 30.0;
+static Class GGHTTPServiceFetcherClass = nil;
 
 @interface GGHTTPService () <GGHTTPFetcherDelegate>
 
@@ -45,14 +52,16 @@ static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
 
 }
 
-@synthesize userAgent=userAgent_;
-@synthesize baseURL=baseURL_;
-@synthesize additionalHTTPHeaders=additionalHTTPHeaders_;
+@synthesize userAgent=_userAgent;
+@synthesize baseURL=_baseURL;
+@synthesize additionalHTTPHeaders=_additionalHTTPHeaders;
 
-@synthesize cache=cache_;
-@synthesize persistentCache=persistentCache_;
+@synthesize cache=_cache;
+@synthesize persistentCache=_persistentCache;
 
-@synthesize authorizer=authorizer_;
+@synthesize authorizer=_authorizer;
+
+#pragma mark -
 
 + (id)sharedService {
 	static GGHTTPService *sharedInstance = nil;
@@ -66,6 +75,61 @@ static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
 	return sharedInstance;
 }
 
++ (Class)fetcherClass {
+	if (!GGHTTPServiceFetcherClass) {
+		GGHTTPServiceFetcherClass = NSClassFromString(@"GGHTTPGoogleFetcher");
+	}
+	
+	return GGHTTPServiceFetcherClass;
+}
+
++ (void)setFetcherClass:(Class)fetcherClass {
+	if (fetcherClass && !class_conformsToProtocol(fetcherClass, @protocol(GGHTTPFetcherProtocol))) {
+		return;
+	}
+	
+	GGHTTPServiceFetcherClass = fetcherClass;
+}
+
++ (NSString *)GTMCleanedUserAgentString:(NSString *)str {
+	// Reference http://www.w3.org/Protocols/rfc2616/rfc2616-sec2.html
+	// and http://www-archive.mozilla.org/build/user-agent-strings.html
+	
+	if (str == nil) return nil;
+	
+	NSMutableString *result = [NSMutableString stringWithString:str];
+	
+	// Replace spaces with underscores
+	[result replaceOccurrencesOfString:@" "
+							withString:@"_"
+							   options:0
+								 range:NSMakeRange(0, [result length])];
+	
+	// Delete http token separators and remaining whitespace
+	static NSCharacterSet *charsToDelete = nil;
+	if (charsToDelete == nil) {
+		// Make a set of unwanted characters
+		NSString *const kSeparators = @"()<>@,;:\\\"/[]?={}";
+		
+		NSMutableCharacterSet *mutableChars;
+		mutableChars = [[NSCharacterSet whitespaceAndNewlineCharacterSet] mutableCopy];
+		[mutableChars addCharactersInString:kSeparators];
+		charsToDelete = [mutableChars copy]; // hang on to an immutable copy
+	}
+	
+	while (1) {
+		NSRange separatorRange = [result rangeOfCharacterFromSet:charsToDelete];
+		if (separatorRange.location == NSNotFound) break;
+		
+		[result deleteCharactersInRange:separatorRange];
+	};
+	
+	return result;
+}
+
+
+#pragma mark -
+
 - (id)init {
     return [self initWithBaseURL:nil];
 }
@@ -73,13 +137,10 @@ static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
 - (id)initWithBaseURL:(NSURL *)baseURL {
 	self = [super init];
     if (self) {
-        baseURL_ = baseURL;
+        _baseURL = baseURL;
     }
     return self;
 }
-
-#pragma mark -
-
 
 #pragma mark -
 
@@ -172,6 +233,17 @@ static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
 #endif	
 	
 	NSObject <GGHTTPFetcherProtocol> *fetcher = [self fetcherWithRequest:request];
+	if (!fetcher) {
+		if (handler) {
+			NSError *error = [NSError errorWithDomain:kGGHTTPServiceErrorDomain
+												 code:kGGHTTPServiceErrorUnableToConstructRequest
+										  description:NSLocalizedString(@"Error", nil)
+										failureReason:NSLocalizedString(@"Unable to construct request", nil)];
+			handler(nil, nil, error);
+		}
+		return nil;
+	}
+	
 	//[fetcher setCookieStorageMethod:kGTMHTTPFetcherCookieStorageMethodNone];
 	
 	if (!query.suppressAuthorization) {
@@ -191,8 +263,7 @@ static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
 		[fetcher setProperty:[handler copy] forKey:kFetcherCompletionHandlerKey];
 	}
 			
-	BOOL didFetch = [fetcher beginFetchWithDelegate:self
-								  didFinishSelector:@selector(fetcher:finishedWithData:error:)];
+	BOOL didFetch = [fetcher beginFetchWithDelegate:self];
 	
 	if (!didFetch || ticket.used) {
 		ticket.fetcher = nil;
@@ -216,8 +287,7 @@ static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
 #pragma mark -
 
 - (NSObject <GGHTTPFetcherProtocol> *)fetcherWithRequest:(NSMutableURLRequest *)request {
-#warning TODO
-	return nil;
+	return [[[self class] fetcherClass] fetcherWithRequest:request];
 }
 
 #pragma mark - Construct Request
@@ -234,7 +304,7 @@ static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
 	
 	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url 
 																 cachePolicy:NSURLRequestReloadIgnoringCacheData
-															 timeoutInterval:GGHTTPServiceDefaultTimeout];
+															 timeoutInterval:kGGHTTPServiceDefaultTimeout];
 	
 	if (!query.httpMethod || [query.httpMethod length] == 0)  {
 		query.httpMethod = GGHTTPQueryMethodGET;
@@ -264,7 +334,7 @@ static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
 		[request setValue:obj forHTTPHeaderField:key];
 	};
 	
-	[additionalHTTPHeaders_ enumerateKeysAndObjectsUsingBlock:enumerationBlock];
+	[_additionalHTTPHeaders enumerateKeysAndObjectsUsingBlock:enumerationBlock];
 	[query.httpHeaders enumerateKeysAndObjectsUsingBlock:enumerationBlock];
 	
 	if (query.etag && [query.etag length] > 0) {
@@ -307,27 +377,13 @@ static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
 }
 
 - (void)addCommonHeadersToRequest:(NSMutableURLRequest *)request {
-    [request setValue:self.userAgent forHTTPHeaderField:@"User-Agent"];
+	[request setValue:self.userAgent forHTTPHeaderField:@"User-Agent"];
 	[request setValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
-	
-	UIDevice *device = [UIDevice currentDevice];
-	if (device.systemVersion) {
-		[request setValue:device.systemVersion forHTTPHeaderField:@"X-OS-Version"];
-	}
-	
-	if (device.model) {
-		[request setValue:device.model forHTTPHeaderField:@"X-Device-Model"];
-	}
-	
+		
 	NSString *uuid = [[UIDevice currentDevice] UUID];
 	if (uuid) {
 		[request setValue:uuid forHTTPHeaderField:@"X-Device-ID"];
 	}
-	
-	NSBundle *bundle = [NSBundle mainBundle];
-	NSString *marketingVersionNumber = [bundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-	NSString *developmentVersionNumber = [bundle objectForInfoDictionaryKey:@"CFBundleVersion"];
-	[request setValue:[NSString stringWithFormat:@"%@/%@", marketingVersionNumber, developmentVersionNumber] forHTTPHeaderField:@"X-App-Version"];
 }
 
 
@@ -360,18 +416,49 @@ static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
 #pragma mark -
 
 - (NSString *)userAgent {
-	if (userAgent_) {
-		return userAgent_;
+	if (_userAgent) {
+		return _userAgent;
+	}
+		
+	NSBundle *bundle = [NSBundle mainBundle];
+	
+	NSString *appName = [bundle objectForInfoDictionaryKey:@"CFBundleName"];
+	if (!appName) {
+		appName = @"Unknown Application";
 	}
 	
-#warning TODO
+	NSString *version = [bundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+	if (!version) {
+		version = [bundle objectForInfoDictionaryKey:@"CFBundleVersion"];
+	}
 	
-	return userAgent_;
+	appName = [[self class] GTMCleanedUserAgentString:appName];
+	
+	NSMutableArray *userAgentComponents = [NSMutableArray arrayWithCapacity:3];
+	
+	UIDevice *device = [UIDevice currentDevice];
+	
+	if (device.systemName) {
+		[userAgentComponents addObject:device.systemName];
+	}
+	
+	if (device.model) {
+		[userAgentComponents addObject:device.model];
+	}
+	
+	if (device.systemVersion) {
+		[userAgentComponents addObject:device.systemVersion];
+	}
+	
+	_userAgent = [NSString stringWithFormat:@"%@/%@ (%@)", appName, version, [userAgentComponents componentsJoinedByString:@"; "]];
+
+	return _userAgent;
 }
 
 #pragma mark - Fetcher callback
 
 - (void)fetcher:(NSObject <GGHTTPFetcherProtocol> *)fetcher finishedWithData:(NSData *)data error:(NSError *)error {
+	
 #if DEBUG_HTTP_SERVICE
 	GGLog(@"%d: %@", [fetcher statusCode], [[fetcher mutableRequest] URL]);
 #endif
@@ -398,21 +485,24 @@ static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
 	id object = nil;
 	
 	if (error || [fetcher statusCode] >= 300) {
-		if ([error domain] == kGGHTTPFetcherStatusDomain &&
-			[error code] == kGGHTTPFetcherStatusNotModified &&
-			ticket.cacheItem) {
-			
+		if ([fetcher statusCode] == kGGHTTPFetcherStatusNotModified && ticket.cacheItem) {
 			[[self cacheForQuery:ticket.query] bumpAgeOfCachedItem:ticket.cacheItem];
 			
 			object = ticket.cacheItem;
 			error = nil;
 		} else {
-			error = [self errorWithError:error data:data ticket:ticket];
-		}		
+			if (!error) {
+				error = [NSError errorWithDomain:kGGHTTPFetcherStatusDomain
+												code:[fetcher statusCode]
+									 description:nil
+								   failureReason:nil];
+			}
+			object = [self objectWithResponseData:data bodyDecoder:nil expectedResultClass:[NSDictionary class] error:nil];
+		}
 	} else {
-		object = [self objectWithResponseData:data ticket:ticket error:&error];
+		object = [self objectWithResponseData:data bodyDecoder:ticket.query.bodyDecoder expectedResultClass:ticket.query.expectedResultClass error:&error];
 		if (object && !error) {
-			[[self cacheForQuery:ticket.query] storeData:data forRequest:fetcher.request response:fetcher.response];
+			[[self cacheForQuery:ticket.query] storeData:data forRequest:fetcher.mutableRequest response:fetcher.response];
 		}
 	}
 
@@ -420,25 +510,23 @@ static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
 	handler(ticket, object, error);
 }
 
-- (id)objectWithResponseData:(NSData *)data ticket:(GGHTTPServiceTicket *)ticket error:(NSError **)error {
+- (id)objectWithResponseData:(NSData *)data bodyDecoder:(Class)bodyDecoder expectedResultClass:(Class)expectedResultClass error:(NSError **)error {
 	if (!data || [data length] == 0) {
 		return nil;
 	}
 	
-	GGHTTPQuery *query = ticket.query;
-	
 	id result = nil;
 	
-	if (!query.bodyDecoder) {
+	if (!bodyDecoder) {
 		result = data;
 	} else {
-		result = [query.bodyDecoder decode:data error:error];
+		result = [bodyDecoder decode:data error:error];
 		if (error && *error) {
 			return nil;
 		}
 	}
-		
-	if (query.expectedResultClass && ![result isKindOfClass:query.expectedResultClass]) {
+	
+	if (expectedResultClass && ![result isKindOfClass:expectedResultClass]) {
 		if (error) {
 			*error = [NSError errorWithDomain:kGGHTTPServiceErrorDomain
 										 code:kGGHTTPServiceErrorInvalidResponseData
@@ -451,28 +539,6 @@ static NSTimeInterval const GGHTTPServiceDefaultTimeout = 30.0;
 	// TODO: convert data to image if content-type is image/*
 		
 	return result;
-}
-
-- (NSString *)errorMessageFromData:(NSData *)data {
-	return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-}
-
-- (NSError *)errorWithError:(NSError *)error data:(NSData *)data ticket:(GGHTTPServiceTicket *)ticket {
-	NSString *domain = kGGHTTPServiceErrorDomain;
-	NSInteger code;
-	
-	if (([error domain] == kGGHTTPFetcherStatusDomain && [error code] == kGGHTTPFetcherStatusUnauthorized) || 
-		([error domain] == kGGHTTPAuthorizationErrorDomain)) {
-		code = kGGHTTPServiceErrorUnauthorized;
-	} else {
-		code = kGGHTTPServiceErrorQueryFailed;
-	}
-	
-	return [NSError errorWithDomain:domain 
-							   code:code 
-						description:NSLocalizedString(@"Error", nil) 
-					  failureReason:[self errorMessageFromData:data]
-					underlyingError:error];
 }
 
 @end

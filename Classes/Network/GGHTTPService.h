@@ -12,10 +12,9 @@ extern NSString * const kGGHTTPServiceErrorDomain;
 
 enum {
 	kGGHTTPServiceErrorInvalidResponseData		= -1,
-	kGGHTTPServiceErrorQueryFailed				= -2,
-	kGGHTTPServiceErrorUnauthorized				= -3,
-	kGGHTTPServiceErrorInvalidRequestBody		= -4,
-	kGGHTTPServiceErrorUnableToConstructRequest = -5
+	kGGHTTPServiceErrorUnauthorized				= -2,
+	kGGHTTPServiceErrorInvalidRequestBody		= -3,
+	kGGHTTPServiceErrorUnableToConstructRequest = -4
 };
 
 @class GGHTTPServiceTicket;
@@ -30,6 +29,9 @@ enum {
 @interface GGHTTPService : NSObject
 
 + (id)sharedService;
+
++ (Class)fetcherClass;
++ (void)setFetcherClass:(Class)fetcherClass;
 
 - (id)initWithBaseURL:(NSURL *)baseURL;
 

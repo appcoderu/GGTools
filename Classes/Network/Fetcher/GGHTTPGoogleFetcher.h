@@ -1,5 +1,5 @@
 //
-//  GGHTTPFetcherDelegate.h
+//  GGHTTPGoogleFetcher.h
 //  GGFramework
 //
 //  Created by Evgeniy Shurakov on 18.07.12.
@@ -10,8 +10,6 @@
 
 #import "GGHTTPFetcherProtocol.h"
 
-@protocol GGHTTPFetcherDelegate <NSObject>
-@required
-- (void)fetcher:(NSObject <GGHTTPFetcherProtocol> *)fetcher finishedWithData:(NSData *)data error:(NSError *)error;
+@interface GGHTTPGoogleFetcher : NSObject <GGHTTPFetcherProtocol>
 
 @end

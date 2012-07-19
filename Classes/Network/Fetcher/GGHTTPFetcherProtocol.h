@@ -6,24 +6,7 @@
 //  Copyright (c) 2012 Evgeniy Shurakov. All rights reserved.
 //
 
-#pragma once
-
 #import <Foundation/Foundation.h>
-
-NSString * const kGGHTTPFetcherErrorDomain = @"ru.appcode.http.error";
-NSString * const kGGHTTPFetcherStatusDomain = @"ru.appcode.http.status";
-
-enum {
-	kGGHTTPFetcherErrorDownloadFailed = -1,
-	kGGHTTPFetcherErrorAuthenticationChallengeFailed = -2,
-	kGGHTTPFetcherErrorBackgroundExpiration = -3,
-		
-	kGGHTTPFetcherStatusNotModified = 304,
-	kGGHTTPFetcherStatusBadRequest = 400,
-	kGGHTTPFetcherStatusUnauthorized = 401,
-	kGGHTTPFetcherStatusForbidden = 403,
-	kGGHTTPFetcherStatusPreconditionFailed = 412
-};
 
 @protocol GGHTTPAuthorizationProtocol;
 @protocol GGHTTPFetcherDelegate;
@@ -33,14 +16,15 @@ enum {
 @property(nonatomic, strong) NSObject <GGHTTPAuthorizationProtocol> *authorizer;
 @property(nonatomic, copy) NSMutableDictionary *properties;
 
-@property(nonatomic, strong, readonly) NSURLRequest *request;
-@property(nonatomic, strong, readonly) NSHTTPURLResponse *response;
+@property(nonatomic, strong, readonly) NSMutableURLRequest *mutableRequest;
+@property(nonatomic, strong, readonly) NSURLResponse *response;
 
 @property (nonatomic, assign, readonly) NSInteger statusCode;
 
-- (BOOL)beginFetchWithDelegate:(NSObject <GGHTTPFetcherDelegate> *)delegate
-             didFinishSelector:(SEL)finishedSEL;
++ (id)fetcherWithRequest:(NSURLRequest *)request;
+- (id)initWithRequest:(NSURLRequest *)request;
 
+- (BOOL)beginFetchWithDelegate:(NSObject <GGHTTPFetcherDelegate> *)delegate;
 - (BOOL)beginFetchWithCompletionHandler:(void (^)(NSData *data, NSError *error))handler;
 
 - (BOOL)isFetching;

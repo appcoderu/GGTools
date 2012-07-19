@@ -6,16 +6,7 @@
 //  Copyright (c) 2012 AppCode. All rights reserved.
 //
 
-#pragma once
-
 #import <Foundation/Foundation.h>
-
-NSString * const kGGHTTPAuthorizationErrorDomain = @"ru.ruru.http.authorization";
-NSString * const kGGHTTPAuthorizationErrorRequestKey = @"request";
-
-enum {
-	kGGHTTPAuthorizationErrorAuthorizationFailed = -1001
-};
 
 @protocol GGHTTPAuthorizationProtocol <NSObject>
 
