@@ -488,6 +488,10 @@ static Class GGHTTPServiceFetcherClass = nil;
 		return;
 	}
 	
+	if (data && [data length] == 0) {
+		data = nil;
+	}
+	
 	GGHTTPQueryResult *queryResult = [[GGHTTPQueryResult alloc] init];
 	queryResult.query = ticket.query;
 	queryResult.statusCode = [fetcher statusCode];
