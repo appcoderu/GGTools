@@ -90,12 +90,7 @@ static GGCache *sharedInstance = nil;
         if (!path || [path length] == 0) {
 			return nil;
 		}
-				
-		[[NSNotificationCenter defaultCenter] addObserver:self 
-												 selector:@selector(didReceiveMemoryWarning) 
-													 name:UIApplicationDidReceiveMemoryWarningNotification 
-												   object:nil];
-		
+
 		if (!fileManager) {
 			fileManager = [[NSFileManager alloc] init];
 		}
@@ -112,8 +107,6 @@ static GGCache *sharedInstance = nil;
 }
 
 - (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	
 	[self save];
 	
 	[self _clearCacheItems];
@@ -234,12 +227,6 @@ static GGCache *sharedInstance = nil;
 
 - (NSString *)path {
 	return _dirPath;
-}
-
-#pragma mark -
-
-- (void)didReceiveMemoryWarning {
-	[self save];
 }
 
 #pragma mark - Cache

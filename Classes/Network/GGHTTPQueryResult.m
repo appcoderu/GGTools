@@ -144,13 +144,15 @@
 			return nil;
 		}
 		
-	} else if (expectedClass == [UIImage class] && [contentType hasPrefix:@"image/"]) {
-		result = [[UIImage alloc] initWithData:data];
+	} else {
+		Class imageClass = NSClassFromString(@"UIImage");
+		if (imageClass && expectedClass == imageClass && [contentType hasPrefix:@"image/"]) {
+			result = [[imageClass alloc] initWithData:data];
+		}
+
 		if (!result) {
 			result = data;
 		}
-	} else {
-		result = data;
 	}
 	
 	return result;
