@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UIDevice (UUID)
+@interface UIDevice (GGUUID)
 
-- (NSString *)UUID;
-- (NSString *)macAddress;
+- (NSString *)gg_UUID;
+- (NSString *)gg_macAddress;
 
 @end

@@ -11,8 +11,8 @@
 #import "GGHTTPConstants.h"
 #import "GGHTTPQueryBody.h"
 
-#import "NSError+Extra.h"
-#import "NSDictionary+URL.h"
+#import "NSError+GGExtra.h"
+#import "NSDictionary+GGURL.h"
 
 @implementation GGHTTPQueryBodyFormTransformer
 
@@ -23,7 +23,7 @@
 	
 	if (![bodyObject isKindOfClass:[NSDictionary class]]) {
 		if (error) {
-			*error = [NSError errorWithDomain:kGGHTTPServiceErrorDomain
+			*error = [NSError gg_errorWithDomain:kGGHTTPServiceErrorDomain
 										 code:kGGHTTPServiceErrorInvalidRequestBody
 								  description:NSLocalizedString(@"Error", nil) 
 								failureReason:nil];
@@ -32,7 +32,7 @@
 	}
 	
 	GGHTTPQueryBody *body = [[GGHTTPQueryBody alloc] init];
-	body.data = [[bodyObject componentsAsParameterString] dataUsingEncoding:NSUTF8StringEncoding];
+	body.data = [[bodyObject gg_componentsAsParameterString] dataUsingEncoding:NSUTF8StringEncoding];
 	body.contentType = @"application/x-www-form-urlencoded";
 	
 	return body;

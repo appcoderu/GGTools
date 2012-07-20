@@ -6,13 +6,13 @@
 //  Copyright (c) 2012 AppCode. All rights reserved.
 //
 
-#import "NSString+Crypto.h"
+#import "NSString+GGCrypto.h"
 
 #import <CommonCrypto/CommonDigest.h>
 
-@implementation NSString (Crypto)
+@implementation NSString (GGCrypto)
 
-+ (NSString *)saltWithLength:(NSUInteger)length {
++ (NSString *)gg_saltWithLength:(NSUInteger)length {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         srand(time(NULL));
@@ -26,7 +26,7 @@
 	return [[NSString alloc] initWithBytes:salt length:length encoding:NSASCIIStringEncoding];
 }
 
-- (NSString *)sha1 {
+- (NSString *)gg_sha1 {
 	unsigned char sha1[CC_SHA1_DIGEST_LENGTH];
 	const char *str = [self UTF8String];
 	CC_SHA1(str, strlen(str), sha1);
@@ -40,7 +40,7 @@
 	return output;
 }
 
-- (NSString *)md5 {
+- (NSString *)gg_md5 {
     unsigned char md5[CC_MD5_DIGEST_LENGTH];
 	const char *cStr = [self UTF8String];
     CC_MD5( cStr, strlen(cStr), md5 );

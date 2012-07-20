@@ -9,11 +9,11 @@
 #import <Foundation/Foundation.h>
 
 
-@interface NSURL (NSURL_QueryParameters)
+@interface NSURL (NSURL_GGQueryParameters)
 
-+ (NSURL *)URLWithString:(NSString *)urlString
++ (NSURL *)gg_URLWithString:(NSString *)urlString
          queryParameters:(NSDictionary *)queryParameters;
 
-- (NSURL *)URLByAddingQueryParams:(NSDictionary *)queryParameters;
+- (NSURL *)gg_URLByAddingQueryParams:(NSDictionary *)queryParameters;
 
 @end

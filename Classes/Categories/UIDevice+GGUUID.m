@@ -6,8 +6,8 @@
 //  Copyright (c) 2012 AppCode. All rights reserved.
 //
 
-#import "UIDevice+UUID.h"
-#import "NSString+Crypto.h"
+#import "UIDevice+GGUUID.h"
+#import "NSString+GGCrypto.h"
 
 #include <sys/socket.h>
 #include <sys/sysctl.h>
@@ -17,9 +17,9 @@
 static NSString *macAddressString = nil;
 static NSString *UUID = nil;
 
-@implementation UIDevice (UUID)
+@implementation UIDevice (GGUUID)
 
-- (NSString *)macAddress {
+- (NSString *)gg_macAddress {
 	if (nil != macAddressString) {
 		return macAddressString;
 	}
@@ -74,17 +74,17 @@ static NSString *UUID = nil;
 	return macAddressString;
 }
 
-- (NSString *)UUID {
+- (NSString *)gg_UUID {
 	if (nil != UUID) {
 		return UUID;
 	}
 	
-	NSString *mac = [self macAddress];
+	NSString *mac = [self gg_macAddress];
 	if (!mac) {
-		return [@"" sha1];
+		return [@"" gg_sha1];
 	}
 	
-	UUID = [[NSString stringWithFormat:@"%@%@", mac, [self model]] sha1];
+	UUID = [[NSString stringWithFormat:@"%@%@", mac, [self model]] gg_sha1];
 	
 	return UUID;
 }

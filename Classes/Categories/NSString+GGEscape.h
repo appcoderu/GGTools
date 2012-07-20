@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSString(Escape)
+@interface NSString(GGEscape)
 
-+ (NSString *)stringByURLEncodingString:(NSString *)str;
-+ (NSString *)stringByURLEncodingForURI:(NSString *)str;
++ (NSString *)gg_stringByURLEncodingString:(NSString *)str;
++ (NSString *)gg_stringByURLEncodingForURI:(NSString *)str;
 
 @end

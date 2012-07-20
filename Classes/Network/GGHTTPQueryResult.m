@@ -18,7 +18,7 @@
 
 #import "GGHTTPConstants.h"
 
-#import "NSError+Extra.h"
+#import "NSError+GGExtra.h"
 
 @implementation GGHTTPQueryResult {
 	id _data;
@@ -136,7 +136,7 @@
 		
 		if (expectedClass && ![result isKindOfClass:expectedClass]) {
 			if (error) {
-				*error = [NSError errorWithDomain:kGGHTTPServiceErrorDomain
+				*error = [NSError gg_errorWithDomain:kGGHTTPServiceErrorDomain
 											 code:kGGHTTPServiceErrorInvalidResponseData
 									  description:NSLocalizedString(@"Error", nil)
 									failureReason:nil];

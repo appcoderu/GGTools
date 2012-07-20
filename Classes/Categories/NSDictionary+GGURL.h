@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 
 
-@interface NSDictionary (NSDictionary_URL)
+@interface NSDictionary (NSDictionary_GGURL)
 
-- (NSString *)componentsAsParameterString;
+- (NSString *)gg_componentsAsParameterString;
 
 @end

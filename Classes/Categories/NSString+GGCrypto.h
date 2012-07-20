@@ -8,11 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSString (Crypto)
+@interface NSString (GGCrypto)
 
-+ (NSString *)saltWithLength:(NSUInteger)length;
++ (NSString *)gg_saltWithLength:(NSUInteger)length;
 
-- (NSString *)sha1;
-- (NSString *)md5;
+- (NSString *)gg_sha1;
+- (NSString *)gg_md5;
 
 @end

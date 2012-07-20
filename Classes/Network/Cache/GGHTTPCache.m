@@ -10,7 +10,7 @@
 #import "GGHTTPCacheItem.h"
 #import "GGCache.h"
 
-#import "NSString+Crypto.h"
+#import "NSString+GGCrypto.h"
 
 @interface GGHTTPCacheItem (Private)
 - (GGCacheItem *)cacheItem;
@@ -57,7 +57,7 @@
 }
 
 - (NSString *)cacheKeyForRequest:(NSURLRequest *)request {
-	return [[request.URL absoluteString] sha1];
+	return [[request.URL absoluteString] gg_sha1];
 }
 
 - (GGHTTPCacheItem *)cachedItemForRequest:(NSURLRequest *)request {

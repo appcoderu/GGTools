@@ -12,7 +12,7 @@
 
 #import "GTMHTTPFetcher.h"
 
-#import "NSError+Extra.h"
+#import "NSError+GGExtra.h"
 
 @implementation GGHTTPGoogleFetcher {
 	GTMHTTPFetcher *_fetcher;
@@ -154,7 +154,7 @@
 	
 	NSString *failureReason = [underlyingError localizedFailureReason];
 	
-	return [NSError errorWithDomain:domain
+	return [NSError gg_errorWithDomain:domain
 							   code:code
 						description:description
 					  failureReason:failureReason

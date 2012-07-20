@@ -11,7 +11,7 @@
 #import "GGHTTPQueryBody.h"
 #import "GGHTTPConstants.h"
 
-#import "NSError+Extra.h"
+#import "NSError+GGExtra.h"
 
 @implementation GGHTTPQueryBodyDataTransformer
 
@@ -26,7 +26,7 @@
 	
 	if (![bodyObject isKindOfClass:[NSData class]]) {
 		if (error) {
-			*error = [NSError errorWithDomain:kGGHTTPServiceErrorDomain
+			*error = [NSError gg_errorWithDomain:kGGHTTPServiceErrorDomain
 										 code:kGGHTTPServiceErrorInvalidRequestBody
 								  description:NSLocalizedString(@"Error", nil) 
 								failureReason:nil];

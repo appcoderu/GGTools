@@ -8,14 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSError (NSError_Extra)
+@interface NSError (NSError_GGExtra)
 
-+ (id)errorWithDomain:(NSString *)domain 
++ (id)gg_errorWithDomain:(NSString *)domain
 				 code:(NSInteger)code 
 		  description:(NSString *)description 
 		failureReason:(NSString *)failureReason;
 
-+ (id)errorWithDomain:(NSString *)domain 
++ (id)gg_errorWithDomain:(NSString *)domain
 				 code:(NSInteger)code 
 		  description:(NSString *)description 
 		failureReason:(NSString *)failureReason

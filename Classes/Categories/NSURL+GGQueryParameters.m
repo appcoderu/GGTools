@@ -6,20 +6,20 @@
 //  Copyright 2011 Evgeniy Shurakov. All rights reserved.
 //
 
-#import "NSURL+QueryParameters.h"
+#import "NSURL+GGQueryParameters.h"
 
-#import "NSDictionary+URL.h"
+#import "NSDictionary+GGURL.h"
 
-@implementation NSURL (NSURL_QueryParameters)
+@implementation NSURL (NSURL_GGQueryParameters)
 
-+ (NSURL *)URLWithString:(NSString *)urlString
++ (NSURL *)gg_URLWithString:(NSString *)urlString
          queryParameters:(NSDictionary *)queryParameters {
 	
-	return [[[self class] URLWithString:urlString] URLByAddingQueryParams:queryParameters];
+	return [[[self class] URLWithString:urlString] gg_URLByAddingQueryParams:queryParameters];
 }
 
-- (NSURL *)URLByAddingQueryParams:(NSDictionary *)queryParameters {
-	NSString *strParams = [queryParameters componentsAsParameterString];
+- (NSURL *)gg_URLByAddingQueryParams:(NSDictionary *)queryParameters {
+	NSString *strParams = [queryParameters gg_componentsAsParameterString];
 	
 	if (!strParams || [strParams length] == 0) {
 		return self;

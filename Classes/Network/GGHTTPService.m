@@ -27,12 +27,12 @@
 #import "GGHTTPAuthorizationProtocol.h"
 #import "GGHTTPCacheProtocol.h"
 
-#import "UIDevice+UUID.h"
-#import "NSError+Extra.h"
-#import "NSDate+Extra.h"
-#import "NSString+Escape.h"
-#import "NSDictionary+URL.h"
-#import "NSURL+QueryParameters.h"
+#import "UIDevice+GGUUID.h"
+#import "NSError+GGExtra.h"
+#import "NSDate+GGExtra.h"
+#import "NSString+GGEscape.h"
+#import "NSDictionary+GGURL.h"
+#import "NSURL+GGQueryParameters.h"
 
 #import <objc/runtime.h>
 #import <objc/message.h>
@@ -160,7 +160,7 @@ static Class GGHTTPServiceFetcherClass = nil;
    completionHandler:(GGHTTPServiceCompletionHandler)handler {
 	if (!query) {
 		if (handler) {
-			NSError *error = [NSError errorWithDomain:kGGHTTPServiceErrorDomain
+			NSError *error = [NSError gg_errorWithDomain:kGGHTTPServiceErrorDomain
 												 code:kGGHTTPServiceErrorUnableToConstructRequest
 										  description:NSLocalizedString(@"Error", nil) 
 										failureReason:NSLocalizedString(@"Unable to construct request", nil)];
@@ -173,7 +173,7 @@ static Class GGHTTPServiceFetcherClass = nil;
 	NSMutableURLRequest *request = [self requestForQuery:query];
 	if (!request) {
 		if (handler) {
-			NSError *error = [NSError errorWithDomain:kGGHTTPServiceErrorDomain
+			NSError *error = [NSError gg_errorWithDomain:kGGHTTPServiceErrorDomain
 												 code:kGGHTTPServiceErrorUnableToConstructRequest
 										  description:NSLocalizedString(@"Error", nil) 
 										failureReason:NSLocalizedString(@"Unable to construct request", nil)];
@@ -240,7 +240,7 @@ static Class GGHTTPServiceFetcherClass = nil;
 	NSObject <GGHTTPFetcherProtocol> *fetcher = [self fetcherWithRequest:request];
 	if (!fetcher) {
 		if (handler) {
-			NSError *error = [NSError errorWithDomain:kGGHTTPServiceErrorDomain
+			NSError *error = [NSError gg_errorWithDomain:kGGHTTPServiceErrorDomain
 												 code:kGGHTTPServiceErrorUnableToConstructRequest
 										  description:NSLocalizedString(@"Error", nil)
 										failureReason:NSLocalizedString(@"Unable to construct request", nil)];
@@ -349,7 +349,7 @@ static Class GGHTTPServiceFetcherClass = nil;
 	}
 	
 	if (query.lastModified) {
-		[request setValue:[query.lastModified RFC2822String] forHTTPHeaderField:@"If-Modified-Since"];
+		[request setValue:[query.lastModified gg_RFC2822String] forHTTPHeaderField:@"If-Modified-Since"];
 	}
 	
 	return request;
@@ -368,7 +368,7 @@ static Class GGHTTPServiceFetcherClass = nil;
 			[pathComponents addObject:query.methodName];
 			
 			for (NSString *pathComponent in query.queryPathComponents) {
-				[pathComponents addObject:[NSString stringByURLEncodingForURI:pathComponent]];
+				[pathComponents addObject:[NSString gg_stringByURLEncodingForURI:pathComponent]];
 			}
 			
 			result = [NSURL URLWithString:[pathComponents componentsJoinedByString:@"/"] relativeToURL:self.baseURL];
@@ -377,7 +377,7 @@ static Class GGHTTPServiceFetcherClass = nil;
 	}
 	
 	if (query.queryParameters) {
-		result = [result URLByAddingQueryParams:query.queryParameters];
+		result = [result gg_URLByAddingQueryParams:query.queryParameters];
 	}
 	
 	return result;
@@ -387,7 +387,7 @@ static Class GGHTTPServiceFetcherClass = nil;
 	[request setValue:self.userAgent forHTTPHeaderField:@"User-Agent"];
 	[request setValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
 		
-	NSString *uuid = [[UIDevice currentDevice] UUID];
+	NSString *uuid = [[UIDevice currentDevice] gg_UUID];
 	if (uuid) {
 		[request setValue:uuid forHTTPHeaderField:@"X-Device-ID"];
 	}
@@ -401,7 +401,7 @@ static Class GGHTTPServiceFetcherClass = nil;
 	
 	if (!query.bodyEncoder) {
 		if (error) {
-			*error = [NSError errorWithDomain:kGGHTTPServiceErrorDomain
+			*error = [NSError gg_errorWithDomain:kGGHTTPServiceErrorDomain
 										 code:kGGHTTPServiceErrorInvalidRequestBody
 								  description:NSLocalizedString(@"Error", nil) 
 								failureReason:nil];
@@ -508,7 +508,7 @@ static Class GGHTTPServiceFetcherClass = nil;
 		queryResult.cacheItem = ticket.cacheItem;
 		error = nil;
 	} else if (!error && [fetcher statusCode] >= 300) {
-		error = [NSError errorWithDomain:kGGHTTPFetcherStatusDomain
+		error = [NSError gg_errorWithDomain:kGGHTTPFetcherStatusDomain
 									code:[fetcher statusCode]
 							 description:nil
 						   failureReason:nil];

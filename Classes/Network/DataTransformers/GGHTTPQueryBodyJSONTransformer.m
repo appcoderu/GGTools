@@ -14,7 +14,7 @@
 #import "SBJsonWriter.h"
 #import "SBJsonParser.h"
 
-#import "NSError+Extra.h"
+#import "NSError+GGExtra.h"
 
 @implementation GGHTTPQueryBodyJSONTransformer
 
@@ -23,7 +23,7 @@
 	id object = [parser objectWithData:data];
 	if (!object) {
 		if (error) {
-			*error = [NSError errorWithDomain:kGGHTTPServiceErrorDomain
+			*error = [NSError gg_errorWithDomain:kGGHTTPServiceErrorDomain
 										 code:kGGHTTPServiceErrorInvalidResponseData
 								  description:NSLocalizedString(@"Error", nil) 
 								failureReason:parser.error];
@@ -43,7 +43,7 @@
 	
 	if (!data || [data length] == 0) {
 		if (error) {
-			*error = [NSError errorWithDomain:kGGHTTPServiceErrorDomain
+			*error = [NSError gg_errorWithDomain:kGGHTTPServiceErrorDomain
 										 code:kGGHTTPServiceErrorInvalidRequestBody
 								  description:NSLocalizedString(@"Error", nil) 
 								failureReason:writer.error];

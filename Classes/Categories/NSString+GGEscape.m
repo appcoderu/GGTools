@@ -6,11 +6,11 @@
 //  Copyright 2010 Evgeniy Shurakov. All rights reserved.
 //
 
-#import "NSString+Escape.h"
+#import "NSString+GGEscape.h"
 
-@implementation NSString(Escape)
+@implementation NSString(GGEscape)
 
-+ (NSString *)stringByURLEncodingString:(NSString *)str {
++ (NSString *)gg_stringByURLEncodingString:(NSString *)str {
 	NSString *result = [str stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 	return result;
 }
@@ -23,7 +23,7 @@
 
 const CFStringRef kCharsToForceEscape = CFSTR("!*'();:@&=+$,/?%#[]");
 
-+ (NSString *)stringByURLEncodingForURI:(NSString *)str {
++ (NSString *)gg_stringByURLEncodingForURI:(NSString *)str {
 	
 	CFStringRef leaveUnescaped = NULL;
 	

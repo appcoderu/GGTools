@@ -6,11 +6,11 @@
 //  Copyright 2011 Evgeniy Shurakov. All rights reserved.
 //
 
-#import "NSDate+Extra.h"
+#import "NSDate+GGExtra.h"
 
-@implementation NSDate (NSDate_Extra)
+@implementation NSDate (NSDate_GGExtra)
 
-+ (NSDate *)dateFromRelativeDateString:(NSString *)dateStr {
++ (NSDate *)gg_dateFromRelativeDateString:(NSString *)dateStr {
 	if (!dateStr) {
 		return nil;
 	}
@@ -70,7 +70,7 @@
 									options:0];
 }
 
-+ (NSDate *)dateFromRFC3339String:(NSString *)dateStr {
++ (NSDate *)gg_dateFromRFC3339String:(NSString *)dateStr {
 #define ISALNUM(x)  (isalnum((int)  ((unsigned char)x)))
 #define ISALPHA(x)  (isalpha((int)  ((unsigned char)x)))
 #define ISDIGIT(x)  (isdigit((int)  ((unsigned char)x)))
@@ -198,7 +198,7 @@
 	return result;
 }
 
-- (NSString *)RFC3339String {
+- (NSString *)gg_RFC3339String {
 	static NSDateFormatter *dateFormatter = nil;
 	
 	if (!dateFormatter) {
@@ -216,7 +216,7 @@
 	return [dateFormatter stringFromDate:self];
 }
 
-- (NSString *)RFC2822String {
+- (NSString *)gg_RFC2822String {
 	static NSDateFormatter *dateFormatter = nil;
 	
 	if (!dateFormatter) {

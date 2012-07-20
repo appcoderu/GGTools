@@ -6,22 +6,22 @@
 //  Copyright 2011 Evgeniy Shurakov. All rights reserved.
 //
 
-#import "NSError+Extra.h"
+#import "NSError+GGExtra.h"
 
-@implementation NSError (NSError_Extra)
+@implementation NSError (NSError_GGExtra)
 
-+ (id)errorWithDomain:(NSString *)domain 
++ (id)gg_errorWithDomain:(NSString *)domain
 				 code:(NSInteger)code 
 		  description:(NSString *)description 
 		failureReason:(NSString *)failureReason {
-	return [self errorWithDomain:domain 
+	return [self gg_errorWithDomain:domain
 							code:code 
 					 description:description 
 				   failureReason:failureReason 
 				 underlyingError:nil];
 }
 
-+ (id)errorWithDomain:(NSString *)domain 
++ (id)gg_errorWithDomain:(NSString *)domain
 				 code:(NSInteger)code 
 		  description:(NSString *)description 
 		failureReason:(NSString *)failureReason 

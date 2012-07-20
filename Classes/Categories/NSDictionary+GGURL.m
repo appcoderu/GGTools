@@ -6,24 +6,24 @@
 //  Copyright 2011 Evgeniy Shurakov. All rights reserved.
 //
 
-#import "NSDictionary+URL.h"
+#import "NSDictionary+GGURL.h"
 
-#import "NSString+Escape.h"
+#import "NSString+GGEscape.h"
 
-@implementation NSDictionary (NSDictionary_URL)
+@implementation NSDictionary (NSDictionary_GGURL)
 
-- (NSString *)componentsAsParameterString {	
+- (NSString *)gg_componentsAsParameterString {
 	NSMutableString *strParams = [NSMutableString stringWithString:@""];
 	
 	for (NSString *key in self) {
 		id _value = [self objectForKey:key];
-		id _key = [NSString stringByURLEncodingForURI:key];
+		id _key = [NSString gg_stringByURLEncodingForURI:key];
 		
 		if (![_value isKindOfClass:[NSString class]]) {
 			_value = [_value description];
 		}
 		
-		_value = [NSString stringByURLEncodingForURI:_value];
+		_value = [NSString gg_stringByURLEncodingForURI:_value];
 		
 		[strParams appendFormat:@"%@=%@&", _key, _value];
 	}
