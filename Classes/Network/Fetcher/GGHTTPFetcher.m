@@ -13,6 +13,9 @@
 @synthesize authorizer = _authorizer;
 @synthesize properties = _properties;
 
+@synthesize retryEnabled = _retryEnabled;
+@synthesize maxRetryInterval = _maxRetryInterval;
+
 + (id)fetcherWithRequest:(NSURLRequest *)request {
 	return [[self alloc] initWithRequest:request];
 }

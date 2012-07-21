@@ -249,16 +249,12 @@ static Class GGHTTPServiceFetcherClass = nil;
 		return nil;
 	}
 	
-#warning implement
-	//[fetcher setCookieStorageMethod:kGTMHTTPFetcherCookieStorageMethodNone];
-	
 	if (!query.suppressAuthorization) {
 		fetcher.authorizer = self.authorizer;
 	}
 
-#warning implement
-	//fetcher.retryEnabled = YES;
-	//fetcher.maxRetryInterval = 15.0;
+	fetcher.retryEnabled = YES;
+	fetcher.maxRetryInterval = 15.0;
 	
 	GGHTTPServiceTicket *ticket = [[GGHTTPServiceTicket alloc] init];
 	ticket.query = query;

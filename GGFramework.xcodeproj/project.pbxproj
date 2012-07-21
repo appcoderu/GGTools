@@ -30,6 +30,8 @@
 		1C31324715B6C4940099B037 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C31323F15B6C4280099B037 /* Security.framework */; };
 		1C31324815B6C4940099B037 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C31324015B6C4290099B037 /* SystemConfiguration.framework */; };
 		1C31324B15B6C4A20099B037 /* libz.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C31323D15B6C4270099B037 /* libz.1.dylib */; };
+		1C4D897115BAC2BE00FB6CC6 /* GGHTTPGoogleAuthorizationProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C4D896F15BAC2BE00FB6CC6 /* GGHTTPGoogleAuthorizationProxy.h */; };
+		1C4D897215BAC2BE00FB6CC6 /* GGHTTPGoogleAuthorizationProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C4D897015BAC2BE00FB6CC6 /* GGHTTPGoogleAuthorizationProxy.m */; };
 		1C52214A15B9676F00E5E7BE /* GTMHTTPFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C52212F15B9676F00E5E7BE /* GTMHTTPFetcher.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		1C52214B15B9676F00E5E7BE /* NSObject+SBJson.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C52213215B9676F00E5E7BE /* NSObject+SBJson.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		1C52214C15B9676F00E5E7BE /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C52213515B9676F00E5E7BE /* SBJsonParser.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -43,7 +45,6 @@
 		1C52215415B9676F00E5E7BE /* SBJsonTokeniser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C52214515B9676F00E5E7BE /* SBJsonTokeniser.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		1C52215515B9676F00E5E7BE /* SBJsonUTF8Stream.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C52214715B9676F00E5E7BE /* SBJsonUTF8Stream.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		1C52215615B9676F00E5E7BE /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C52214915B9676F00E5E7BE /* SBJsonWriter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		1C52218C15B967E900E5E7BE /* About.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1C52215815B967E900E5E7BE /* About.txt */; };
 		1C52218D15B967E900E5E7BE /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C52215A15B967E900E5E7BE /* GCDAsyncSocket.m */; };
 		1C52218E15B967E900E5E7BE /* DDData.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C52215E15B967E900E5E7BE /* DDData.m */; };
 		1C52218F15B967E900E5E7BE /* DDNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C52216015B967E900E5E7BE /* DDNumber.m */; };
@@ -58,7 +59,6 @@
 		1C52219815B967E900E5E7BE /* HTTPFileResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C52217515B967E900E5E7BE /* HTTPFileResponse.m */; };
 		1C52219915B967E900E5E7BE /* HTTPRedirectResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C52217715B967E900E5E7BE /* HTTPRedirectResponse.m */; };
 		1C52219A15B967E900E5E7BE /* WebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C52217915B967E900E5E7BE /* WebSocket.m */; };
-		1C52219B15B967E900E5E7BE /* About.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1C52217B15B967E900E5E7BE /* About.txt */; };
 		1C52219C15B967E900E5E7BE /* DDASLLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C52217D15B967E900E5E7BE /* DDASLLogger.m */; };
 		1C52219D15B967E900E5E7BE /* DDAbstractDatabaseLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C52217F15B967E900E5E7BE /* DDAbstractDatabaseLogger.m */; };
 		1C52219E15B967E900E5E7BE /* DDFileLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C52218115B967E900E5E7BE /* DDFileLogger.m */; };
@@ -207,6 +207,8 @@
 		1C31323E15B6C4280099B037 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		1C31323F15B6C4280099B037 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		1C31324015B6C4290099B037 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		1C4D896F15BAC2BE00FB6CC6 /* GGHTTPGoogleAuthorizationProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGHTTPGoogleAuthorizationProxy.h; sourceTree = "<group>"; };
+		1C4D897015BAC2BE00FB6CC6 /* GGHTTPGoogleAuthorizationProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGHTTPGoogleAuthorizationProxy.m; sourceTree = "<group>"; };
 		1C52212E15B9676F00E5E7BE /* GTMHTTPFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMHTTPFetcher.h; sourceTree = "<group>"; };
 		1C52212F15B9676F00E5E7BE /* GTMHTTPFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMHTTPFetcher.m; sourceTree = "<group>"; };
 		1C52213115B9676F00E5E7BE /* NSObject+SBJson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJson.h"; sourceTree = "<group>"; };
@@ -433,6 +435,8 @@
 			isa = PBXGroup;
 			children = (
 				1C31319A15B69B770099B037 /* GGHTTPAuthorizationProtocol.h */,
+				1C4D896F15BAC2BE00FB6CC6 /* GGHTTPGoogleAuthorizationProxy.h */,
+				1C4D897015BAC2BE00FB6CC6 /* GGHTTPGoogleAuthorizationProxy.m */,
 			);
 			path = Authorization;
 			sourceTree = "<group>";
@@ -709,6 +713,7 @@
 				1C7666FB15B94EB5002C3F6C /* GGCache.h in Headers */,
 				1C7666FC15B94EB5002C3F6C /* GGCacheItem.h in Headers */,
 				1C5221B815B969BF00E5E7BE /* GGTools-Prefix.pch in Headers */,
+				1C4D897115BAC2BE00FB6CC6 /* GGHTTPGoogleAuthorizationProxy.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -787,8 +792,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				1C087ADC1580FC52001C4060 /* RunTests.sh in Resources */,
-				1C52218C15B967E900E5E7BE /* About.txt in Resources */,
-				1C52219B15B967E900E5E7BE /* About.txt in Resources */,
 				1C5221A315B967E900E5E7BE /* README.txt in Resources */,
 				1C5221AD15B9683B00E5E7BE /* Web in Resources */,
 			);
@@ -912,6 +915,7 @@
 				1C7666D115B9447F002C3F6C /* GGHTTPQueryBody.m in Sources */,
 				1C7666D215B9447F002C3F6C /* GGHTTPConstants.m in Sources */,
 				1C7666D315B9447F002C3F6C /* GGHTTPQueryResult.m in Sources */,
+				1C4D897215BAC2BE00FB6CC6 /* GGHTTPGoogleAuthorizationProxy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

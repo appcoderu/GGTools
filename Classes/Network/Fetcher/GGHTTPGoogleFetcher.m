@@ -3,7 +3,7 @@
 //  GGFramework
 //
 //  Created by Evgeniy Shurakov on 18.07.12.
-//  Copyright (c) 2012 Evgeniy Shurakov. All rights reserved.
+//  Copyright (c) 2012 AppCode. All rights reserved.
 //
 
 #import "GGHTTPGoogleFetcher.h"
@@ -11,6 +11,8 @@
 #import "GGHTTPConstants.h"
 
 #import "GTMHTTPFetcher.h"
+
+#import "GGHTTPGoogleAuthorizationProxy.h"
 
 #import "NSError+GGExtra.h"
 
@@ -21,9 +23,6 @@
 	__weak NSObject <GGHTTPFetcherDelegate> *_delegate;
 }
 
-@synthesize authorizer = _authorizer;
-@synthesize properties = _properties;
-
 + (id)fetcherWithRequest:(NSURLRequest *)request {
 	return [[self alloc] initWithRequest:request];
 }
@@ -32,6 +31,7 @@
 	self = [super init];
 	if (self) {
 		_fetcher = [GTMHTTPFetcher fetcherWithRequest:request];
+		_fetcher.cookieStorageMethod = kGTMHTTPFetcherCookieStorageMethodNone;
 	}
 	return self;
 }
@@ -76,6 +76,31 @@
 	[self releaseCallbacks];
 }
 
+- (NSObject <GGHTTPAuthorizationProtocol> *)authorizer {
+	if ([_fetcher.authorizer isKindOfClass:[GGHTTPGoogleAuthorizationProxy class]]) {
+		return [(GGHTTPGoogleAuthorizationProxy *)(_fetcher.authorizer) authorizer];
+	}
+	
+	return nil;
+}
+
+- (void)setAuthorizer:(NSObject<GGHTTPAuthorizationProtocol> *)authorizer {
+	if (!authorizer) {
+		_fetcher.authorizer = nil;
+		return;
+	}
+	
+	_fetcher.authorizer = [[GGHTTPGoogleAuthorizationProxy alloc] initWithAuthorizer:authorizer];
+}
+
+- (NSMutableDictionary *)properties {
+	return [_fetcher properties];
+}
+
+- (void)setProperties:(NSMutableDictionary *)properties {
+	[_fetcher setProperties:properties];
+}
+
 - (void)setProperty:(id)value forKey:(NSString *)key {
 	[_fetcher setProperty:value forKey:key];
 }
@@ -94,6 +119,22 @@
 
 - (NSInteger)statusCode {
 	return [_fetcher statusCode];
+}
+
+- (BOOL)isRetryEnabled {
+	return [_fetcher isRetryEnabled];
+}
+
+- (void)setRetryEnabled:(BOOL)retryEnabled {
+	[_fetcher setRetryEnabled:retryEnabled];
+}
+
+- (NSTimeInterval)maxRetryInterval {
+	return [_fetcher maxRetryInterval];
+}
+
+- (void)setMaxRetryInterval:(NSTimeInterval)maxRetryInterval {
+	[_fetcher setMaxRetryInterval:maxRetryInterval];
 }
 
 - (void)releaseCallbacks {

@@ -3,7 +3,7 @@
 //  GGFramework
 //
 //  Created by Evgeniy Shurakov on 18.07.12.
-//  Copyright (c) 2012 Evgeniy Shurakov. All rights reserved.
+//  Copyright (c) 2012 AppCode. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -19,7 +19,10 @@
 @property(nonatomic, strong, readonly) NSMutableURLRequest *mutableRequest;
 @property(nonatomic, strong, readonly) NSURLResponse *response;
 
-@property (nonatomic, assign, readonly) NSInteger statusCode;
+@property(nonatomic, assign, readonly) NSInteger statusCode;
+
+@property(nonatomic, assign, getter = isRetryEnabled) BOOL retryEnabled;
+@property(nonatomic, assign) NSTimeInterval maxRetryInterval;
 
 + (id)fetcherWithRequest:(NSURLRequest *)request;
 - (id)initWithRequest:(NSURLRequest *)request;
