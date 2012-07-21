@@ -3,7 +3,7 @@
 //  GGFramework
 //
 //  Created by Evgeniy Shurakov on 04.08.11.
-//  Copyright 2011 Evgeniy Shurakov. All rights reserved.
+//  Copyright 2012 AppCode. All rights reserved.
 //
 
 #import "NSError+GGExtra.h"

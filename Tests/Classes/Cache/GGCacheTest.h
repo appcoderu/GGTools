@@ -3,7 +3,7 @@
 //  GG
 //
 //  Created by Evgeniy Shurakov on 07.06.12.
-//  Copyright (c) 2012 Evgeniy Shurakov. All rights reserved.
+//  Copyright (c) 2012 AppCode. All rights reserved.
 //
 
 #import <GHUnitIOS/GHUnit.h>

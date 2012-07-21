@@ -3,7 +3,7 @@
 //  GGFramework
 //
 //  Created by Evgeniy Shurakov on 29.12.10.
-//  Copyright 2010 Evgeniy Shurakov. All rights reserved.
+//  Copyright 2012 AppCode. All rights reserved.
 //
 
 #import "NSString+GGEscape.h"
