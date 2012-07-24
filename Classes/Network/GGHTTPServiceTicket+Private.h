@@ -8,10 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-@class GGHTTPCacheItem;
+@protocol GGHTTPFetcherProtocol;
 
 @interface GGHTTPServiceTicket (Private)
 
-@property(nonatomic, strong) GGHTTPCacheItem *cacheItem;
+@property(nonatomic, strong) NSObject <GGHTTPFetcherProtocol> *fetcher;
+
 
 @end

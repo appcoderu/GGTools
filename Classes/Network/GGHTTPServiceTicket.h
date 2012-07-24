@@ -8,15 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol GGHTTPFetcherProtocol;
-
 @class GGHTTPQuery;
-@class GTMHTTPFetcher;
 
 @interface GGHTTPServiceTicket : NSObject
 
 @property(nonatomic, strong) GGHTTPQuery *query;
 @property(nonatomic, assign, getter = isUsed) BOOL used;
-@property(nonatomic, strong) NSObject <GGHTTPFetcherProtocol> *fetcher;
 
 @end

@@ -16,16 +16,19 @@ extern NSString * const GGHTTPQueryMethodDELETE;
 
 @interface GGHTTPQuery : NSObject
 
+#warning rename
 + (id)queryForMethodName:(NSString *)methodName;
-
 + (id)queryForURL:(NSURL *)url;
-+ (id)queryForURL:(NSURL *)url revalidateInterval:(NSTimeInterval)revalidateInterval;
 
 - (void)setQueryParameter:(NSString *)parameter forKey:(NSString *)key;
 - (void)setHTTPHeader:(NSString *)parameter forKey:(NSString *)key;
 
 - (void)addQueryPathComponent:(NSString *)component;
 
+- (void)setProperty:(id)obj forKey:(NSString *)key;
+- (id)propertyForKey:(NSString *)key;
+
+#warning rename
 @property (nonatomic, strong) NSString *methodName;
 @property (nonatomic, strong) NSURL *url;
 

@@ -21,6 +21,12 @@
 #import "GGHTTPQueryBodyJSONTransformer.h"
 
 #import "HTTPServer.h"
+#import "HTTPConnection.h"
+#import "HTTPResponse.h"
+
+@interface TestsHTTPConnection : HTTPConnection
+
+@end
 
 @implementation GGNetworkTest {
 	HTTPServer *httpServer;
@@ -33,6 +39,7 @@
 	NSString *webPath = [[[NSBundle bundleForClass:[self class]] resourcePath] stringByAppendingPathComponent:@"Web"];
 	
 	[httpServer setDocumentRoot:webPath];
+	[httpServer setConnectionClass:[TestsHTTPConnection class]];
 	
 	NSError *error;
 	BOOL success = [httpServer start:&error];
@@ -53,7 +60,6 @@
    completionHandler:^(GGHTTPServiceTicket *ticket, GGHTTPQueryResult *queryResult) {
 	   GHAssertNotNil(ticket, nil);
 	   GHAssertNotNil(ticket.query, nil);
-	   GHAssertNil(ticket.fetcher, nil);
 	   GHAssertTrue(ticket.used, nil);
 	   
 	   GHAssertNotNil(queryResult, nil);
@@ -115,7 +121,6 @@
 		   GHAssertNotNil(ticket, nil);
 		   GHAssertNotNil(ticket.query, nil);
 		   GHAssertEquals(ticket.query, query, nil);
-		   GHAssertNil(ticket.fetcher, nil);
 		   GHAssertTrue(ticket.used, nil);
 		   
 		   GHAssertNotNil(queryResult, nil);
@@ -154,7 +159,6 @@
 						  GHAssertNotNil(ticket, nil);
 						  GHAssertNotNil(ticket.query, nil);
 						  GHAssertEquals(ticket.query, query, nil);
-						  GHAssertNil(ticket.fetcher, nil);
 						  GHAssertTrue(ticket.used, nil);
 						  
 						  GHAssertNotNil(queryResult, nil);
@@ -174,11 +178,74 @@
 						  [self notify:kGHUnitWaitStatusSuccess forSelector:@selector(testSimpleJSONQuery)];
 					  }];
 	
+	GHAssertNotNil(localTicket, nil);
+	
 	[self waitForStatus:kGHUnitWaitStatusSuccess timeout:10.0];
 	
 	service = nil;
 	localTicket = nil;
 	query = nil;
 }
+
+/*
+- (void)testImageQuery {
+	[self prepare];
+	
+	GGHTTPService *service = [[GGHTTPService alloc] initWithBaseURL:nil];
+	GGHTTPQuery *query = [GGHTTPQuery queryForURL:[NSURL URLWithString:@"http://:20005/ggdynamics.png"]];
+	query.expectedResultClass = [UIImage class];
+	
+	GGHTTPServiceTicket *localTicket = nil;
+	localTicket = [service executeQuery:query
+					  completionHandler:^(GGHTTPServiceTicket *ticket, GGHTTPQueryResult *queryResult) {
+						  GHAssertNotNil(queryResult, nil);
+						  GHAssertNil(queryResult.error, nil);
+						  GHAssertNil(queryResult.cacheItem, nil);
+						  GHAssertFalse(queryResult.cached, nil);
+						  GHAssertNotNil(queryResult.data, nil);
+						  GHAssertNotNil(queryResult.rawData, nil);
+						  GHAssertEquals(queryResult.statusCode, (NSInteger)200, nil);
+						  
+						  GHAssertTrue([queryResult.data isKindOfClass:[UIImage class]], nil);
+						  
+						  UIImage *image = [UIImage imageWithContentsOfFile:[[httpServer documentRoot] stringByAppendingPathComponent:@"ggdynamics.png"]];
+						  
+						  GHAssertEquals(image.size.width, ((UIImage *)(queryResult.data)).size.width, nil);
+						  GHAssertEquals(image.size.height, ((UIImage *)(queryResult.data)).size.height, nil);
+						  
+						  [self notify:kGHUnitWaitStatusSuccess forSelector:@selector(testImageQuery)];
+					  }];
+	
+	[self waitForStatus:kGHUnitWaitStatusSuccess timeout:10.0];
+	
+	service = nil;
+	localTicket = nil;
+	query = nil;
+}
+*/
+
+@end
+
+@implementation TestsHTTPConnection
+
+- (NSObject<HTTPResponse> *)httpResponseForMethod:(NSString *)method URI:(NSString *)path {
+	NSString *filePath = [self filePathForURI:path];
+	NSString *documentRoot = [config documentRoot];
+	
+	if (![filePath hasPrefix:documentRoot]) {
+		return nil;
+	}
+	
+	NSString *relativePath = [filePath substringFromIndex:[documentRoot length]];
+	
+	if ([relativePath hasSuffix:@".png"]) {
+		NSObject <HTTPResponse> *response = [super httpResponseForMethod:method URI:path];
+		//response.httpHeaders = @{ @"Content-Type" : @"image/png" };
+		return response;
+	}
+	
+	return [super httpResponseForMethod:method URI:path];
+}
+
 
 @end

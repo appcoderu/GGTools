@@ -32,10 +32,6 @@ typedef void (^GGHTTPServiceCompletionHandler)(GGHTTPServiceTicket *ticket, GGHT
 - (GGHTTPServiceTicket *)loadURL:(NSURL *)url
 			   completionHandler:(GGHTTPServiceCompletionHandler)handler;
 
-- (GGHTTPServiceTicket *)loadURL:(NSURL *)url
-			  revalidateInterval:(NSTimeInterval)revalidateInterval
-			   completionHandler:(GGHTTPServiceCompletionHandler)handler;
-
 - (GGHTTPServiceTicket *)executeQuery:(GGHTTPQuery *)query
 					completionHandler:(GGHTTPServiceCompletionHandler)handler;
 

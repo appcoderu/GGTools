@@ -21,31 +21,33 @@ NSString * const GGHTTPQueryMethodPATCH		= @"PATCH";
 NSString * const GGHTTPQueryMethodDELETE	= @"DELETE";
 
 @implementation GGHTTPQuery {
-	NSMutableDictionary *httpHeaders_;
-	NSMutableDictionary *queryParameters_;
-	NSMutableArray *queryPathComponents_;
+	NSMutableDictionary *_httpHeaders;
+	NSMutableDictionary *_queryParameters;
+	NSMutableArray *_queryPathComponents;
+	
+	NSMutableDictionary *_properties;
 }
 
-@synthesize methodName=methodName_;
-@synthesize url=url_;
+@synthesize methodName=_methodName;
+@synthesize url=_url;
 
-@synthesize bodyDecoder=bodyDecoder_;
-@synthesize bodyEncoder=bodyEncoder_;
-@synthesize bodyObject=bodyObject_;
+@synthesize bodyDecoder=_bodyDecoder;
+@synthesize bodyEncoder=_bodyEncoder;
+@synthesize bodyObject=_bodyObject;
 
-@synthesize httpMethod=httpMethod_;
-@synthesize etag=etag_;
-@synthesize lastModified=lastModified_;
-@synthesize httpHeaders=httpHeaders_;
-@synthesize queryParameters=queryParameters_;
-@synthesize queryPathComponents=queryPathComponents_;
+@synthesize httpMethod=_httpMethod;
+@synthesize etag=_etag;
+@synthesize lastModified=_lastModified;
+@synthesize httpHeaders=_httpHeaders;
+@synthesize queryParameters=_queryParameters;
+@synthesize queryPathComponents=_queryPathComponents;
 
-@synthesize suppressAuthorization=suppressAuthorization_;
+@synthesize suppressAuthorization=_suppressAuthorization;
 
-@synthesize expectedResultClass=expectedResultClass_;
+@synthesize expectedResultClass=_expectedResultClass;
 
-@synthesize revalidateInterval=validateAfter_;
-@synthesize cachePersistently=cachePersistently_;
+@synthesize revalidateInterval=_validateAfter;
+@synthesize cachePersistently=_cachePersistently;
 
 + (id)queryForMethodName:(NSString *)methodName {
 	GGHTTPQuery *query = [[[self class] alloc] init];
@@ -54,13 +56,8 @@ NSString * const GGHTTPQueryMethodDELETE	= @"DELETE";
 }
 
 + (id)queryForURL:(NSURL *)url {
-	return [self queryForURL:url revalidateInterval:0.0];
-}
-
-+ (id)queryForURL:(NSURL *)url revalidateInterval:(NSTimeInterval)revalidateInterval {
 	GGHTTPQuery *query = [[[self class] alloc] init];
 	query.url = url;
-	query.revalidateInterval = revalidateInterval;
 	return query;
 }
 
@@ -69,7 +66,7 @@ NSString * const GGHTTPQueryMethodDELETE	= @"DELETE";
 - (id)init {
 	self = [super init];
 	if (self) {
-		validateAfter_ = 0.0;
+		_validateAfter = 0.0;
 	}
 	return self;
 }
@@ -83,12 +80,12 @@ NSString * const GGHTTPQueryMethodDELETE	= @"DELETE";
 	}
 		
 	if (parameter) {
-		if (!queryParameters_) {
-			queryParameters_ = [[NSMutableDictionary alloc] initWithCapacity:1];
+		if (!_queryParameters) {
+			_queryParameters = [[NSMutableDictionary alloc] initWithCapacity:1];
 		}
-		[queryParameters_ setObject:parameter forKey:key];
+		[_queryParameters setObject:parameter forKey:key];
 	} else {
-		[queryParameters_ removeObjectForKey:key];
+		[_queryParameters removeObjectForKey:key];
 	}
 }
 
@@ -98,12 +95,12 @@ NSString * const GGHTTPQueryMethodDELETE	= @"DELETE";
 	}
 		
 	if (parameter) {
-		if (!httpHeaders_) {
-			httpHeaders_ = [[NSMutableDictionary alloc] initWithCapacity:1];
+		if (!_httpHeaders) {
+			_httpHeaders = [[NSMutableDictionary alloc] initWithCapacity:1];
 		}
-		[httpHeaders_ setObject:parameter forKey:key];
+		[_httpHeaders setObject:parameter forKey:key];
 	} else {
-		[httpHeaders_ removeObjectForKey:key];
+		[_httpHeaders removeObjectForKey:key];
 	}
 }
 
@@ -112,10 +109,31 @@ NSString * const GGHTTPQueryMethodDELETE	= @"DELETE";
 		return;
 	}
 	
-	if (!queryPathComponents_) {
-		queryPathComponents_ = [[NSMutableArray alloc] initWithCapacity:1];
+	if (!_queryPathComponents) {
+		_queryPathComponents = [[NSMutableArray alloc] initWithCapacity:1];
 	}
-	[queryPathComponents_ addObject:component];
+	[_queryPathComponents addObject:component];
+}
+
+#pragma mark -
+
+- (void)setProperty:(id)obj forKey:(NSString *)key {
+	if (!key) {
+		return;
+	}
+	
+	if (obj) {
+		if (!_properties) {
+			_properties = [[NSMutableDictionary alloc] initWithCapacity:5];
+		}
+		[_properties setObject:obj forKey:key];
+	} else {
+		[_properties removeObjectForKey:key];
+	}
+}
+
+- (id)propertyForKey:(NSString *)key {
+	return [_properties objectForKey:key];
 }
 
 #pragma mark -
@@ -125,7 +143,7 @@ NSString * const GGHTTPQueryMethodDELETE	= @"DELETE";
 	if (httpHeaders) {
 		tmp = [[NSMutableDictionary alloc] initWithDictionary:httpHeaders];
 	}
-	httpHeaders_ = tmp;
+	_httpHeaders = tmp;
 }
 
 - (void)setQueryParameters:(NSDictionary *)queryParameters {
@@ -133,7 +151,7 @@ NSString * const GGHTTPQueryMethodDELETE	= @"DELETE";
 	if (queryParameters) {
 		tmp = [[NSMutableDictionary alloc] initWithDictionary:queryParameters];
 	}
-	queryParameters_ = tmp;
+	_queryParameters = tmp;
 }
 
 - (void)setQueryPathComponents:(NSArray *)queryPathComponents {
@@ -141,7 +159,7 @@ NSString * const GGHTTPQueryMethodDELETE	= @"DELETE";
 	if (queryPathComponents) {
 		tmp = [[NSMutableArray alloc] initWithArray:queryPathComponents];
 	}
-	queryPathComponents_ = tmp;
+	_queryPathComponents = tmp;
 }
 
 - (void)setBodyDecoder:(Class)bodyDecoder {
@@ -149,7 +167,7 @@ NSString * const GGHTTPQueryMethodDELETE	= @"DELETE";
 		return;
 	}
 	
-	bodyDecoder_ = bodyDecoder;
+	_bodyDecoder = bodyDecoder;
 }
 
 - (void)setBodyEncoder:(Class)bodyEncoder {
@@ -157,7 +175,7 @@ NSString * const GGHTTPQueryMethodDELETE	= @"DELETE";
 		return;
 	}
 	
-	bodyEncoder_ = bodyEncoder;
+	_bodyEncoder = bodyEncoder;
 }
 
 @end

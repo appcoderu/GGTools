@@ -37,9 +37,9 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 
-static NSString * const kFetcherTicketKey					= @"ticket";
-static NSString * const kFetcherCompletionHandlerKey	= @"completionHandler";
-static NSString * const kFetcherCacheItemKey				= @"cacheItem";
+static NSString * const kFetcherTicketKey				= @"__ticket";
+static NSString * const kFetcherCompletionHandlerKey	= @"__completionHandler";
+static NSString * const kFetcherCacheItemKey			= @"__cacheItem";
 
 static NSTimeInterval const kGGHTTPServiceDefaultTimeout = 30.0;
 static Class GGHTTPServiceFetcherClass = nil;
@@ -146,14 +146,8 @@ static Class GGHTTPServiceFetcherClass = nil;
 
 - (GGHTTPServiceTicket *)loadURL:(NSURL *)url
 			   completionHandler:(GGHTTPServiceCompletionHandler)handler {
-	return [self loadURL:url revalidateInterval:0.0 completionHandler:handler];
-}
-
-- (GGHTTPServiceTicket *)loadURL:(NSURL *)url
-			  revalidateInterval:(NSTimeInterval)revalidateInterval
-			   completionHandler:(GGHTTPServiceCompletionHandler)handler {
-	GGHTTPQuery *query = [GGHTTPQuery queryForURL:url revalidateInterval:revalidateInterval];
-	return [self executeQuery:query completionHandler:handler];
+	return [self executeQuery:[GGHTTPQuery queryForURL:url]
+			completionHandler:handler];
 }
 
 - (GGHTTPServiceTicket *)executeQuery:(GGHTTPQuery *)query
@@ -259,18 +253,23 @@ static Class GGHTTPServiceFetcherClass = nil;
 	GGHTTPServiceTicket *ticket = [[GGHTTPServiceTicket alloc] init];
 	ticket.query = query;
 	ticket.fetcher = fetcher;
-	ticket.cacheItem = cacheItem;
+	
+	[query setProperty:cacheItem forKey:kFetcherCacheItemKey];
+	if (handler) {
+		[query setProperty:[handler copy] forKey:kFetcherCompletionHandlerKey];
+	}
 	
 	[fetcher setProperty:ticket forKey:kFetcherTicketKey];
-	if (handler) {
-		[fetcher setProperty:[handler copy] forKey:kFetcherCompletionHandlerKey];
-	}
 			
 	BOOL didFetch = [fetcher beginFetchWithDelegate:self];
 	
 	if (!didFetch || ticket.used) {
 		ticket.fetcher = nil;
 		fetcher.properties = nil;
+		
+		[query setProperty:nil forKey:kFetcherCacheItemKey];
+		[query setProperty:nil forKey:kFetcherCompletionHandlerKey];
+		
 		return nil;
 	}
 	
@@ -285,6 +284,9 @@ static Class GGHTTPServiceFetcherClass = nil;
 	[ticket.fetcher stopFetching];
 	ticket.fetcher.properties = nil;
 	ticket.fetcher = nil;
+	
+	[ticket.query setProperty:nil forKey:kFetcherCacheItemKey];
+	[ticket.query setProperty:nil forKey:kFetcherCompletionHandlerKey];
 }
 
 #pragma mark -
@@ -476,17 +478,19 @@ static Class GGHTTPServiceFetcherClass = nil;
 	
 	GGHTTPServiceTicket *ticket = [fetcher propertyForKey:kFetcherTicketKey];
 	ticket.used = YES;
+	ticket.fetcher.properties = nil;
+	ticket.fetcher = nil;
 	
-	GGHTTPServiceCompletionHandler handler = [fetcher propertyForKey:kFetcherCompletionHandlerKey];
-	
+	GGHTTPServiceCompletionHandler handler = [ticket.query propertyForKey:kFetcherCompletionHandlerKey];
 	if (!handler) {
-		ticket.fetcher = nil;
 		return;
 	}
 	
 	if (data && [data length] == 0) {
 		data = nil;
 	}
+	
+	GGHTTPCacheItem *cacheItem = [ticket.query propertyForKey:kFetcherCacheItemKey];
 	
 	GGHTTPQueryResult *queryResult = [[GGHTTPQueryResult alloc] init];
 	queryResult.query = ticket.query;
@@ -498,10 +502,10 @@ static Class GGHTTPServiceFetcherClass = nil;
 		response = (NSHTTPURLResponse *)(fetcher.response);
 	}
 		
-	if ([fetcher statusCode] == kGGHTTPFetcherStatusNotModified && ticket.cacheItem) {
-		[[self cacheForQuery:ticket.query] bumpAgeOfCachedItem:ticket.cacheItem];
+	if ([fetcher statusCode] == kGGHTTPFetcherStatusNotModified && cacheItem) {
+		[[self cacheForQuery:ticket.query] bumpAgeOfCachedItem:cacheItem];
 		
-		queryResult.cacheItem = ticket.cacheItem;
+		queryResult.cacheItem = cacheItem;
 		error = nil;
 	} else if (!error && [fetcher statusCode] >= 300) {
 		error = [NSError gg_errorWithDomain:kGGHTTPFetcherStatusDomain
@@ -514,7 +518,8 @@ static Class GGHTTPServiceFetcherClass = nil;
 											response:response];
 	}
 
-	ticket.fetcher = nil;
+	[ticket.query setProperty:nil forKey:kFetcherCompletionHandlerKey];
+	[ticket.query setProperty:nil forKey:kFetcherCacheItemKey];
 	
 	if (!queryResult.cached) {
 		queryResult.rawData = data;

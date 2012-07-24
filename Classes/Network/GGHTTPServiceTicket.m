@@ -9,22 +9,19 @@
 #import "GGHTTPServiceTicket.h"
 #import "GGHTTPServiceTicket+Private.h"
 
-#import "GGHTTPCacheItem.h"
-
 @implementation GGHTTPServiceTicket {
-	GGHTTPCacheItem *_cacheItem;
+	NSObject <GGHTTPFetcherProtocol> *_fetcher;
 }
 
 @synthesize used=_used;
 @synthesize query=_query;
-@synthesize fetcher=_fetcher;
 
-- (GGHTTPCacheItem *)cacheItem {
-	return _cacheItem;
+- (NSObject <GGHTTPFetcherProtocol> *)fetcher {
+	return _fetcher;
 }
 
-- (void)setCacheItem:(GGHTTPCacheItem *)cacheItem {
-	_cacheItem = cacheItem;
+- (void)setFetcher:(NSObject<GGHTTPFetcherProtocol> *)fetcher {
+	_fetcher = fetcher;
 }
 
 @end
