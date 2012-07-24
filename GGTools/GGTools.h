@@ -8,6 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+#import <GGTools/GGToolsVersion.h>
+
+#import <GGTools/GGHTTPConstants.h>
+
 #import <GGTools/GGHTTPService.h>
 #import <GGTools/GGHTTPServiceTicket.h>
 #import <GGTools/GGHTTPQuery.h>
@@ -15,8 +19,14 @@
 
 #import <GGTools/GGHTTPAuthorizationProtocol.h>
 #import <GGTools/GGHTTPCacheProtocol.h>
+
 #import <GGTools/GGHTTPQueryBodyDecoder.h>
 #import <GGTools/GGHTTPQueryBodyEncoder.h>
+#import <GGTools/GGHTTPQueryBodyJSONTransformer.h>
+#import <GGTools/GGHTTPQueryBodyFormTransformer.h>
 
 #import <GGTools/GGHTTPCache.h>
 #import <GGTools/GGHTTPCacheItem.h>
+
+#import <GGTools/GGCache.h>
+#import <GGTools/GGCacheItem.h>

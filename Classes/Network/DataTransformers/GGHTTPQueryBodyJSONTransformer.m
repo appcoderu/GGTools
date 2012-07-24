@@ -11,25 +11,24 @@
 
 #import "GGHTTPConstants.h"
 
-#import "SBJsonWriter.h"
-#import "SBJsonParser.h"
-
 #import "NSError+GGExtra.h"
 
 @implementation GGHTTPQueryBodyJSONTransformer
 
-+ (id)decode:(NSData *)data error:(NSError **)error {	
-	SBJsonParser *parser = [[SBJsonParser alloc] init];
-	id object = [parser objectWithData:data];
-	if (!object) {
-		if (error) {
-			*error = [NSError gg_errorWithDomain:kGGHTTPServiceErrorDomain
-										 code:kGGHTTPServiceErrorInvalidResponseData
-								  description:NSLocalizedString(@"Error", nil) 
-								failureReason:parser.error];
-		}
++ (id)decode:(NSData *)data error:(NSError **)error {
+	NSError *jsonError = nil;
+	id object = [NSJSONSerialization JSONObjectWithData:data
+												options:0
+												  error:&jsonError];
+	
+	if (jsonError && error) {
+		*error = [NSError gg_errorWithDomain:kGGHTTPServiceErrorDomain
+										code:kGGHTTPServiceErrorInvalidResponseData
+								 description:NSLocalizedString(@"Error", nil)
+							   failureReason:jsonError.localizedFailureReason
+							 underlyingError:jsonError];
 	}
-		
+	
 	return object;
 }
 
@@ -37,16 +36,19 @@
 	if (!bodyObject) {
 		return nil;
 	}
-		
-	SBJsonWriter *writer = [[SBJsonWriter alloc] init];
-	NSData *data = [writer dataWithObject:bodyObject];
 	
-	if (!data || [data length] == 0) {
+	NSError *jsonError = nil;
+	NSData *data = [NSJSONSerialization dataWithJSONObject:bodyObject
+												   options:0
+													 error:&jsonError];
+	
+	if (jsonError) {
 		if (error) {
 			*error = [NSError gg_errorWithDomain:kGGHTTPServiceErrorDomain
-										 code:kGGHTTPServiceErrorInvalidRequestBody
-								  description:NSLocalizedString(@"Error", nil) 
-								failureReason:writer.error];
+											code:kGGHTTPServiceErrorInvalidRequestBody
+									 description:NSLocalizedString(@"Error", nil)
+								   failureReason:jsonError.localizedFailureReason
+								 underlyingError:jsonError];
 		}
 		return nil;
 	}
