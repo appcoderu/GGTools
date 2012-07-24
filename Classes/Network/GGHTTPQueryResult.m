@@ -63,8 +63,16 @@
 	return _data;
 }
 
+- (NSData *)rawData {
+	if ([self isCached]) {
+		return self.cacheItem.data;
+	} else {
+		return _rawData;
+	}
+}
+
 - (NSError *)error {
-	if (!_error && !_processedRawData && [self isCached]) {
+	if (!_error && !_processedRawData && ![self isCached]) {
 		[self processRawData];
 	}
 	
@@ -90,15 +98,8 @@
 							   error:nil];
 	} else {
 		NSError *error = nil;
-		NSData *data = nil;
 		
-		if ([self isCached]) {
-			data = self.cacheItem.data;
-		} else {
-			data = _rawData;
-		}
-		
-		_data = [self objectWithData:data
+		_data = [self objectWithData:[self rawData]
 						 contentType:[self contentType]
 							 decoder:self.query.bodyDecoder
 					   expectedClass:self.query.expectedResultClass
@@ -123,7 +124,7 @@
 	id result = nil;
 	
 	if (!decoder && contentType) {
-		if ([contentType caseInsensitiveCompare:@"application/json"]) {
+		if ([contentType caseInsensitiveCompare:@"application/json"] == NSOrderedSame) {
 			decoder = [GGHTTPQueryBodyJSONTransformer class];
 		}
 	}
@@ -159,7 +160,7 @@
 }
 
 - (NSString *)contentType {
-	return [self responseHeaders][@"content-type"];
+	return [[self responseHeaders] objectForKey:@"content-type"];
 }
 
 

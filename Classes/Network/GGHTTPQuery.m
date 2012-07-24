@@ -14,11 +14,11 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 
-NSString * const GGHTTPQueryMethodGET		= @"GET";
-NSString * const GGHTTPQueryMethodPUT		= @"PUT";
-NSString * const GGHTTPQueryMethodPOST		= @"POST";
-NSString * const GGHTTPQueryMethodPATCH		= @"PATCH";
-NSString * const GGHTTPQueryMethodDELETE	= @"DELETE";
+NSString * const GGHTTPMethodGET		= @"GET";
+NSString * const GGHTTPMethodPUT		= @"PUT";
+NSString * const GGHTTPMethodPOST		= @"POST";
+NSString * const GGHTTPMethodPATCH		= @"PATCH";
+NSString * const GGHTTPMethodDELETE	= @"DELETE";
 
 @implementation GGHTTPQuery {
 	NSMutableDictionary *_httpHeaders;
@@ -28,7 +28,7 @@ NSString * const GGHTTPQueryMethodDELETE	= @"DELETE";
 	NSMutableDictionary *_properties;
 }
 
-@synthesize methodName=_methodName;
+@synthesize relativePath=_relativePath;
 @synthesize url=_url;
 
 @synthesize bodyDecoder=_bodyDecoder;
@@ -49,13 +49,13 @@ NSString * const GGHTTPQueryMethodDELETE	= @"DELETE";
 @synthesize revalidateInterval=_validateAfter;
 @synthesize cachePersistently=_cachePersistently;
 
-+ (id)queryForMethodName:(NSString *)methodName {
++ (id)queryWithRelativePath:(NSString *)relativePath {
 	GGHTTPQuery *query = [[[self class] alloc] init];
-	query.methodName = methodName;
+	query.relativePath = relativePath;
 	return query;
 }
 
-+ (id)queryForURL:(NSURL *)url {
++ (id)queryWithURL:(NSURL *)url {
 	GGHTTPQuery *query = [[[self class] alloc] init];
 	query.url = url;
 	return query;

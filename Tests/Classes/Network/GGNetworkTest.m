@@ -113,7 +113,7 @@
 	[self prepare];
 	
 	GGHTTPService *service = [[GGHTTPService alloc] initWithBaseURL:nil];
-	GGHTTPQuery *query = [GGHTTPQuery queryForURL:[NSURL URLWithString:@"http://:20005/index.html"]];
+	GGHTTPQuery *query = [GGHTTPQuery queryWithURL:[NSURL URLWithString:@"http://:20005/index.html"]];
 	
 	GGHTTPServiceTicket *localTicket = nil;
 	localTicket = [service executeQuery:query
@@ -149,7 +149,7 @@
 	[self prepare];
 	
 	GGHTTPService *service = [[GGHTTPService alloc] initWithBaseURL:nil];
-	GGHTTPQuery *query = [GGHTTPQuery queryForURL:[NSURL URLWithString:@"http://:20005/test.json"]];
+	GGHTTPQuery *query = [GGHTTPQuery queryWithURL:[NSURL URLWithString:@"http://:20005/test.json"]];
 	query.bodyDecoder = [GGHTTPQueryBodyJSONTransformer class];
 	query.expectedResultClass = [NSDictionary class];
 	

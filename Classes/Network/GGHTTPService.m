@@ -146,7 +146,7 @@ static Class GGHTTPServiceFetcherClass = nil;
 
 - (GGHTTPServiceTicket *)loadURL:(NSURL *)url
 			   completionHandler:(GGHTTPServiceCompletionHandler)handler {
-	return [self executeQuery:[GGHTTPQuery queryForURL:url]
+	return [self executeQuery:[GGHTTPQuery queryWithURL:url]
 			completionHandler:handler];
 }
 
@@ -312,7 +312,7 @@ static Class GGHTTPServiceFetcherClass = nil;
 															 timeoutInterval:kGGHTTPServiceDefaultTimeout];
 	
 	if (!query.httpMethod || [query.httpMethod length] == 0)  {
-		query.httpMethod = GGHTTPQueryMethodGET;
+		query.httpMethod = GGHTTPMethodGET;
 	}
 	request.HTTPMethod = query.httpMethod;
 	
@@ -358,12 +358,12 @@ static Class GGHTTPServiceFetcherClass = nil;
 	
 	if (query.url) {
 		result = query.url;
-	} else if (query.methodName) {
+	} else if (query.relativePath) {
 		if (!query.queryPathComponents || [query.queryPathComponents count] == 0) {
-			result = [NSURL URLWithString:query.methodName relativeToURL:self.baseURL];
+			result = [NSURL URLWithString:query.relativePath relativeToURL:self.baseURL];
 		} else {
 			NSMutableArray *pathComponents = [[NSMutableArray alloc] initWithCapacity:1 + [query.queryPathComponents count]];
-			[pathComponents addObject:query.methodName];
+			[pathComponents addObject:query.relativePath];
 			
 			for (NSString *pathComponent in query.queryPathComponents) {
 				[pathComponents addObject:[NSString gg_stringByURLEncodingForURI:pathComponent]];

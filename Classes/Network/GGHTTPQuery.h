@@ -8,17 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString * const GGHTTPQueryMethodGET;
-extern NSString * const GGHTTPQueryMethodPUT;
-extern NSString * const GGHTTPQueryMethodPOST;
-extern NSString * const GGHTTPQueryMethodPATCH;
-extern NSString * const GGHTTPQueryMethodDELETE;
+extern NSString * const GGHTTPMethodGET;
+extern NSString * const GGHTTPMethodPUT;
+extern NSString * const GGHTTPMethodPOST;
+extern NSString * const GGHTTPMethodPATCH;
+extern NSString * const GGHTTPMethodDELETE;
 
 @interface GGHTTPQuery : NSObject
 
-#warning rename
-+ (id)queryForMethodName:(NSString *)methodName;
-+ (id)queryForURL:(NSURL *)url;
++ (id)queryWithRelativePath:(NSString *)relativePath;
++ (id)queryWithURL:(NSURL *)url;
 
 - (void)setQueryParameter:(NSString *)parameter forKey:(NSString *)key;
 - (void)setHTTPHeader:(NSString *)parameter forKey:(NSString *)key;
@@ -28,8 +27,7 @@ extern NSString * const GGHTTPQueryMethodDELETE;
 - (void)setProperty:(id)obj forKey:(NSString *)key;
 - (id)propertyForKey:(NSString *)key;
 
-#warning rename
-@property (nonatomic, strong) NSString *methodName;
+@property (nonatomic, strong) NSString *relativePath;
 @property (nonatomic, strong) NSURL *url;
 
 @property (nonatomic, strong) NSString *httpMethod;
