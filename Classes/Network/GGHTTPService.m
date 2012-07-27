@@ -27,6 +27,8 @@
 #import "GGHTTPAuthorizationProtocol.h"
 #import "GGHTTPCacheProtocol.h"
 
+#import "GGNetworkActivityIndicator.h"
+
 #import "UIDevice+GGUUID.h"
 #import "NSError+GGExtra.h"
 #import "NSDate+GGExtra.h"
@@ -260,10 +262,16 @@ static Class GGHTTPServiceFetcherClass = nil;
 	}
 	
 	[fetcher setProperty:ticket forKey:kFetcherTicketKey];
-			
+
+	[GGNetworkActivityIndicator show];
+	
 	BOOL didFetch = [fetcher beginFetchWithDelegate:self];
 	
 	if (!didFetch || ticket.used) {
+		if (!ticket.used) {
+			[GGNetworkActivityIndicator hide];
+		}
+		
 		ticket.fetcher = nil;
 		fetcher.properties = nil;
 		
@@ -272,7 +280,7 @@ static Class GGHTTPServiceFetcherClass = nil;
 		
 		return nil;
 	}
-	
+		
 	return ticket;
 }
 
@@ -280,13 +288,15 @@ static Class GGHTTPServiceFetcherClass = nil;
 	if (!ticket || !ticket.fetcher || ticket.used) {
 		return;
 	}
-	
+		
 	[ticket.fetcher stopFetching];
 	ticket.fetcher.properties = nil;
 	ticket.fetcher = nil;
 	
 	[ticket.query setProperty:nil forKey:kFetcherCacheItemKey];
 	[ticket.query setProperty:nil forKey:kFetcherCompletionHandlerKey];
+	
+	[GGNetworkActivityIndicator hide];
 }
 
 #pragma mark -
@@ -475,6 +485,8 @@ static Class GGHTTPServiceFetcherClass = nil;
 #if DEBUG_HTTP_SERVICE && DEBUG_HTTP_SERVICE_RESPONSE_BODY
 	GGLog(@"%@", [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]);
 #endif
+	
+	[GGNetworkActivityIndicator hide];
 	
 	GGHTTPServiceTicket *ticket = [fetcher propertyForKey:kFetcherTicketKey];
 	ticket.used = YES;

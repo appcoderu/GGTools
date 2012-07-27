@@ -84,10 +84,12 @@
 		}];
 	}
 	
-	if (!headerFields[@"last-modified"] && !headerFields[@"etag"] && !headerFields[@"cache-control"]) {
+	if (![headerFields objectForKey:@"last-modified"] &&
+		![headerFields objectForKey:@"etag"] &&
+		![headerFields objectForKey:@"cache-control"]) {
 		return;
 	}
-	
+		
 	[cache storeData:data 
 			withMeta:headerFields
 			  forKey:[self cacheKeyForRequest:request]];

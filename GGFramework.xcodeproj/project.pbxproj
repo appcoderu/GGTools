@@ -123,6 +123,8 @@
 		1C76670315B94ECE002C3F6C /* NSString+GGCrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3131E715B6AACC0099B037 /* NSString+GGCrypto.m */; };
 		1C76670415B94ECE002C3F6C /* GGCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C087AE11580FDC5001C4060 /* GGCache.m */; };
 		1C76670515B94ECE002C3F6C /* GGCacheItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C087AE31580FDC5001C4060 /* GGCacheItem.m */; };
+		1C97128C15C291180001A7C9 /* GGNetworkActivityIndicator.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C97128A15C291180001A7C9 /* GGNetworkActivityIndicator.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1C97128D15C291180001A7C9 /* GGNetworkActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C97128B15C291180001A7C9 /* GGNetworkActivityIndicator.m */; };
 		1CA8CC5315B96FBB00EF259E /* libGGTools.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C7666B515B9403E002C3F6C /* libGGTools.a */; };
 		1CC3949A15BE6A78001AB225 /* GGToolsVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = 1CC3949915BE6A78001AB225 /* GGToolsVersion.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
@@ -275,6 +277,8 @@
 		1C5221B615B969BF00E5E7BE /* GGTools-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GGTools-Prefix.pch"; sourceTree = "<group>"; };
 		1C5221B715B969BF00E5E7BE /* GGTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGTools.h; sourceTree = "<group>"; };
 		1C7666B515B9403E002C3F6C /* libGGTools.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGGTools.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		1C97128A15C291180001A7C9 /* GGNetworkActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGNetworkActivityIndicator.h; sourceTree = "<group>"; };
+		1C97128B15C291180001A7C9 /* GGNetworkActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGNetworkActivityIndicator.m; sourceTree = "<group>"; };
 		1CC3949915BE6A78001AB225 /* GGToolsVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGToolsVersion.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -406,6 +410,8 @@
 				1C137C6D15B6EB350033FE44 /* GGHTTPConstants.m */,
 				1C137C8515B828160033FE44 /* GGHTTPQueryResult.h */,
 				1C137C8615B828180033FE44 /* GGHTTPQueryResult.m */,
+				1C97128A15C291180001A7C9 /* GGNetworkActivityIndicator.h */,
+				1C97128B15C291180001A7C9 /* GGNetworkActivityIndicator.m */,
 			);
 			name = Network;
 			path = Classes/Network;
@@ -661,6 +667,7 @@
 				1C7666FA15B94EB5002C3F6C /* NSString+GGCrypto.h in Headers */,
 				1C7666FB15B94EB5002C3F6C /* GGCache.h in Headers */,
 				1C7666FC15B94EB5002C3F6C /* GGCacheItem.h in Headers */,
+				1C97128C15C291180001A7C9 /* GGNetworkActivityIndicator.h in Headers */,
 				1C5221B815B969BF00E5E7BE /* GGTools-Prefix.pch in Headers */,
 				1C4D897115BAC2BE00FB6CC6 /* GGHTTPGoogleAuthorizationProxy.h in Headers */,
 			);
@@ -868,6 +875,7 @@
 				1C7666D215B9447F002C3F6C /* GGHTTPConstants.m in Sources */,
 				1C7666D315B9447F002C3F6C /* GGHTTPQueryResult.m in Sources */,
 				1C4D897215BAC2BE00FB6CC6 /* GGHTTPGoogleAuthorizationProxy.m in Sources */,
+				1C97128D15C291180001A7C9 /* GGNetworkActivityIndicator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1095,6 +1103,7 @@
 				1CC3949315BE663D001AB225 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
