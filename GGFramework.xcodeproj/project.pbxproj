@@ -36,6 +36,8 @@
 		1C087AC71580FB66001C4060 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C087AAA1580FB1E001C4060 /* UIKit.framework */; };
 		1C087AC81580FB66001C4060 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C087AAC1580FB1E001C4060 /* Foundation.framework */; };
 		1C087AC91580FB66001C4060 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C087AAE1580FB1E001C4060 /* CoreGraphics.framework */; };
+		1C2DE7DB15C67E45004AC42E /* SBJsonParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C2DE7D815C67BAD004AC42E /* SBJsonParser.h */; };
+		1C2DE7DC15C67E45004AC42E /* SBJsonWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C2DE7D915C67BAD004AC42E /* SBJsonWriter.h */; };
 		1C31324615B6C4940099B037 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C31323C15B6C4260099B037 /* CFNetwork.framework */; };
 		1C31324715B6C4940099B037 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C31323F15B6C4280099B037 /* Security.framework */; };
 		1C31324815B6C4940099B037 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C31324015B6C4290099B037 /* SystemConfiguration.framework */; };
@@ -171,6 +173,8 @@
 		1C137C8515B828160033FE44 /* GGHTTPQueryResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGHTTPQueryResult.h; sourceTree = "<group>"; };
 		1C137C8615B828180033FE44 /* GGHTTPQueryResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGHTTPQueryResult.m; sourceTree = "<group>"; };
 		1C137C8915B82EB30033FE44 /* GGHTTPServiceTicket+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GGHTTPServiceTicket+Private.h"; sourceTree = "<group>"; };
+		1C2DE7D815C67BAD004AC42E /* SBJsonParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SBJsonParser.h; sourceTree = "<group>"; };
+		1C2DE7D915C67BAD004AC42E /* SBJsonWriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
 		1C31319A15B69B770099B037 /* GGHTTPAuthorizationProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGHTTPAuthorizationProtocol.h; sourceTree = "<group>"; };
 		1C31319C15B69B770099B037 /* GGHTTPCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGHTTPCache.h; sourceTree = "<group>"; };
 		1C31319D15B69B770099B037 /* GGHTTPCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGHTTPCache.m; sourceTree = "<group>"; };
@@ -390,6 +394,15 @@
 			path = Cache;
 			sourceTree = "<group>";
 		};
+		1C2DE7D715C67BAD004AC42E /* SBJSON */ = {
+			isa = PBXGroup;
+			children = (
+				1C2DE7D815C67BAD004AC42E /* SBJsonParser.h */,
+				1C2DE7D915C67BAD004AC42E /* SBJsonWriter.h */,
+			);
+			path = SBJSON;
+			sourceTree = "<group>";
+		};
 		1C31319815B69B770099B037 /* Network */ = {
 			isa = PBXGroup;
 			children = (
@@ -491,6 +504,7 @@
 		1C52212C15B9676F00E5E7BE /* External */ = {
 			isa = PBXGroup;
 			children = (
+				1C2DE7D715C67BAD004AC42E /* SBJSON */,
 				1C52215715B967E900E5E7BE /* CocoaAsyncSocket */,
 				1C52215B15B967E900E5E7BE /* CocoaHTTPServer */,
 				1C52217A15B967E900E5E7BE /* CocoaLumberjack */,
@@ -670,6 +684,8 @@
 				1C97128C15C291180001A7C9 /* GGNetworkActivityIndicator.h in Headers */,
 				1C5221B815B969BF00E5E7BE /* GGTools-Prefix.pch in Headers */,
 				1C4D897115BAC2BE00FB6CC6 /* GGHTTPGoogleAuthorizationProxy.h in Headers */,
+				1C2DE7DB15C67E45004AC42E /* SBJsonParser.h in Headers */,
+				1C2DE7DC15C67E45004AC42E /* SBJsonWriter.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
