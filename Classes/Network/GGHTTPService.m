@@ -46,6 +46,16 @@ static NSString * const kFetcherCacheItemKey			= @"__cacheItem";
 static NSTimeInterval const kGGHTTPServiceDefaultTimeout = 30.0;
 static Class GGHTTPServiceFetcherClass = nil;
 
+static unsigned int debug = 0U;
+enum {
+	GGHTTPServiceDebugRequests			= 1U << 1,
+	GGHTTPServiceDebugHeaders			= 1U << 2,
+	GGHTTPServiceDebugRequestBody		= 1U << 3,
+	GGHTTPServiceDebugRequestRawBody	= 1U << 4,
+	GGHTTPServiceDebugResponseBody		= 1U << 5,
+	GGHTTPServiceDebugResponseRawBody	= 1U << 6
+};
+
 @interface GGHTTPService () <GGHTTPFetcherDelegate>
 
 @end
@@ -64,6 +74,34 @@ static Class GGHTTPServiceFetcherClass = nil;
 @synthesize authorizer=_authorizer;
 
 #pragma mark -
+
++ (void)initialize {
+	NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+		
+	if ([ud boolForKey:@"ru.appcode.http.debugHeaders"]) {
+		debug |= GGHTTPServiceDebugHeaders;
+	}
+	
+	if ([ud boolForKey:@"ru.appcode.http.debugRequestBody"]) {
+		debug |= GGHTTPServiceDebugRequestBody;
+	}
+	
+	if ([ud boolForKey:@"ru.appcode.http.debugRequestRawBody"]) {
+		debug |= GGHTTPServiceDebugRequestRawBody;
+	}
+	
+	if ([ud boolForKey:@"ru.appcode.http.debugResponseBody"]) {
+		debug |= GGHTTPServiceDebugResponseBody;
+	}
+	
+	if ([ud boolForKey:@"ru.appcode.http.debugResponseRawBody"]) {
+		debug |= GGHTTPServiceDebugResponseRawBody;
+	}
+	
+	if ((debug && !(debug & GGHTTPServiceDebugRequests)) || [ud boolForKey:@"ru.appcode.http.debug"]) {
+		debug |= GGHTTPServiceDebugRequests;
+	}
+}
 
 + (id)sharedService {
 	static GGHTTPService *sharedInstance = nil;
@@ -178,10 +216,10 @@ static Class GGHTTPServiceFetcherClass = nil;
 		return nil;
 	}
 	
-#if DEBUG_HTTP_SERVICE
-	GGLog(@"%@: %@", [request HTTPMethod], [request URL]);
-#endif
-		
+	if (debug & GGHTTPServiceDebugRequests) {
+		NSLog(@"%@: %@", [request HTTPMethod], [request URL]);
+	}
+			
 	GGHTTPCacheItem *cacheItem = [[self cacheForQuery:query] cachedItemForRequest:request];
 	if (cacheItem) {
 		BOOL useCachedItem = NO;
@@ -195,9 +233,11 @@ static Class GGHTTPServiceFetcherClass = nil;
 		}
 		
 		if (useCachedItem) {
-#if DEBUG_HTTP_SERVICE
-			GGLog(@"Use cached item", nil);
-#endif
+			
+			if (debug & GGHTTPServiceDebugRequests) {
+				NSLog(@"Use cached item for %@", [request URL]);
+			}
+			
 			if (handler) {
 				GGHTTPQueryResult *result = [[GGHTTPQueryResult alloc] init];
 				result.cacheItem = cacheItem;
@@ -208,9 +248,10 @@ static Class GGHTTPServiceFetcherClass = nil;
 			return nil;
 		}
 		
-#if DEBUG_HTTP_SERVICE
-		GGLog(@"Validate cached item", nil);
-#endif
+		if (debug & GGHTTPServiceDebugRequests) {
+			NSLog(@"Revalidate cached item for %@", [request URL]);
+		}
+
 		NSString *lastModified = cacheItem.lastModified;
 		NSString *eTag = cacheItem.eTag;
 		
@@ -223,16 +264,18 @@ static Class GGHTTPServiceFetcherClass = nil;
 		}
 	}
 	
-#if DEBUG_HTTP_SERVICE && DEBUG_HTTP_SERVICE_HEADERS
-	GGLog(@"%@", [request allHTTPHeaderFields]);
-#endif
-	
-#if DEBUG_HTTP_SERVICE && DEBUG_HTTP_SERVICE_BODY
-	if ([request HTTPBody]) {
-		GGLog(@"%@", [[[NSString alloc] initWithData:[request HTTPBody] encoding:NSUTF8StringEncoding] autorelease]);
+	if (debug & GGHTTPServiceDebugHeaders) {
+		NSLog(@"%@", [request allHTTPHeaderFields]);
 	}
-#endif	
 	
+	if ((debug & GGHTTPServiceDebugRequestBody) && query.bodyObject) {
+		NSLog(@"%@", query.bodyObject);
+	}
+	
+	if ((debug & GGHTTPServiceDebugRequestRawBody) && [request HTTPBody]) {
+		NSLog(@"%@", [[NSString alloc] initWithData:[request HTTPBody] encoding:NSUTF8StringEncoding]);
+	}
+		
 	NSObject <GGHTTPFetcherProtocol> *fetcher = [self fetcherWithRequest:request];
 	if (!fetcher) {
 		if (handler) {
@@ -474,17 +517,20 @@ static Class GGHTTPServiceFetcherClass = nil;
 
 - (void)fetcher:(NSObject <GGHTTPFetcherProtocol> *)fetcher finishedWithData:(NSData *)data error:(NSError *)error {
 	
-#if DEBUG_HTTP_SERVICE
-	GGLog(@"%d: %@", [fetcher statusCode], [[fetcher mutableRequest] URL]);
-#endif
-
-#if DEBUG_HTTP_SERVICE && DEBUG_HTTP_SERVICE_RESPONSE_HEADERS
-	GGLog(@"%@", [fetcher responseHeaders]);
-#endif
+	if (debug & GGHTTPServiceDebugRequests) {
+		NSLog(@"%d: %@", [fetcher statusCode], [[fetcher mutableRequest] URL]);
+	}
 	
-#if DEBUG_HTTP_SERVICE && DEBUG_HTTP_SERVICE_RESPONSE_BODY
-	GGLog(@"%@", [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]);
-#endif
+	if (debug & GGHTTPServiceDebugHeaders) {
+		NSURLResponse *response = [fetcher response];
+		if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
+			NSLog(@"%@", [(NSHTTPURLResponse *)response allHeaderFields]);
+		}
+	}
+	
+	if (debug & GGHTTPServiceDebugResponseRawBody) {
+		NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+	}
 	
 	[GGNetworkActivityIndicator hide];
 	
@@ -536,6 +582,10 @@ static Class GGHTTPServiceFetcherClass = nil;
 	if (!queryResult.cached) {
 		queryResult.rawData = data;
 		queryResult.responseHeaders = response.allHeaderFields;
+		
+		if (debug & GGHTTPServiceDebugResponseBody) {
+			NSLog(@"%@", queryResult.data);
+		}
 	}
 	
 	queryResult.error = error;
