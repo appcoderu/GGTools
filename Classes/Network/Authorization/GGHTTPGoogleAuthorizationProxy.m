@@ -33,9 +33,9 @@
 - (void)authorizeRequest:(NSMutableURLRequest *)request
                 delegate:(id)delegate
        didFinishSelector:(SEL)sel {
-	[self authorizeRequest:request
-				  delegate:delegate
-		 didFinishSelector:sel];
+	[_authorizer authorizeRequest:request
+						 delegate:delegate
+				didFinishSelector:sel];
 }
 
 - (void)stopAuthorization {

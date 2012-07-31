@@ -171,9 +171,9 @@
 						  
 						  GHAssertTrue([queryResult.data isKindOfClass:[NSDictionary class]], nil);
 						  GHAssertEquals([queryResult.data count], (NSUInteger)3, nil);
-						  GHAssertEqualObjects(queryResult.data[@"string"], @"A meta-markup language, used to create markup languages such as DocBook", nil);
-						  GHAssertEqualObjects(queryResult.data[@"double"], @115.34, nil);
-						  GHAssertEqualObjects(queryResult.data[@"int"], @115, nil);
+						  GHAssertEqualObjects([queryResult.data objectForKey:@"string"], @"A meta-markup language, used to create markup languages such as DocBook", nil);
+						  GHAssertEqualObjects([queryResult.data objectForKey:@"double"], @115.34, nil);
+						  GHAssertEqualObjects([queryResult.data objectForKey:@"int"], @115, nil);
 						  						  
 						  [self notify:kGHUnitWaitStatusSuccess forSelector:@selector(testSimpleJSONQuery)];
 					  }];

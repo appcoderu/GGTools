@@ -14,9 +14,8 @@ extern NSString * const kGGHTTPServiceErrorDomain;
 
 enum {
 	kGGHTTPServiceErrorInvalidResponseData		= -1,
-	kGGHTTPServiceErrorUnauthorized				= -2,
-	kGGHTTPServiceErrorInvalidRequestBody		= -3,
-	kGGHTTPServiceErrorUnableToConstructRequest = -4
+	kGGHTTPServiceErrorInvalidRequestBody		= -2,
+	kGGHTTPServiceErrorUnableToConstructRequest = -3
 };
 
 enum {

@@ -21,7 +21,7 @@
 //
 // Reference: http://www.ietf.org/rfc/rfc3986.txt
 
-const CFStringRef kCharsToForceEscape = CFSTR("!*'();:@&=+$,/?%#[]");
+static const CFStringRef kCharsToForceEscape = CFSTR("!*'();:@&=+$,/?%#[]");
 
 + (NSString *)gg_stringByURLEncodingForURI:(NSString *)str {
 	
