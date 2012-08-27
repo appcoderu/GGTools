@@ -9,10 +9,11 @@
 #import <Foundation/Foundation.h>
 
 @protocol GGHTTPFetcherProtocol;
+@class GGHTTPServiceInternalTicket;
 
 @interface GGHTTPServiceTicket (Private)
 
-@property(nonatomic, strong) NSObject <GGHTTPFetcherProtocol> *fetcher;
-
+@property(nonatomic, copy) id completionHandler;
+@property(nonatomic, weak) GGHTTPServiceInternalTicket *internalTicket;
 
 @end

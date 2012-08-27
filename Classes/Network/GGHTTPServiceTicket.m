@@ -9,19 +9,30 @@
 #import "GGHTTPServiceTicket.h"
 #import "GGHTTPServiceTicket+Private.h"
 
+#import "GGHTTPService.h"
+
 @implementation GGHTTPServiceTicket {
-	NSObject <GGHTTPFetcherProtocol> *_fetcher;
+	GGHTTPServiceCompletionHandler _completionHandler;
+	__weak GGHTTPServiceInternalTicket *_internalTicket;
 }
 
-@synthesize used=_used;
 @synthesize query=_query;
+@synthesize used=_used;
 
-- (NSObject <GGHTTPFetcherProtocol> *)fetcher {
-	return _fetcher;
+- (GGHTTPServiceCompletionHandler)completionHandler {
+	return _completionHandler;
 }
 
-- (void)setFetcher:(NSObject<GGHTTPFetcherProtocol> *)fetcher {
-	_fetcher = fetcher;
+- (void)setCompletionHandler:(GGHTTPServiceCompletionHandler)completionHandler {
+	_completionHandler = [completionHandler copy];
+}
+
+- (GGHTTPServiceInternalTicket *)internalTicket {
+	return _internalTicket;
+}
+
+- (void)setInternalTicket:(GGHTTPServiceInternalTicket *)internalTicket {
+	_internalTicket = internalTicket;
 }
 
 @end

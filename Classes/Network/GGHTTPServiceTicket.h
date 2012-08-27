@@ -13,6 +13,6 @@
 @interface GGHTTPServiceTicket : NSObject
 
 @property(nonatomic, strong) GGHTTPQuery *query;
-@property(nonatomic, assign, getter = isUsed) BOOL used;
+@property(nonatomic, getter = isUsed) BOOL used;
 
 @end

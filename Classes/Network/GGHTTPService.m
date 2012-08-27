@@ -7,6 +7,8 @@
 //
 
 #import "GGHTTPService.h"
+
+#import "GGHTTPServiceInternalTicket.h"
 #import "GGHTTPServiceTicket.h"
 #import "GGHTTPServiceTicket+Private.h"
 
@@ -39,9 +41,7 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 
-static NSString * const kFetcherTicketKey				= @"__ticket";
-static NSString * const kFetcherCompletionHandlerKey	= @"__completionHandler";
-static NSString * const kFetcherCacheItemKey			= @"__cacheItem";
+static NSString * const kFetcherTicketKey = @"__ticket";
 
 static NSTimeInterval const kGGHTTPServiceDefaultTimeout = 30.0;
 static Class GGHTTPServiceFetcherClass = nil;
@@ -61,7 +61,7 @@ enum {
 @end
 
 @implementation GGHTTPService {
-
+	NSMutableSet *_tickets;
 }
 
 @synthesize userAgent=_userAgent;
@@ -178,6 +178,8 @@ enum {
 	self = [super init];
     if (self) {
         _baseURL = baseURL;
+		
+		_tickets = [[NSMutableSet alloc] initWithCapacity:50];
     }
     return self;
 }
@@ -203,7 +205,19 @@ enum {
 		}
 		return nil;
 	}
+	
+
+	GGHTTPServiceInternalTicket *internalTicket = [self ticketForQuery:query];
+	if (internalTicket) {
+		GGHTTPServiceTicket *ticket = [[GGHTTPServiceTicket alloc] init];
+		ticket.query = query;
+		ticket.completionHandler = handler;
 		
+		[internalTicket addClientTicket:ticket];
+		
+		return ticket;
+	}
+	
 	NSMutableURLRequest *request = [self requestForQuery:query];
 	if (!request) {
 		if (handler) {
@@ -238,14 +252,19 @@ enum {
 				NSLog(@"Use cached item for %@", [request URL]);
 			}
 			
+			GGHTTPServiceTicket *ticket = [[GGHTTPServiceTicket alloc] init];
+			ticket.query = query;
+			ticket.used = YES;
+			
 			if (handler) {
 				GGHTTPQueryResult *result = [[GGHTTPQueryResult alloc] init];
 				result.cacheItem = cacheItem;
 				result.query = query;
 				
-				handler(nil, result);
+				handler(ticket, result);
 			}
-			return nil;
+			
+			return ticket;
 		}
 		
 		if (debug & GGHTTPServiceDebugRequests) {
@@ -295,49 +314,88 @@ enum {
 	fetcher.retryEnabled = YES;
 	fetcher.maxRetryInterval = 15.0;
 	
+	internalTicket = [GGHTTPServiceInternalTicket ticketWithQuery:query];
+	internalTicket.fetcher = fetcher;
+	internalTicket.cachedItem = cacheItem;
+	
 	GGHTTPServiceTicket *ticket = [[GGHTTPServiceTicket alloc] init];
 	ticket.query = query;
-	ticket.fetcher = fetcher;
+	ticket.completionHandler = handler;
 	
-	[query setProperty:cacheItem forKey:kFetcherCacheItemKey];
-	if (handler) {
-		[query setProperty:[handler copy] forKey:kFetcherCompletionHandlerKey];
-	}
+	[internalTicket addClientTicket:ticket];
 	
-	[fetcher setProperty:ticket forKey:kFetcherTicketKey];
+	[fetcher setProperty:internalTicket forKey:kFetcherTicketKey];
 
 	[GGNetworkActivityIndicator show];
 	
 	BOOL didFetch = [fetcher beginFetchWithDelegate:self];
 	
-	if (!didFetch || ticket.used) {
-		if (!ticket.used) {
+	if (!didFetch || internalTicket.used) {
+		if (!internalTicket.used) {
 			[GGNetworkActivityIndicator hide];
 		}
 		
-		ticket.fetcher = nil;
-		fetcher.properties = nil;
+		internalTicket.fetcher = nil;
+		internalTicket.cachedItem = nil;
+		[internalTicket removeAllClientTickets];
 		
-		[query setProperty:nil forKey:kFetcherCacheItemKey];
-		[query setProperty:nil forKey:kFetcherCompletionHandlerKey];
+		fetcher.properties = nil;
 		
 		return nil;
 	}
-		
+	
+	[_tickets addObject:internalTicket];
+	
 	return ticket;
 }
 
-- (void)cancelQueryWithTicket:(GGHTTPServiceTicket *)ticket {
-	if (!ticket || !ticket.fetcher || ticket.used) {
+#pragma mark - Tickets
+
+- (GGHTTPServiceInternalTicket *)ticketForQuery:(GGHTTPQuery *)query {
+	if (!query) {
+		return nil;
+	}
+	
+	if (query.httpMethod && ![query.httpMethod isEqualToString:GGHTTPMethodGET]) {
+		return nil;
+	}
+	
+	NSURL *url = [self URLForQuery:query];
+	if (!url) {
+		return nil;
+	}
+	
+	for (GGHTTPServiceInternalTicket *ticket in _tickets) {
+		if (ticket.query.httpMethod && ![ticket.query.httpMethod isEqualToString:GGHTTPMethodGET]) {
+			continue;
+		}
+		
+		if ([[ticket.fetcher.mutableRequest URL] isEqual:url]) {
+			return ticket;
+		}
+	}
+	
+	return nil;
+}
+
+- (GGHTTPServiceInternalTicket *)ticketForClientTicket:(GGHTTPServiceTicket *)clientTicket {
+	return clientTicket.internalTicket;
+}
+
+- (void)cancelQueryWithTicket:(GGHTTPServiceTicket *)clientTicket {
+	GGHTTPServiceInternalTicket *ticket = [self ticketForClientTicket:clientTicket];
+	if (!ticket || ticket.used || !ticket.fetcher) {
 		return;
 	}
-		
+	
 	[ticket.fetcher stopFetching];
 	ticket.fetcher.properties = nil;
 	ticket.fetcher = nil;
 	
-	[ticket.query setProperty:nil forKey:kFetcherCacheItemKey];
-	[ticket.query setProperty:nil forKey:kFetcherCompletionHandlerKey];
+	ticket.cachedItem = nil;
+	[ticket removeAllClientTickets];
+	
+	[_tickets removeObject:ticket];
 	
 	[GGNetworkActivityIndicator hide];
 }
@@ -425,12 +483,14 @@ enum {
 			result = [NSURL URLWithString:[pathComponents componentsJoinedByString:@"/"] relativeToURL:self.baseURL];
 			
 		}
+		
+		query.url = result;
 	}
 	
 	if (query.queryParameters) {
 		result = [result gg_URLByAddingQueryParams:query.queryParameters];
 	}
-	
+		
 	return result;
 }
 
@@ -534,21 +594,21 @@ enum {
 	
 	[GGNetworkActivityIndicator hide];
 	
-	GGHTTPServiceTicket *ticket = [fetcher propertyForKey:kFetcherTicketKey];
-	ticket.used = YES;
+	GGHTTPServiceInternalTicket *ticket = [fetcher propertyForKey:kFetcherTicketKey];
+	if (!ticket) {
+		return;
+	}
+	
 	ticket.fetcher.properties = nil;
 	ticket.fetcher = nil;
 	
-	GGHTTPServiceCompletionHandler handler = [ticket.query propertyForKey:kFetcherCompletionHandlerKey];
-	if (!handler) {
-		return;
-	}
+	ticket.used = YES;
 	
 	if (data && [data length] == 0) {
 		data = nil;
 	}
 	
-	GGHTTPCacheItem *cacheItem = [ticket.query propertyForKey:kFetcherCacheItemKey];
+	GGHTTPCacheItem *cacheItem = ticket.cachedItem;
 	
 	GGHTTPQueryResult *queryResult = [[GGHTTPQueryResult alloc] init];
 	queryResult.query = ticket.query;
@@ -576,9 +636,6 @@ enum {
 											response:response];
 	}
 
-	[ticket.query setProperty:nil forKey:kFetcherCompletionHandlerKey];
-	[ticket.query setProperty:nil forKey:kFetcherCacheItemKey];
-	
 	if (!queryResult.cached) {
 		queryResult.rawData = data;
 		queryResult.responseHeaders = response.allHeaderFields;
@@ -589,7 +646,18 @@ enum {
 	}
 	
 	queryResult.error = error;
-	handler(ticket, queryResult);
+	
+	for (GGHTTPServiceTicket *clientTicket in ticket.clientTickets) {
+		clientTicket.used = YES;
+		if (clientTicket.completionHandler) {
+			((GGHTTPServiceCompletionHandler)clientTicket.completionHandler)(clientTicket, queryResult);
+		}
+	}
+	
+	ticket.cachedItem = nil;
+	[ticket removeAllClientTickets];
+	
+	[_tickets removeObject:ticket];
 }
 
 

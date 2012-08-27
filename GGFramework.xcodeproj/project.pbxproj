@@ -128,6 +128,8 @@
 		1C97128C15C291180001A7C9 /* GGNetworkActivityIndicator.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C97128A15C291180001A7C9 /* GGNetworkActivityIndicator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1C97128D15C291180001A7C9 /* GGNetworkActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C97128B15C291180001A7C9 /* GGNetworkActivityIndicator.m */; };
 		1CA8CC5315B96FBB00EF259E /* libGGTools.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C7666B515B9403E002C3F6C /* libGGTools.a */; };
+		1CB31C2E15EB59450033868B /* GGHTTPServiceInternalTicket.h in Headers */ = {isa = PBXBuildFile; fileRef = 1CB31C2C15EB59440033868B /* GGHTTPServiceInternalTicket.h */; };
+		1CB31C3015EB59450033868B /* GGHTTPServiceInternalTicket.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CB31C2D15EB59450033868B /* GGHTTPServiceInternalTicket.m */; };
 		1CC3949A15BE6A78001AB225 /* GGToolsVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = 1CC3949915BE6A78001AB225 /* GGToolsVersion.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
@@ -283,6 +285,8 @@
 		1C7666B515B9403E002C3F6C /* libGGTools.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGGTools.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		1C97128A15C291180001A7C9 /* GGNetworkActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGNetworkActivityIndicator.h; sourceTree = "<group>"; };
 		1C97128B15C291180001A7C9 /* GGNetworkActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGNetworkActivityIndicator.m; sourceTree = "<group>"; };
+		1CB31C2C15EB59440033868B /* GGHTTPServiceInternalTicket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGHTTPServiceInternalTicket.h; sourceTree = "<group>"; };
+		1CB31C2D15EB59450033868B /* GGHTTPServiceInternalTicket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGHTTPServiceInternalTicket.m; sourceTree = "<group>"; };
 		1CC3949915BE6A78001AB225 /* GGToolsVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGToolsVersion.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -415,6 +419,8 @@
 				1C3131AC15B69B770099B037 /* GGHTTPServiceTicket.h */,
 				1C3131AD15B69B770099B037 /* GGHTTPServiceTicket.m */,
 				1C137C8915B82EB30033FE44 /* GGHTTPServiceTicket+Private.h */,
+				1CB31C2C15EB59440033868B /* GGHTTPServiceInternalTicket.h */,
+				1CB31C2D15EB59450033868B /* GGHTTPServiceInternalTicket.m */,
 				1C3131AE15B69B770099B037 /* GGHTTPQuery.h */,
 				1C3131AF15B69B770099B037 /* GGHTTPQuery.m */,
 				1C3131B015B69B770099B037 /* GGHTTPQueryBody.h */,
@@ -686,6 +692,7 @@
 				1C4D897115BAC2BE00FB6CC6 /* GGHTTPGoogleAuthorizationProxy.h in Headers */,
 				1C2DE7DB15C67E45004AC42E /* SBJsonParser.h in Headers */,
 				1C2DE7DC15C67E45004AC42E /* SBJsonWriter.h in Headers */,
+				1CB31C2E15EB59450033868B /* GGHTTPServiceInternalTicket.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -892,6 +899,7 @@
 				1C7666D315B9447F002C3F6C /* GGHTTPQueryResult.m in Sources */,
 				1C4D897215BAC2BE00FB6CC6 /* GGHTTPGoogleAuthorizationProxy.m in Sources */,
 				1C97128D15C291180001A7C9 /* GGNetworkActivityIndicator.m in Sources */,
+				1CB31C3015EB59450033868B /* GGHTTPServiceInternalTicket.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

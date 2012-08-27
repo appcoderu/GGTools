@@ -187,6 +187,62 @@
 	query = nil;
 }
 
+- (void)testRequestsAggregation {
+	[self prepare];
+	
+	GGHTTPService *service = [[GGHTTPService alloc] initWithBaseURL:nil];
+	
+	__block GGHTTPQueryResult *localQueryResult = nil;
+	
+	NSMutableSet *tickets = [[NSMutableSet alloc] initWithCapacity:10];
+	
+	GGHTTPServiceCompletionHandler completionHandler = nil;
+	completionHandler = ^(GGHTTPServiceTicket *ticket, GGHTTPQueryResult *queryResult) {		
+		GHAssertNotNil(ticket, nil);
+		GHAssertNotNil(ticket.query, nil);
+		GHAssertTrue(ticket.used, nil);
+		
+		GHAssertNotNil(queryResult, nil);
+		GHAssertNil(queryResult.error, nil);
+		GHAssertNil(queryResult.cacheItem, nil);
+		GHAssertFalse(queryResult.cached, nil);
+		GHAssertNotNil(queryResult.data, nil);
+		GHAssertNotNil(queryResult.rawData, nil);
+		GHAssertEquals(queryResult.statusCode, (NSInteger)200, nil);
+		
+		GHAssertTrue([queryResult.data isKindOfClass:[NSData class]], nil);
+		
+		GHAssertEqualObjects(queryResult.rawData, [@"123" dataUsingEncoding:NSUTF8StringEncoding], nil);
+		
+		GHAssertTrue([tickets containsObject:ticket], nil);
+		[tickets removeObject:ticket];
+		
+		if (localQueryResult) {
+			GHAssertEquals(localQueryResult, queryResult, nil);
+		} else {
+			localQueryResult = queryResult;
+		}
+		
+		if (tickets.count == 0) {
+			[self notify:kGHUnitWaitStatusSuccess forSelector:@selector(testRequestsAggregation)];
+		}
+	};
+	
+	while (tickets.count < 10) {
+		GGHTTPServiceTicket *ticket = nil;
+		ticket = [service loadURL:[NSURL URLWithString:@"http://:20005/index.html"]
+				completionHandler:completionHandler];
+		
+		GHAssertNotNil(ticket, nil);
+		
+		[tickets addObject:ticket];
+	}
+		
+	[self waitForStatus:kGHUnitWaitStatusSuccess timeout:10.0];
+	
+	service = nil;
+}
+
 /*
 - (void)testImageQuery {
 	[self prepare];
