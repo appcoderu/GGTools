@@ -388,12 +388,17 @@ enum {
 		return;
 	}
 	
+	[ticket removeClientTicket:clientTicket];
+	
+	if (ticket.clientTickets.count > 0) {
+		return;
+	}
+	
 	[ticket.fetcher stopFetching];
 	ticket.fetcher.properties = nil;
 	ticket.fetcher = nil;
 	
 	ticket.cachedItem = nil;
-	[ticket removeAllClientTickets];
 	
 	[_tickets removeObject:ticket];
 	

@@ -228,15 +228,30 @@
 		}
 	};
 	
-	while (tickets.count < 10) {
+	for (int i = 0; i < 10; ++i) {
 		GGHTTPServiceTicket *ticket = nil;
 		ticket = [service loadURL:[NSURL URLWithString:@"http://:20005/index.html"]
 				completionHandler:completionHandler];
 		
 		GHAssertNotNil(ticket, nil);
+		GHAssertFalse(ticket.used, nil);
 		
 		[tickets addObject:ticket];
 	}
+	
+	GHAssertEquals(tickets.count, (NSUInteger)10, nil);
+	
+	for (int i = 0; i < 3; ++i) {
+		GGHTTPServiceTicket *ticket = [tickets anyObject];
+		
+		GHAssertNotNil(ticket, nil);
+		GHAssertFalse(ticket.used, nil);
+		
+		[service cancelQueryWithTicket:ticket];
+		[tickets removeObject:ticket];
+	}
+	
+	GHAssertEquals(tickets.count, (NSUInteger)7, nil);
 		
 	[self waitForStatus:kGHUnitWaitStatusSuccess timeout:10.0];
 	
