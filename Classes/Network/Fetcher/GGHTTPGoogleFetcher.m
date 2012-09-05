@@ -32,6 +32,7 @@
 	if (self) {
 		_fetcher = [GTMHTTPFetcher fetcherWithRequest:request];
 		_fetcher.cookieStorageMethod = kGTMHTTPFetcherCookieStorageMethodNone;
+		_fetcher.runLoopModes = @[NSRunLoopCommonModes];
 	}
 	return self;
 }
