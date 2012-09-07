@@ -32,7 +32,7 @@ static GGCache *sharedInstance = nil;
 @interface GGCacheItem (Private)
 
 @property(nonatomic, strong) NSString *key;
-@property(nonatomic, weak) id proxy;
+@property(nonatomic, assign, readwrite) id proxy;
 @property(nonatomic, assign, readwrite) NSTimeInterval age;
 
 - (BOOL)write;
@@ -340,13 +340,11 @@ static GGCache *sharedInstance = nil;
 		return nil;
 	}
 	
-	GGCacheItemProxy *proxy = nil;
+	GGCacheItemProxy *proxy = cacheItem.proxy;
 	
-	if (!cacheItem.proxy) {
+	if (!proxy) {
 		proxy = [[GGCacheItemProxy alloc] initWithCacheItem:cacheItem cache:self];
 		cacheItem.proxy = proxy;
-	} else {
-		proxy = cacheItem.proxy;
 	}
 
 	return (GGCacheItem *)proxy;

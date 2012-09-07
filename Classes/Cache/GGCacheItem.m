@@ -15,7 +15,7 @@ enum {
 
 @interface GGCacheItem ()
 @property(nonatomic, strong) NSString *key;
-@property(nonatomic, weak) id proxy;
+@property(nonatomic, assign) id proxy;
 @end
 
 @implementation GGCacheItem {
@@ -29,7 +29,8 @@ enum {
 	
 	unsigned int state;
 	
-	id __weak _proxy;
+	// Due to ARC bug this is not weak
+	__unsafe_unretained id _proxy;
 }
 
 @synthesize data=_data;
