@@ -31,8 +31,6 @@ extern NSString * const GGHTTPMethodDELETE;
 @property (nonatomic, strong) NSURL *url;
 
 @property (nonatomic, strong) NSString *httpMethod;
-@property (nonatomic, strong) NSString *etag;
-@property (nonatomic, strong) NSDate *lastModified;
 
 @property (nonatomic, assign) NSTimeInterval revalidateInterval;
 @property (nonatomic, assign) BOOL cachePersistently;

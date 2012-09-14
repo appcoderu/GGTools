@@ -17,7 +17,7 @@
 @end
 
 @implementation GGHTTPCache {
-	GGCache *cache;
+	GGCache *_coreCache;
 }
 
 + (id)sharedCache {
@@ -31,50 +31,33 @@
 	return sharedInstance;
 }
 
-- (id)initWithCoreCache:(GGCache *)aCache {
+- (id)initWithCoreCache:(GGCache *)cache {
 	self = [super init];
 	if (self) {
-		if (!aCache) {
+		if (!cache) {
 			return nil;
 		}
-		cache = aCache;
+		_coreCache = cache;
 	}
 	
 	return self;
 }
 
-
-- (BOOL)canCacheRequest:(NSURLRequest *)request {
-	if (!request) {
-		return NO;
-	}
-	
-	if (request.HTTPMethod && [request.HTTPMethod caseInsensitiveCompare:@"GET"] != NSOrderedSame) {
-		return NO;
-	}
-	
-	return YES;
+- (NSString *)cacheKeyForURL:(NSURL *)url {
+	return [[url absoluteString] gg_sha1];
 }
 
-- (NSString *)cacheKeyForRequest:(NSURLRequest *)request {
-	return [[request.URL absoluteString] gg_sha1];
+- (GGHTTPCacheItem *)cachedItemForURL:(NSURL *)url {
+	return [[GGHTTPCacheItem alloc] initWithCacheItem:[_coreCache cachedItemForKey:[self cacheKeyForURL:url]]];
 }
 
-- (GGHTTPCacheItem *)cachedItemForRequest:(NSURLRequest *)request {
-	if (![self canCacheRequest:request]) {
-		return nil;
-	}
-	
-	GGCacheItem *item = [cache cachedItemForKey:[self cacheKeyForRequest:request]];
-	return [[GGHTTPCacheItem alloc] initWithCacheItem:item];
-}
-
-- (void)storeData:(NSData *)data forRequest:(NSURLRequest *)request response:(NSHTTPURLResponse *)response {
-	if (![self canCacheRequest:request]) {
+- (void)storeData:(NSData *)data
+		  headers:(NSDictionary *)rawHeaderFields
+		   forURL:(NSURL *)url {
+	if (!url) {
 		return;
 	}
-	
-	NSDictionary *rawHeaderFields = [response allHeaderFields];
+
 	NSMutableDictionary *headerFields = nil;
 	
 	if (rawHeaderFields && [rawHeaderFields count] > 0) {
@@ -90,17 +73,17 @@
 		return;
 	}
 		
-	[cache storeData:data 
+	[_coreCache storeData:data 
 			withMeta:headerFields
-			  forKey:[self cacheKeyForRequest:request]];
+			  forKey:[self cacheKeyForURL:url]];
 }
 
 - (void)bumpAgeOfCachedItem:(GGHTTPCacheItem *)cacheItem {
-	[cache bumpAgeOfCachedItem:[cacheItem cacheItem]];
+	[_coreCache bumpAgeOfCachedItem:[cacheItem cacheItem]];
 }
 
 - (void)clear {
-	[cache clear];
+	[_coreCache clear];
 }
 
 @end

@@ -36,8 +36,6 @@ NSString * const GGHTTPMethodDELETE	= @"DELETE";
 @synthesize bodyObject=_bodyObject;
 
 @synthesize httpMethod=_httpMethod;
-@synthesize etag=_etag;
-@synthesize lastModified=_lastModified;
 @synthesize httpHeaders=_httpHeaders;
 @synthesize queryParameters=_queryParameters;
 @synthesize queryPathComponents=_queryPathComponents;

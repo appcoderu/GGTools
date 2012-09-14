@@ -12,6 +12,7 @@
 
 @class GGHTTPQuery;
 @class GGHTTPQueryResult;
+@class GGHTTPQueryBody;
 
 typedef void (^GGHTTPServiceCompletionHandler)(GGHTTPServiceTicket *ticket, GGHTTPQueryResult *queryResult);
 
@@ -39,13 +40,22 @@ typedef void (^GGHTTPServiceCompletionHandler)(GGHTTPServiceTicket *ticket, GGHT
 
 #pragma mark -
 
-@property(nonatomic, strong) NSString *userAgent;
+- (void)setHTTPHeader:(NSString *)parameter forKey:(NSString *)key;
+
 @property(nonatomic, strong) NSURL *baseURL;
-@property(nonatomic, copy) NSDictionary *additionalHTTPHeaders;
 
 @property(nonatomic, strong) NSObject <GGHTTPCacheProtocol> *cache;
 @property(nonatomic, strong) NSObject <GGHTTPCacheProtocol> *persistentCache;
 
 @property(nonatomic, strong) NSObject <GGHTTPAuthorizationProtocol> *authorizer;
+
+
+#pragma mark -
+
+- (NSURL *)requestURLForQuery:(GGHTTPQuery *)query;
+- (NSURL *)URLForQuery:(GGHTTPQuery *)query;
+
+- (NSMutableURLRequest *)requestForQuery:(GGHTTPQuery *)query;
+- (GGHTTPQueryBody *)requestBodyForQuery:(GGHTTPQuery *)query error:(NSError **)error;
 
 @end

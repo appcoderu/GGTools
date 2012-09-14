@@ -62,11 +62,10 @@ enum {
 
 @implementation GGHTTPService {
 	NSMutableSet *_tickets;
+	NSMutableDictionary *_httpHeaders;
 }
 
-@synthesize userAgent=_userAgent;
 @synthesize baseURL=_baseURL;
-@synthesize additionalHTTPHeaders=_additionalHTTPHeaders;
 
 @synthesize cache=_cache;
 @synthesize persistentCache=_persistentCache;
@@ -178,8 +177,11 @@ enum {
 	self = [super init];
     if (self) {
         _baseURL = baseURL;
-		
 		_tickets = [[NSMutableSet alloc] initWithCapacity:50];
+		
+		[self setHTTPHeader:self.userAgent forKey:@"User-Agent"];
+		[self setHTTPHeader:@"gzip" forKey:@"Accept-Encoding"];
+		[self setHTTPHeader:[[UIDevice currentDevice] gg_UUID] forKey:@"X-Device-ID"];
     }
     return self;
 }
@@ -218,23 +220,8 @@ enum {
 		return ticket;
 	}
 	
-	NSMutableURLRequest *request = [self requestForQuery:query];
-	if (!request) {
-		if (handler) {
-			NSError *error = [NSError gg_errorWithDomain:kGGHTTPServiceErrorDomain
-												 code:kGGHTTPServiceErrorUnableToConstructRequest
-										  description:NSLocalizedString(@"Error", nil) 
-										failureReason:NSLocalizedString(@"Unable to construct request", nil)];
-			handler(nil, [GGHTTPQueryResult queryResultWithError:error]);
-		}
-		return nil;
-	}
 	
-	if (debug & GGHTTPServiceDebugRequests) {
-		NSLog(@"%@: %@", [request HTTPMethod], [request URL]);
-	}
-			
-	GGHTTPCacheItem *cacheItem = [[self cacheForQuery:query] cachedItemForRequest:request];
+	GGHTTPCacheItem *cacheItem = [self cacheForQuery:query];
 	if (cacheItem) {
 		BOOL useCachedItem = NO;
 		
@@ -249,7 +236,7 @@ enum {
 		if (useCachedItem) {
 			
 			if (debug & GGHTTPServiceDebugRequests) {
-				NSLog(@"Use cached item for %@", [request URL]);
+				NSLog(@"Use cached item for %@", [self URLForQuery:query]);
 			}
 			
 			GGHTTPServiceTicket *ticket = [[GGHTTPServiceTicket alloc] init];
@@ -266,7 +253,25 @@ enum {
 			
 			return ticket;
 		}
-		
+	}
+	
+	NSMutableURLRequest *request = [self requestForQuery:query];
+	if (!request) {
+		if (handler) {
+			NSError *error = [NSError gg_errorWithDomain:kGGHTTPServiceErrorDomain
+												 code:kGGHTTPServiceErrorUnableToConstructRequest
+										  description:NSLocalizedString(@"Error", nil) 
+										failureReason:NSLocalizedString(@"Unable to construct request", nil)];
+			handler(nil, [GGHTTPQueryResult queryResultWithError:error]);
+		}
+		return nil;
+	}
+	
+	if (debug & GGHTTPServiceDebugRequests) {
+		NSLog(@"%@: %@", [request HTTPMethod], [request URL]);
+	}
+	
+	if (cacheItem) {		
 		if (debug & GGHTTPServiceDebugRequests) {
 			NSLog(@"Revalidate cached item for %@", [request URL]);
 		}
@@ -349,6 +354,21 @@ enum {
 	return ticket;
 }
 
+- (void)setHTTPHeader:(NSString *)parameter forKey:(NSString *)key {
+	if (!key) {
+		return;
+	}
+	
+	if (parameter) {
+		if (!_httpHeaders) {
+			_httpHeaders = [[NSMutableDictionary alloc] initWithCapacity:1];
+		}
+		[_httpHeaders setObject:parameter forKey:key];
+	} else {
+		[_httpHeaders removeObjectForKey:key];
+	}
+}
+
 #pragma mark - Tickets
 
 - (GGHTTPServiceInternalTicket *)ticketForQuery:(GGHTTPQuery *)query {
@@ -418,7 +438,7 @@ enum {
 		return nil;
 	}
 	
-	NSURL *url = [self URLForQuery:query];
+	NSURL *url = [self requestURLForQuery:query];
 	if (!url) {
 		return nil;
 	}
@@ -449,27 +469,17 @@ enum {
 		}
 	}
 	
-	[self addCommonHeadersToRequest:request];
-
 	id enumerationBlock = ^(id key, id obj, BOOL *stop) {
 		[request setValue:obj forHTTPHeaderField:key];
 	};
 	
-	[_additionalHTTPHeaders enumerateKeysAndObjectsUsingBlock:enumerationBlock];
+	[_httpHeaders enumerateKeysAndObjectsUsingBlock:enumerationBlock];
 	[query.httpHeaders enumerateKeysAndObjectsUsingBlock:enumerationBlock];
-	
-	if (query.etag && [query.etag length] > 0) {
-		[request setValue:query.etag forHTTPHeaderField:@"If-None-Match"];
-	}
-	
-	if (query.lastModified) {
-		[request setValue:[query.lastModified gg_RFC2822String] forHTTPHeaderField:@"If-Modified-Since"];
-	}
-	
+		
 	return request;
 }
 
-- (NSURL *)URLForQuery:(GGHTTPQuery *)query {	
+- (NSURL *)URLForQuery:(GGHTTPQuery *)query {
 	NSURL *result = nil;
 	
 	if (query.url) {
@@ -499,16 +509,9 @@ enum {
 	return result;
 }
 
-- (void)addCommonHeadersToRequest:(NSMutableURLRequest *)request {
-	[request setValue:self.userAgent forHTTPHeaderField:@"User-Agent"];
-	[request setValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
-		
-	NSString *uuid = [[UIDevice currentDevice] gg_UUID];
-	if (uuid) {
-		[request setValue:uuid forHTTPHeaderField:@"X-Device-ID"];
-	}
+- (NSURL *)requestURLForQuery:(GGHTTPQuery *)query {
+	return [self URLForQuery:query];
 }
-
 
 - (GGHTTPQueryBody *)requestBodyForQuery:(GGHTTPQuery *)query error:(NSError **)error {
 	if (!query.bodyObject) {
@@ -528,7 +531,9 @@ enum {
 	return [query.bodyEncoder encode:query.bodyObject error:error];
 }
 
-- (NSObject <GGHTTPCacheProtocol> *)cacheForQuery:(GGHTTPQuery *)query {
+#pragma mark -
+
+- (NSObject <GGHTTPCacheProtocol> *)cacheEngineForQuery:(GGHTTPQuery *)query {
 	if (query.cachePersistently && self.persistentCache) {
 		return self.persistentCache;
 	} else {
@@ -536,13 +541,26 @@ enum {
 	}
 }
 
+- (GGHTTPCacheItem *)cacheForQuery:(GGHTTPQuery *)query {
+	if (![self canCacheQuery:query]) {
+		return nil;
+	}
+	return [[self cacheEngineForQuery:query] cachedItemForURL:[self URLForQuery:query]];
+}
+
+- (BOOL)canCacheQuery:(GGHTTPQuery *)query {
+	if (query &&
+		(!query.httpMethod ||
+		 (query.httpMethod && [query.httpMethod caseInsensitiveCompare:GGHTTPMethodGET] == NSOrderedSame))) {
+		return YES;
+	}
+	
+	return NO;
+}
+
 #pragma mark -
 
-- (NSString *)userAgent {
-	if (_userAgent) {
-		return _userAgent;
-	}
-		
+- (NSString *)userAgent {		
 	NSBundle *bundle = [NSBundle mainBundle];
 	
 	NSString *appName = [bundle objectForInfoDictionaryKey:@"CFBundleName"];
@@ -573,9 +591,7 @@ enum {
 		[userAgentComponents addObject:device.systemVersion];
 	}
 	
-	_userAgent = [NSString stringWithFormat:@"%@/%@ (%@)", appName, version, [userAgentComponents componentsJoinedByString:@"; "]];
-
-	return _userAgent;
+	return [NSString stringWithFormat:@"%@/%@ (%@)", appName, version, [userAgentComponents componentsJoinedByString:@"; "]];
 }
 
 #pragma mark - Fetcher callback
@@ -626,7 +642,7 @@ enum {
 	}
 		
 	if ([fetcher statusCode] == kGGHTTPFetcherStatusNotModified && cacheItem) {
-		[[self cacheForQuery:ticket.query] bumpAgeOfCachedItem:cacheItem];
+		[[self cacheEngineForQuery:ticket.query] bumpAgeOfCachedItem:cacheItem];
 		
 		queryResult.cacheItem = cacheItem;
 		error = nil;
@@ -636,9 +652,12 @@ enum {
 							 description:nil
 						   failureReason:nil];
 	} else if (!error) {
-		[[self cacheForQuery:ticket.query] storeData:data
-										  forRequest:fetcher.mutableRequest
-											response:response];
+		
+		if ([self canCacheQuery:ticket.query]) {
+			[[self cacheEngineForQuery:ticket.query] storeData:data
+													   headers:[(NSHTTPURLResponse *)response allHeaderFields]
+														forURL:[self URLForQuery:ticket.query]];
+		}
 	}
 
 	if (!queryResult.cached) {

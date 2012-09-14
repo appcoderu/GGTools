@@ -10,53 +10,53 @@
 #import "GGCacheItem.h"
 
 @implementation GGHTTPCacheItem {
-	GGCacheItem *cacheItem;
+	GGCacheItem *_cacheItem;
 }
 
 - (id)init {
 	return [self initWithCacheItem:nil];
 }
 
-- (id)initWithCacheItem:(GGCacheItem *)aCacheItem {
+- (id)initWithCacheItem:(GGCacheItem *)cacheItem {
 	self = [super init];
 	if (self) {
-		if (!aCacheItem) {
+		if (!cacheItem) {
 			return nil;
 		}
-		cacheItem = aCacheItem;
+		_cacheItem = cacheItem;
 	}
 	return self;
 }
 
 
 - (GGCacheItem *)cacheItem {
-	return cacheItem;
+	return _cacheItem;
 }
 
 #pragma mark -
 
 - (NSDictionary *)responseHeaders {
-	return [cacheItem meta];
+	return [_cacheItem meta];
 }
 
 - (NSString *)lastModified {
-	return [cacheItem metaValueForKey:@"last-modified"];
+	return [_cacheItem metaValueForKey:@"last-modified"];
 }
 
 - (NSString *)eTag {
-	return [cacheItem metaValueForKey:@"etag"];
+	return [_cacheItem metaValueForKey:@"etag"];
 }
 
 - (NSData *)data {
-	return [cacheItem data];
+	return [_cacheItem data];
 }
 
 - (NSTimeInterval)age {
-	return [cacheItem age];
+	return [_cacheItem age];
 }
 
 - (NSTimeInterval)maxAge {
-	NSString *cacheControl = [cacheItem metaValueForKey:@"cache-control"];
+	NSString *cacheControl = [_cacheItem metaValueForKey:@"cache-control"];
 	if (!cacheControl) {
 		return 0.0;
 	}
