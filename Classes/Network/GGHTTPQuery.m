@@ -44,8 +44,10 @@ NSString * const GGHTTPMethodDELETE	= @"DELETE";
 
 @synthesize expectedResultClass=_expectedResultClass;
 
-@synthesize revalidateInterval=_validateAfter;
+@synthesize revalidateInterval=_revalidateInterval;
 @synthesize cachePersistently=_cachePersistently;
+
+@synthesize timeout=_timeout;
 
 + (id)queryWithRelativePath:(NSString *)relativePath {
 	GGHTTPQuery *query = [[[self class] alloc] init];
@@ -64,7 +66,8 @@ NSString * const GGHTTPMethodDELETE	= @"DELETE";
 - (id)init {
 	self = [super init];
 	if (self) {
-		_validateAfter = 0.0;
+		_revalidateInterval = 0.0;
+		_timeout = 0.0;
 	}
 	return self;
 }

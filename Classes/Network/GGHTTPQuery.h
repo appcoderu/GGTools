@@ -47,4 +47,6 @@ extern NSString * const GGHTTPMethodDELETE;
 @property(nonatomic, strong) NSDictionary *queryParameters;
 @property(nonatomic, strong) NSArray *queryPathComponents;
 
+@property(nonatomic, assign) NSTimeInterval timeout;
+
 @end

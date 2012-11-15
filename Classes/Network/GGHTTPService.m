@@ -443,9 +443,9 @@ enum {
 		return nil;
 	}
 	
-	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url 
-																 cachePolicy:NSURLRequestReloadIgnoringCacheData
-															 timeoutInterval:kGGHTTPServiceDefaultTimeout];
+	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url
+																cachePolicy:NSURLRequestReloadIgnoringCacheData
+															timeoutInterval:query.timeout > 0.1 ? query.timeout : kGGHTTPServiceDefaultTimeout];
 	
 	if (!query.httpMethod || [query.httpMethod length] == 0)  {
 		query.httpMethod = GGHTTPMethodGET;

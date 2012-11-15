@@ -31,6 +31,7 @@
 @interface HTTPResponseProxy : NSObject
 @property(nonatomic, strong, readonly) NSObject <HTTPResponse> *proxyItem;
 @property(nonatomic, strong) NSDictionary *httpHeaders;
+@property(nonatomic, assign) BOOL delayResponseHeaders;
 
 - (id)initWithProxyItem:(NSObject <HTTPResponse> *)proxyItem;
 
@@ -318,6 +319,10 @@
 	if ([relativePath hasSuffix:@".png"]) {
 		HTTPResponseProxy *response = [[HTTPResponseProxy alloc] initWithProxyItem:[super httpResponseForMethod:method URI:path]];
 		response.httpHeaders = @{ @"Content-Type" : @"image/png" };
+		return (NSObject<HTTPResponse> *)response;
+	} else if ([relativePath hasSuffix:@"timeout.html"]) {
+		HTTPResponseProxy *response = [[HTTPResponseProxy alloc] initWithProxyItem:[super httpResponseForMethod:method URI:path]];
+		response.delayResponseHeaders = YES;
 		return (NSObject<HTTPResponse> *)response;
 	}
 	
