@@ -20,10 +20,10 @@ static GGCache *sharedInstance = nil;
 
 @interface GGCacheItemProxy : NSProxy
 
-@property(nonatomic, strong, readonly) GGCacheItem *cacheItem;
+@property(nonatomic, strong, readonly) GGCacheItem *proxyItem;
 @property(nonatomic, strong, readonly) GGCache *cache;
 
-- (id)initWithCacheItem:(GGCacheItem *)aCacheItem cache:(GGCache *)aCache;
+- (id)initWithCacheItem:(GGCacheItem *)cacheItem cache:(GGCache *)cache;
 
 @end
 
@@ -351,11 +351,9 @@ static GGCache *sharedInstance = nil;
 }
 
 - (void)_removeProxyItem:(GGCacheItemProxy *)proxy {
-	if (![proxy.cacheItem hasUnsavedChanges]) {
-		[proxy.cacheItem dehydrate];
+	if (![proxy.proxyItem hasUnsavedChanges]) {
+		[proxy.proxyItem dehydrate];
 	}
-	
-	proxy.cacheItem.proxy = nil;
 }
 
 - (void)_addCacheItem:(GGCacheItem *)cacheItem {
@@ -439,27 +437,57 @@ static GGCache *sharedInstance = nil;
 @end
 
 @implementation GGCacheItemProxy {
-	GGCache *cache;
-	GGCacheItem *cacheItem;
+	GGCache *_cache;
+	GGCacheItem *_proxyItem;
 }
 
-@synthesize cacheItem, cache;
+@synthesize proxyItem=_proxyItem, cache=_cache;
 
-- (id)initWithCacheItem:(GGCacheItem *)aCacheItem cache:(GGCache *)aCache {
-	cacheItem = aCacheItem;
-	cache = aCache;
+- (id)initWithCacheItem:(GGCacheItem *)proxyItem cache:(GGCache *)cache {
+	_proxyItem = proxyItem;
+	_cache = cache;
 
 	return self;
 }
 
 - (void)dealloc {
-	[cache _removeProxyItem:self];
-	
-	
+	_proxyItem.proxy = nil;
+	[_cache _removeProxyItem:self];
 }
 
 - (id)forwardingTargetForSelector:(SEL)sel {
-	return cacheItem; 
+	return _proxyItem;
+}
+
+- (NSMethodSignature *)methodSignatureForSelector:(SEL)sel {
+	return [_proxyItem methodSignatureForSelector:sel];
+}
+
+- (void)forwardInvocation:(NSInvocation *)invocation {
+	[invocation setTarget:_proxyItem];
+	[invocation invoke];
+}
+
+#pragma mark -
+
+- (NSString *)description {
+	return _proxyItem.description;
+}
+
+- (NSUInteger)hash {
+	return _proxyItem.hash;
+}
+
+- (BOOL)isEqual:(id)object {
+	return [_proxyItem isEqual:object];
+}
+
+- (BOOL)isKindOfClass:(Class)aClass {
+	return [_proxyItem isKindOfClass:aClass];
+}
+
+- (BOOL)respondsToSelector:(SEL)aSelector {
+	return [_proxyItem respondsToSelector:aSelector];
 }
 
 @end

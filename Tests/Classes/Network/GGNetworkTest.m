@@ -28,6 +28,14 @@
 
 @end
 
+@interface HTTPResponseProxy : NSObject
+@property(nonatomic, strong, readonly) NSObject <HTTPResponse> *proxyItem;
+@property(nonatomic, strong) NSDictionary *httpHeaders;
+
+- (id)initWithProxyItem:(NSObject <HTTPResponse> *)proxyItem;
+
+@end
+
 @implementation GGNetworkTest {
 	HTTPServer *httpServer;
 }
@@ -258,12 +266,11 @@
 	service = nil;
 }
 
-/*
 - (void)testImageQuery {
 	[self prepare];
 	
 	GGHTTPService *service = [[GGHTTPService alloc] initWithBaseURL:nil];
-	GGHTTPQuery *query = [GGHTTPQuery queryForURL:[NSURL URLWithString:@"http://:20005/ggdynamics.png"]];
+	GGHTTPQuery *query = [GGHTTPQuery queryWithURL:[NSURL URLWithString:@"http://:20005/ggdynamics.png"]];
 	query.expectedResultClass = [UIImage class];
 	
 	GGHTTPServiceTicket *localTicket = nil;
@@ -293,7 +300,6 @@
 	localTicket = nil;
 	query = nil;
 }
-*/
 
 @end
 
@@ -310,13 +316,57 @@
 	NSString *relativePath = [filePath substringFromIndex:[documentRoot length]];
 	
 	if ([relativePath hasSuffix:@".png"]) {
-		NSObject <HTTPResponse> *response = [super httpResponseForMethod:method URI:path];
-		//response.httpHeaders = @{ @"Content-Type" : @"image/png" };
-		return response;
+		HTTPResponseProxy *response = [[HTTPResponseProxy alloc] initWithProxyItem:[super httpResponseForMethod:method URI:path]];
+		response.httpHeaders = @{ @"Content-Type" : @"image/png" };
+		return (NSObject<HTTPResponse> *)response;
 	}
 	
 	return [super httpResponseForMethod:method URI:path];
 }
 
+@end
+
+@implementation HTTPResponseProxy {
+	NSObject <HTTPResponse> *_proxyItem;
+	NSDictionary *_httpHeaders;
+}
+
+@synthesize proxyItem=_proxyItem;
+@synthesize httpHeaders=_httpHeaders;
+
+- (id)initWithProxyItem:(NSObject <HTTPResponse> *)proxyItem {
+	self = [super init];
+	if (self) {
+		_proxyItem = proxyItem;
+	}
+	return self;
+}
+
+- (void)dealloc {
+
+}
+
+- (void)setHttpHeaders:(NSDictionary *)httpHeaders {
+	_httpHeaders = httpHeaders;
+}
+
+- (NSDictionary *)httpHeaders {
+	return _httpHeaders;
+}
+
+#pragma mark -
+
+- (id)forwardingTargetForSelector:(SEL)sel {
+	return _proxyItem;
+}
+
+- (NSMethodSignature *)methodSignatureForSelector:(SEL)sel {
+	return [_proxyItem methodSignatureForSelector:sel];
+}
+
+- (void)forwardInvocation:(NSInvocation *)invocation {
+	[invocation setTarget:_proxyItem];
+	[invocation invoke];
+}
 
 @end
