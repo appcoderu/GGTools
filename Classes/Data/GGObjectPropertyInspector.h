@@ -15,6 +15,8 @@
 
 + (id)inspectorForEntity:(NSEntityDescription *)entity;
 
+- (NSArray *)properties;
+
 - (BOOL)hasProperty:(NSString *)property;
 - (Class)classOfProperty:(NSString *)propertyName;
 

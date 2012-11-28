@@ -8,9 +8,12 @@
 //	https://github.com/RestKit/RestKit
 
 #import "GGObjectPropertyInspector.h"
-#import <CoreData/CoreData.h>
+#import "GGObjectPropertyInspectorUnknownClass.h"
 
-#warning cache
+#import <CoreData/CoreData.h>
+#import <objc/message.h>
+
+static NSMutableDictionary *propertyInspectorCache = nil;
 
 @implementation GGObjectPropertyInspector {
 	NSEntityDescription *_entity;
@@ -18,8 +21,38 @@
 }
 
 + (id)inspectorForEntity:(NSEntityDescription *)entity {
-	return [[self alloc] initWithEntity:entity];
+	if (!entity) {
+		return nil;
+	}
+	
+	if (!propertyInspectorCache) {
+		propertyInspectorCache = [[NSMutableDictionary alloc] initWithCapacity:20];
+	}
+	
+	id obj = propertyInspectorCache[entity.name];
+	if (!obj) {
+		obj = [[self alloc] initWithEntity:entity];
+		propertyInspectorCache[entity.name] = obj;
+	}
+	return obj;
 }
+
++ (NSString *)propertyTypeFromAttributeString:(NSString *)attributeString {
+    NSString *type = [NSString string];
+    NSScanner *typeScanner = [NSScanner scannerWithString:attributeString];
+    [typeScanner scanUpToCharactersFromSet:[NSCharacterSet characterSetWithCharactersInString:@"@"] intoString:NULL];
+	
+    // we are not dealing with an object
+    if ([typeScanner isAtEnd]) {
+        return @"NULL";
+    }
+    [typeScanner scanCharactersFromSet:[NSCharacterSet characterSetWithCharactersInString:@"\"@"] intoString:NULL];
+    // this gets the actual object type
+    [typeScanner scanUpToCharactersFromSet:[NSCharacterSet characterSetWithCharactersInString:@"\""] intoString:&type];
+    return type;
+}
+
+#pragma mark -
 
 - (id)init {
 	return [self initWithEntity:nil];
@@ -42,20 +75,42 @@
 	if (_properties) {
 		return;
 	}
-	_properties = [[NSMutableDictionary alloc] initWithCapacity:50];
 	
-	[[_entity attributesByName] enumerateKeysAndObjectsUsingBlock:^(NSString *name, NSAttributeDescription *attributeDescription, BOOL *stop) {
+	NSDictionary *attributesByName = [_entity attributesByName];
+	NSDictionary *relationshipsByName = [_entity relationshipsByName];
+	
+	_properties = [[NSMutableDictionary alloc] initWithCapacity:(attributesByName.count + relationshipsByName.count)];
+	
+	[attributesByName enumerateKeysAndObjectsUsingBlock:^(NSString *name, NSAttributeDescription *attributeDescription, BOOL *stop) {
 		
 		if ([attributeDescription attributeValueClassName]) {
-            [_properties setValue:NSClassFromString([attributeDescription attributeValueClassName])
-						   forKey:name];
+            [_properties setObject:NSClassFromString([attributeDescription attributeValueClassName])
+							forKey:name];
 			
-        } else {
-			NSLog(@"%@", attributeDescription);
-		}
+        } else if ([attributeDescription attributeType] == NSTransformableAttributeType &&
+                   ![name isEqualToString:@"_mapkit_hasPanoramaID"]) {
+
+            const char *propertyName = [name cStringUsingEncoding:NSUTF8StringEncoding];
+            Class managedObjectClass = NSClassFromString([_entity managedObjectClassName]);
+			
+            objc_property_t prop = class_getProperty(managedObjectClass, propertyName);
+			if (!prop) {
+				return;
+			}
+			
+            NSString *attributeString = [NSString stringWithCString:property_getAttributes(prop)
+														   encoding:NSUTF8StringEncoding];
+						
+			Class aClass = NSClassFromString([[self class] propertyTypeFromAttributeString:attributeString]);
+            if (!aClass) {
+				aClass = [GGObjectPropertyInspectorUnknownClass class];
+            }
+			
+			[_properties setObject:aClass forKey:name];
+        }
 	}];
 	
-	[[_entity relationshipsByName] enumerateKeysAndObjectsUsingBlock:^(NSString *name, NSRelationshipDescription *relationshipDescription, BOOL *stop) {
+	[relationshipsByName enumerateKeysAndObjectsUsingBlock:^(NSString *name, NSRelationshipDescription *relationshipDescription, BOOL *stop) {
 		
 		if ([relationshipDescription isToMany]) {
             [_properties setValue:[NSSet class] forKey:name];
@@ -72,7 +127,15 @@
 }
 
 - (Class)classOfProperty:(NSString *)propertyName {
-	return [_properties objectForKey:propertyName];
+	Class class = [_properties objectForKey:propertyName];
+	if ([class isSubclassOfClass:[GGObjectPropertyInspectorUnknownClass class]]) {
+		class = nil;
+	}
+	return class;
+}
+
+- (NSArray *)properties {
+	return [_properties allKeys];
 }
 
 @end
