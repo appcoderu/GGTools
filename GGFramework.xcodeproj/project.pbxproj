@@ -38,10 +38,26 @@
 		1C087AC91580FB66001C4060 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C087AAE1580FB1E001C4060 /* CoreGraphics.framework */; };
 		1C2DE7DB15C67E45004AC42E /* SBJsonParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C2DE7D815C67BAD004AC42E /* SBJsonParser.h */; };
 		1C2DE7DC15C67E45004AC42E /* SBJsonWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C2DE7D915C67BAD004AC42E /* SBJsonWriter.h */; };
+		1C2F54351665F572008823F4 /* GGDataManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C2F54291665F572008823F4 /* GGDataManager.h */; };
+		1C2F54361665F572008823F4 /* GGDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F542A1665F572008823F4 /* GGDataManager.m */; };
+		1C2F54371665F572008823F4 /* GGDataManagerTicket.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C2F542B1665F572008823F4 /* GGDataManagerTicket.h */; };
+		1C2F54381665F572008823F4 /* GGDataManagerTicket.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F542C1665F572008823F4 /* GGDataManagerTicket.m */; };
+		1C2F54391665F572008823F4 /* GGDataStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C2F542D1665F572008823F4 /* GGDataStorage.h */; };
+		1C2F543A1665F572008823F4 /* GGDataStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F542E1665F572008823F4 /* GGDataStorage.m */; };
+		1C2F543B1665F572008823F4 /* GGObjectPropertyInspector.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C2F542F1665F572008823F4 /* GGObjectPropertyInspector.h */; };
+		1C2F543C1665F572008823F4 /* GGObjectPropertyInspector.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F54301665F572008823F4 /* GGObjectPropertyInspector.m */; };
+		1C2F543D1665F572008823F4 /* GGResourceAttributeMapping.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C2F54311665F572008823F4 /* GGResourceAttributeMapping.h */; };
+		1C2F543E1665F572008823F4 /* GGResourceAttributeMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F54321665F572008823F4 /* GGResourceAttributeMapping.m */; };
+		1C2F543F1665F572008823F4 /* GGResourceConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C2F54331665F572008823F4 /* GGResourceConfig.h */; };
+		1C2F54401665F572008823F4 /* GGResourceConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F54341665F572008823F4 /* GGResourceConfig.m */; };
 		1C31324615B6C4940099B037 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C31323C15B6C4260099B037 /* CFNetwork.framework */; };
 		1C31324715B6C4940099B037 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C31323F15B6C4280099B037 /* Security.framework */; };
 		1C31324815B6C4940099B037 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C31324015B6C4290099B037 /* SystemConfiguration.framework */; };
 		1C31324B15B6C4A20099B037 /* libz.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C31323D15B6C4270099B037 /* libz.1.dylib */; };
+		1C48509316661ADF00417211 /* GGDataStorageTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C48509216661ADF00417211 /* GGDataStorageTest.m */; };
+		1C48509616661B1300417211 /* GGDataManagerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C48509516661B1300417211 /* GGDataManagerTest.m */; };
+		1C48509916661B4400417211 /* GGObjectPropertyInspectorTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C48509816661B4400417211 /* GGObjectPropertyInspectorTest.m */; };
+		1C48509B16662B6000417211 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C48509A16662B6000417211 /* CoreData.framework */; };
 		1C4D897115BAC2BE00FB6CC6 /* GGHTTPGoogleAuthorizationProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C4D896F15BAC2BE00FB6CC6 /* GGHTTPGoogleAuthorizationProxy.h */; };
 		1C4D897215BAC2BE00FB6CC6 /* GGHTTPGoogleAuthorizationProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C4D897015BAC2BE00FB6CC6 /* GGHTTPGoogleAuthorizationProxy.m */; };
 		1C52214A15B9676F00E5E7BE /* GTMHTTPFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C52212F15B9676F00E5E7BE /* GTMHTTPFetcher.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -177,6 +193,18 @@
 		1C137C8915B82EB30033FE44 /* GGHTTPServiceTicket+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GGHTTPServiceTicket+Private.h"; sourceTree = "<group>"; };
 		1C2DE7D815C67BAD004AC42E /* SBJsonParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SBJsonParser.h; sourceTree = "<group>"; };
 		1C2DE7D915C67BAD004AC42E /* SBJsonWriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
+		1C2F54291665F572008823F4 /* GGDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGDataManager.h; sourceTree = "<group>"; };
+		1C2F542A1665F572008823F4 /* GGDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGDataManager.m; sourceTree = "<group>"; };
+		1C2F542B1665F572008823F4 /* GGDataManagerTicket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGDataManagerTicket.h; sourceTree = "<group>"; };
+		1C2F542C1665F572008823F4 /* GGDataManagerTicket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGDataManagerTicket.m; sourceTree = "<group>"; };
+		1C2F542D1665F572008823F4 /* GGDataStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGDataStorage.h; sourceTree = "<group>"; };
+		1C2F542E1665F572008823F4 /* GGDataStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGDataStorage.m; sourceTree = "<group>"; };
+		1C2F542F1665F572008823F4 /* GGObjectPropertyInspector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGObjectPropertyInspector.h; sourceTree = "<group>"; };
+		1C2F54301665F572008823F4 /* GGObjectPropertyInspector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGObjectPropertyInspector.m; sourceTree = "<group>"; };
+		1C2F54311665F572008823F4 /* GGResourceAttributeMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGResourceAttributeMapping.h; sourceTree = "<group>"; };
+		1C2F54321665F572008823F4 /* GGResourceAttributeMapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGResourceAttributeMapping.m; sourceTree = "<group>"; };
+		1C2F54331665F572008823F4 /* GGResourceConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGResourceConfig.h; sourceTree = "<group>"; };
+		1C2F54341665F572008823F4 /* GGResourceConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGResourceConfig.m; sourceTree = "<group>"; };
 		1C31319A15B69B770099B037 /* GGHTTPAuthorizationProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGHTTPAuthorizationProtocol.h; sourceTree = "<group>"; };
 		1C31319C15B69B770099B037 /* GGHTTPCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGHTTPCache.h; sourceTree = "<group>"; };
 		1C31319D15B69B770099B037 /* GGHTTPCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGHTTPCache.m; sourceTree = "<group>"; };
@@ -220,6 +248,13 @@
 		1C31323E15B6C4280099B037 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		1C31323F15B6C4280099B037 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		1C31324015B6C4290099B037 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		1C48509116661ADF00417211 /* GGDataStorageTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGDataStorageTest.h; sourceTree = "<group>"; };
+		1C48509216661ADF00417211 /* GGDataStorageTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGDataStorageTest.m; sourceTree = "<group>"; };
+		1C48509416661B1300417211 /* GGDataManagerTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGDataManagerTest.h; sourceTree = "<group>"; };
+		1C48509516661B1300417211 /* GGDataManagerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGDataManagerTest.m; sourceTree = "<group>"; };
+		1C48509716661B4400417211 /* GGObjectPropertyInspectorTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGObjectPropertyInspectorTest.h; sourceTree = "<group>"; };
+		1C48509816661B4400417211 /* GGObjectPropertyInspectorTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGObjectPropertyInspectorTest.m; sourceTree = "<group>"; };
+		1C48509A16662B6000417211 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		1C4D896F15BAC2BE00FB6CC6 /* GGHTTPGoogleAuthorizationProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGHTTPGoogleAuthorizationProxy.h; sourceTree = "<group>"; };
 		1C4D897015BAC2BE00FB6CC6 /* GGHTTPGoogleAuthorizationProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGHTTPGoogleAuthorizationProxy.m; sourceTree = "<group>"; };
 		1C52212E15B9676F00E5E7BE /* GTMHTTPFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMHTTPFetcher.h; sourceTree = "<group>"; };
@@ -295,6 +330,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1C48509B16662B6000417211 /* CoreData.framework in Frameworks */,
 				1CA8CC5315B96FBB00EF259E /* libGGTools.a in Frameworks */,
 				1C5221B415B968B700E5E7BE /* GHUnitIOS.framework in Frameworks */,
 				1C31324615B6C4940099B037 /* CFNetwork.framework in Frameworks */,
@@ -342,6 +378,7 @@
 		1C087AA91580FB1E001C4060 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1C48509A16662B6000417211 /* CoreData.framework */,
 				1C5221B315B968B700E5E7BE /* GHUnitIOS.framework */,
 				1C31323C15B6C4260099B037 /* CFNetwork.framework */,
 				1C31323D15B6C4270099B037 /* libz.1.dylib */,
@@ -360,6 +397,7 @@
 			children = (
 				1C5221A415B9682D00E5E7BE /* Cache */,
 				1C5221A715B9682D00E5E7BE /* Network */,
+				1C48508F16661A9600417211 /* Data */,
 				1C087ACB1580FB66001C4060 /* Supporting Files */,
 			);
 			name = Tests;
@@ -383,6 +421,7 @@
 				1C3131E515B6AACC0099B037 /* Categories */,
 				1C087ADF1580FDC5001C4060 /* Cache */,
 				1C31319815B69B770099B037 /* Network */,
+				1C2F54281665F572008823F4 /* Data */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -405,6 +444,25 @@
 				1C2DE7D915C67BAD004AC42E /* SBJsonWriter.h */,
 			);
 			path = SBJSON;
+			sourceTree = "<group>";
+		};
+		1C2F54281665F572008823F4 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				1C2F54291665F572008823F4 /* GGDataManager.h */,
+				1C2F542A1665F572008823F4 /* GGDataManager.m */,
+				1C2F542B1665F572008823F4 /* GGDataManagerTicket.h */,
+				1C2F542C1665F572008823F4 /* GGDataManagerTicket.m */,
+				1C2F542D1665F572008823F4 /* GGDataStorage.h */,
+				1C2F542E1665F572008823F4 /* GGDataStorage.m */,
+				1C2F542F1665F572008823F4 /* GGObjectPropertyInspector.h */,
+				1C2F54301665F572008823F4 /* GGObjectPropertyInspector.m */,
+				1C2F54311665F572008823F4 /* GGResourceAttributeMapping.h */,
+				1C2F54321665F572008823F4 /* GGResourceAttributeMapping.m */,
+				1C2F54331665F572008823F4 /* GGResourceConfig.h */,
+				1C2F54341665F572008823F4 /* GGResourceConfig.m */,
+			);
+			path = Data;
 			sourceTree = "<group>";
 		};
 		1C31319815B69B770099B037 /* Network */ = {
@@ -506,6 +564,20 @@
 			);
 			name = Fetcher;
 			sourceTree = "<group>";
+		};
+		1C48508F16661A9600417211 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				1C48509116661ADF00417211 /* GGDataStorageTest.h */,
+				1C48509216661ADF00417211 /* GGDataStorageTest.m */,
+				1C48509416661B1300417211 /* GGDataManagerTest.h */,
+				1C48509516661B1300417211 /* GGDataManagerTest.m */,
+				1C48509716661B4400417211 /* GGObjectPropertyInspectorTest.h */,
+				1C48509816661B4400417211 /* GGObjectPropertyInspectorTest.m */,
+			);
+			name = Data;
+			path = Tests/Classes/Data;
+			sourceTree = SOURCE_ROOT;
 		};
 		1C52212C15B9676F00E5E7BE /* External */ = {
 			isa = PBXGroup;
@@ -693,6 +765,12 @@
 				1C2DE7DB15C67E45004AC42E /* SBJsonParser.h in Headers */,
 				1C2DE7DC15C67E45004AC42E /* SBJsonWriter.h in Headers */,
 				1CB31C2E15EB59450033868B /* GGHTTPServiceInternalTicket.h in Headers */,
+				1C2F54351665F572008823F4 /* GGDataManager.h in Headers */,
+				1C2F54371665F572008823F4 /* GGDataManagerTicket.h in Headers */,
+				1C2F54391665F572008823F4 /* GGDataStorage.h in Headers */,
+				1C2F543B1665F572008823F4 /* GGObjectPropertyInspector.h in Headers */,
+				1C2F543D1665F572008823F4 /* GGResourceAttributeMapping.h in Headers */,
+				1C2F543F1665F572008823F4 /* GGResourceConfig.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -868,6 +946,9 @@
 				1C5221AA15B9682D00E5E7BE /* GGCacheTest.m in Sources */,
 				1C5221AB15B9682D00E5E7BE /* GGNetworkTest.m in Sources */,
 				1C5221B115B9685500E5E7BE /* main.m in Sources */,
+				1C48509316661ADF00417211 /* GGDataStorageTest.m in Sources */,
+				1C48509616661B1300417211 /* GGDataManagerTest.m in Sources */,
+				1C48509916661B4400417211 /* GGObjectPropertyInspectorTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -900,6 +981,12 @@
 				1C4D897215BAC2BE00FB6CC6 /* GGHTTPGoogleAuthorizationProxy.m in Sources */,
 				1C97128D15C291180001A7C9 /* GGNetworkActivityIndicator.m in Sources */,
 				1CB31C3015EB59450033868B /* GGHTTPServiceInternalTicket.m in Sources */,
+				1C2F54361665F572008823F4 /* GGDataManager.m in Sources */,
+				1C2F54381665F572008823F4 /* GGDataManagerTicket.m in Sources */,
+				1C2F543A1665F572008823F4 /* GGDataStorage.m in Sources */,
+				1C2F543C1665F572008823F4 /* GGObjectPropertyInspector.m in Sources */,
+				1C2F543E1665F572008823F4 /* GGResourceAttributeMapping.m in Sources */,
+				1C2F54401665F572008823F4 /* GGResourceConfig.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
