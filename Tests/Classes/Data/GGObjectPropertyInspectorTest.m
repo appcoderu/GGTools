@@ -8,114 +8,21 @@
 
 #import "GGObjectPropertyInspectorTest.h"
 
-#import "GGDataStorage.h"
 #import "GGObjectPropertyInspector.h"
 #import "GGObjectPropertyInspectorUnknownClass.h"
-
-#import "TestCityModel.h"
-#import "TestItemDetailsModel.h"
-#import "TestRubricModel.h"
 
 #import <CoreData/CoreData.h>
 
 @interface GGObjectPropertyInspectorTest()
 
-@property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
-@property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
-@property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-
-@property (readonly, strong, nonatomic) GGDataStorage *dataStorage;
-
 @end
 
 @implementation GGObjectPropertyInspectorTest {
-	NSPersistentStoreCoordinator *_persistentStoreCoordinator;
-	NSManagedObjectModel *_managedObjectModel;
-	NSManagedObjectContext *_managedObjectContext;
 	
-	GGDataStorage *_dataStorage;
-}
-
-- (NSURL *)applicationDocumentsDirectory {
-    return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-}
-
-- (NSManagedObjectContext *)managedObjectContext
-{
-    if (_managedObjectContext != nil) {
-        return _managedObjectContext;
-    }
-    
-    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
-    if (coordinator != nil) {
-        _managedObjectContext = [[NSManagedObjectContext alloc] init];
-        [_managedObjectContext setPersistentStoreCoordinator:coordinator];
-    }
-    return _managedObjectContext;
-}
-
-- (NSManagedObjectModel *)managedObjectModel
-{
-    if (_managedObjectModel != nil) {
-        return _managedObjectModel;
-    }
-    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"TestModel" withExtension:@"momd"];
-    _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
-    return _managedObjectModel;
-}
-
-- (NSString *)dbName {
-	return @"Tests.sqlite";
-}
-
-- (NSURL *)storeURL {
-	return [[self applicationDocumentsDirectory] URLByAppendingPathComponent:[self dbName]];
-}
-
-- (NSPersistentStoreCoordinator *)persistentStoreCoordinator
-{
-    if (_persistentStoreCoordinator != nil) {
-        return _persistentStoreCoordinator;
-    }
-    
-    NSURL *storeURL = [self storeURL];
-    
-    NSError *error = nil;
-    _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:@{NSMigratePersistentStoresAutomaticallyOption: @(YES), NSInferMappingModelAutomaticallyOption: @(YES)} error:&error]) {
-        
-		[[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil];
-		
-		NSURL *cacheDirURL = [[[NSFileManager defaultManager] URLsForDirectory:NSCachesDirectory
-																	 inDomains:NSUserDomainMask] lastObject];
-		NSString *cacheDirPath = [cacheDirURL path];
-		
-		NSDirectoryEnumerator* en = [[NSFileManager defaultManager] enumeratorAtPath:cacheDirPath];
-		NSString *file = nil;
-		while (file = [en nextObject]) {
-			[[NSFileManager defaultManager] removeItemAtPath:[cacheDirPath stringByAppendingPathComponent:file] error:nil];
-		}
-		
-		if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
-			
-			NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-			abort();
-		}
-    }
-    
-    return _persistentStoreCoordinator;
-}
-
-- (GGDataStorage *)dataStorage {
-	if (_dataStorage != nil) {
-		return _dataStorage;
-	}
-	_dataStorage = [[GGDataStorage alloc] initWithStorage:[self managedObjectContext]];
-	return _dataStorage;
 }
 
 - (void)setUpClass {
-	
+
 }
 
 - (void)tearDownClass {

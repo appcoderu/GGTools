@@ -63,6 +63,7 @@
 		1C46289216664E81001FAE72 /* GGTestTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C46289116664E81001FAE72 /* GGTestTest.m */; };
 		1C46289516665023001FAE72 /* GGObjectPropertyInspectorUnknownClass.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C46289316665023001FAE72 /* GGObjectPropertyInspectorUnknownClass.h */; };
 		1C46289616665023001FAE72 /* GGObjectPropertyInspectorUnknownClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C46289416665023001FAE72 /* GGObjectPropertyInspectorUnknownClass.m */; };
+		1C462899166656AC001FAE72 /* GGDataBaseTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C462898166656AC001FAE72 /* GGDataBaseTestCase.m */; };
 		1C48509316661ADF00417211 /* GGDataStorageTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C48509216661ADF00417211 /* GGDataStorageTest.m */; };
 		1C48509616661B1300417211 /* GGDataManagerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C48509516661B1300417211 /* GGDataManagerTest.m */; };
 		1C48509916661B4400417211 /* GGObjectPropertyInspectorTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C48509816661B4400417211 /* GGObjectPropertyInspectorTest.m */; };
@@ -272,6 +273,8 @@
 		1C46289116664E81001FAE72 /* GGTestTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGTestTest.m; sourceTree = "<group>"; };
 		1C46289316665023001FAE72 /* GGObjectPropertyInspectorUnknownClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGObjectPropertyInspectorUnknownClass.h; sourceTree = "<group>"; };
 		1C46289416665023001FAE72 /* GGObjectPropertyInspectorUnknownClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGObjectPropertyInspectorUnknownClass.m; sourceTree = "<group>"; };
+		1C462897166656AC001FAE72 /* GGDataBaseTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGDataBaseTestCase.h; sourceTree = "<group>"; };
+		1C462898166656AC001FAE72 /* GGDataBaseTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGDataBaseTestCase.m; sourceTree = "<group>"; };
 		1C48509116661ADF00417211 /* GGDataStorageTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGDataStorageTest.h; sourceTree = "<group>"; };
 		1C48509216661ADF00417211 /* GGDataStorageTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGDataStorageTest.m; sourceTree = "<group>"; };
 		1C48509416661B1300417211 /* GGDataManagerTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGDataManagerTest.h; sourceTree = "<group>"; };
@@ -619,6 +622,8 @@
 				1C48509516661B1300417211 /* GGDataManagerTest.m */,
 				1C48509716661B4400417211 /* GGObjectPropertyInspectorTest.h */,
 				1C48509816661B4400417211 /* GGObjectPropertyInspectorTest.m */,
+				1C462897166656AC001FAE72 /* GGDataBaseTestCase.h */,
+				1C462898166656AC001FAE72 /* GGDataBaseTestCase.m */,
 			);
 			name = Data;
 			path = Classes/Data;
@@ -1002,6 +1007,7 @@
 				1C46288E16663BF3001FAE72 /* TestMetroModel.m in Sources */,
 				1C46288F16663BF3001FAE72 /* TestRubricModel.m in Sources */,
 				1C46289216664E81001FAE72 /* GGTestTest.m in Sources */,
+				1C462899166656AC001FAE72 /* GGDataBaseTestCase.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

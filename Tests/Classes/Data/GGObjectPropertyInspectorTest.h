@@ -6,8 +6,8 @@
 //  Copyright (c) 2012 Evgeniy Shurakov. All rights reserved.
 //
 
-#import <GHUnitIOS/GHUnit.h>
+#import "GGDataBaseTestCase.h"
 
-@interface GGObjectPropertyInspectorTest : GHTestCase
+@interface GGObjectPropertyInspectorTest : GGDataBaseTestCase
 
 @end
