@@ -1,0 +1,53 @@
+{
+	"cities" : [
+		{
+			"id" : 1,
+			"location" : {
+				"lat" : 50.123,
+				"lng" : 51.321
+			},
+			"title" : "city 1"
+		},
+		{
+			"id" : 2,
+			"location" : {
+				"lat" : 52.123
+			},
+			"title" : "city 2"
+		},
+		{
+			"id" : 3,
+			"location" : {
+				"lat" : 54.123,
+				"lng" : 55.321
+			},
+			"title" : "city 3"
+		},
+		{
+			"id" : 4,
+			"title" : "city 4"
+		}
+	],
+	"metro" : [
+		{
+			"id" : 1,
+			"title": "metro 1",
+			"cityId" : 1
+		},
+		{
+			"id" : 2,
+			"title": "metro 2",
+			"cityId" : 1
+		},
+		{
+			"id" : 3,
+			"title": "metro 3",
+			"cityId" : 2
+		},
+		{
+			"id" : 4,
+			"title": "metro 4",
+			"cityId" : 3
+		}
+	]
+}

@@ -15,6 +15,8 @@
 
 #import "NSError+GGExtra.h"
 
+#warning implement errors
+
 @implementation GGDataMapper
 
 - (id)init {
@@ -70,6 +72,11 @@
 	}
 	
 	GGObjectPropertyInspector *propertyInspector = [GGObjectPropertyInspector inspectorForEntity:[self.dataStorage entityDescriptionWithName:config.entityName]];
+	
+	NSAssert(propertyInspector, nil);
+	if (!propertyInspector) {
+		return nil;
+	}
 	
 	Class primaryKeyClass = nil;
 	NSString *primaryKeyPath = nil;
@@ -255,9 +262,10 @@
 		Class propertyClass = nil;
 		
 		if (propertyInspector) {
-			[propertyInspector classOfProperty:mapping.destinationKeyPath];
+			propertyClass = [propertyInspector classOfProperty:mapping.destinationKeyPath];
 			if (!propertyClass && ![propertyInspector hasProperty:mapping.destinationKeyPath]) {
 #warning error
+				NSAssert(propertyClass, @"Property not found: %@", mapping.destinationKeyPath);
 				NSLog(@"Property not found: %@", mapping.destinationKeyPath);
 				continue;
 			}
@@ -270,7 +278,11 @@
 			
 			value = [objectDict valueForKeyPath:mapping.sourceKeyPath];
 			
-			if ([propertyClass isSubclassOfClass:[NSSet class]] ||
+			if (!propertyClass) {
+				value = [self mapData:value
+					   resourceConfig:mapping.destinationConfig
+								error:nil];
+			} else if ([propertyClass isSubclassOfClass:[NSSet class]] ||
 				[propertyClass isSubclassOfClass:[NSArray class]]) {
 				
 				value = [self importObjects:value
@@ -289,7 +301,7 @@
 		
 		value = [self convertValue:value
 						   toClass:propertyClass];
-		
+				
 		[object setValue:value forKey:mapping.destinationKeyPath];
 	}
 	
@@ -313,6 +325,10 @@
 	} else if ([class isSubclassOfClass:[NSSet class]]) {
 		if ([value isKindOfClass:[NSArray class]]) {
 			return [NSSet setWithArray:value];
+		}
+	} else if ([class isSubclassOfClass:[NSDate class]]) {
+		if ([value isKindOfClass:[NSNumber class]]) {
+			return [NSDate dateWithTimeIntervalSince1970:[value doubleValue]];
 		}
 	}
 	

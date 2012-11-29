@@ -38,15 +38,15 @@
 		1C087AC91580FB66001C4060 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C087AAE1580FB1E001C4060 /* CoreGraphics.framework */; };
 		1C2DE7DB15C67E45004AC42E /* SBJsonParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C2DE7D815C67BAD004AC42E /* SBJsonParser.h */; };
 		1C2DE7DC15C67E45004AC42E /* SBJsonWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C2DE7D915C67BAD004AC42E /* SBJsonWriter.h */; };
-		1C2F54351665F572008823F4 /* GGDataManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C2F54291665F572008823F4 /* GGDataManager.h */; };
+		1C2F54351665F572008823F4 /* GGDataManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C2F54291665F572008823F4 /* GGDataManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1C2F54361665F572008823F4 /* GGDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F542A1665F572008823F4 /* GGDataManager.m */; };
-		1C2F54391665F572008823F4 /* GGDataStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C2F542D1665F572008823F4 /* GGDataStorage.h */; };
+		1C2F54391665F572008823F4 /* GGDataStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C2F542D1665F572008823F4 /* GGDataStorage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1C2F543A1665F572008823F4 /* GGDataStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F542E1665F572008823F4 /* GGDataStorage.m */; };
 		1C2F543B1665F572008823F4 /* GGObjectPropertyInspector.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C2F542F1665F572008823F4 /* GGObjectPropertyInspector.h */; };
 		1C2F543C1665F572008823F4 /* GGObjectPropertyInspector.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F54301665F572008823F4 /* GGObjectPropertyInspector.m */; };
-		1C2F543D1665F572008823F4 /* GGResourceAttributeMapping.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C2F54311665F572008823F4 /* GGResourceAttributeMapping.h */; };
+		1C2F543D1665F572008823F4 /* GGResourceAttributeMapping.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C2F54311665F572008823F4 /* GGResourceAttributeMapping.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1C2F543E1665F572008823F4 /* GGResourceAttributeMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F54321665F572008823F4 /* GGResourceAttributeMapping.m */; };
-		1C2F543F1665F572008823F4 /* GGResourceConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C2F54331665F572008823F4 /* GGResourceConfig.h */; };
+		1C2F543F1665F572008823F4 /* GGResourceConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C2F54331665F572008823F4 /* GGResourceConfig.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1C2F54401665F572008823F4 /* GGResourceConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F54341665F572008823F4 /* GGResourceConfig.m */; };
 		1C31324615B6C4940099B037 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C31323C15B6C4260099B037 /* CFNetwork.framework */; };
 		1C31324715B6C4940099B037 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C31323F15B6C4280099B037 /* Security.framework */; };
@@ -155,7 +155,7 @@
 		1CB31C2E15EB59450033868B /* GGHTTPServiceInternalTicket.h in Headers */ = {isa = PBXBuildFile; fileRef = 1CB31C2C15EB59440033868B /* GGHTTPServiceInternalTicket.h */; };
 		1CB31C3015EB59450033868B /* GGHTTPServiceInternalTicket.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CB31C2D15EB59450033868B /* GGHTTPServiceInternalTicket.m */; };
 		1CC3949A15BE6A78001AB225 /* GGToolsVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = 1CC3949915BE6A78001AB225 /* GGToolsVersion.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		1CD1712C16678036005C3A6C /* GGDataMapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 1CD1712A16678036005C3A6C /* GGDataMapper.h */; };
+		1CD1712C16678036005C3A6C /* GGDataMapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 1CD1712A16678036005C3A6C /* GGDataMapper.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1CD1712D16678036005C3A6C /* GGDataMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CD1712B16678036005C3A6C /* GGDataMapper.m */; };
 		1CD1713116678AB0005C3A6C /* GGDataMapperTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CD1713016678AB0005C3A6C /* GGDataMapperTest.m */; };
 /* End PBXBuildFile section */
@@ -815,18 +815,18 @@
 				1C7666FB15B94EB5002C3F6C /* GGCache.h in Headers */,
 				1C7666FC15B94EB5002C3F6C /* GGCacheItem.h in Headers */,
 				1C97128C15C291180001A7C9 /* GGNetworkActivityIndicator.h in Headers */,
+				1C2F54351665F572008823F4 /* GGDataManager.h in Headers */,
+				1C2F54391665F572008823F4 /* GGDataStorage.h in Headers */,
+				1C2F543D1665F572008823F4 /* GGResourceAttributeMapping.h in Headers */,
+				1C2F543F1665F572008823F4 /* GGResourceConfig.h in Headers */,
+				1CD1712C16678036005C3A6C /* GGDataMapper.h in Headers */,
 				1C5221B815B969BF00E5E7BE /* GGTools-Prefix.pch in Headers */,
 				1C4D897115BAC2BE00FB6CC6 /* GGHTTPGoogleAuthorizationProxy.h in Headers */,
 				1C2DE7DB15C67E45004AC42E /* SBJsonParser.h in Headers */,
 				1C2DE7DC15C67E45004AC42E /* SBJsonWriter.h in Headers */,
 				1CB31C2E15EB59450033868B /* GGHTTPServiceInternalTicket.h in Headers */,
-				1C2F54351665F572008823F4 /* GGDataManager.h in Headers */,
-				1C2F54391665F572008823F4 /* GGDataStorage.h in Headers */,
 				1C2F543B1665F572008823F4 /* GGObjectPropertyInspector.h in Headers */,
-				1C2F543D1665F572008823F4 /* GGResourceAttributeMapping.h in Headers */,
-				1C2F543F1665F572008823F4 /* GGResourceConfig.h in Headers */,
 				1C46289516665023001FAE72 /* GGObjectPropertyInspectorUnknownClass.h in Headers */,
-				1CD1712C16678036005C3A6C /* GGDataMapper.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

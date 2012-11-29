@@ -13,6 +13,7 @@
 
 @interface TestMetroModel : NSManagedObject
 
+@property (nonatomic, retain) NSNumber * identifier;
 @property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) TestCityModel *city;
 @property (nonatomic, retain) NSSet *items;

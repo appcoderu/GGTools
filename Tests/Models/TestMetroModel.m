@@ -13,6 +13,7 @@
 
 @implementation TestMetroModel
 
+@dynamic identifier;
 @dynamic title;
 @dynamic city;
 @dynamic items;

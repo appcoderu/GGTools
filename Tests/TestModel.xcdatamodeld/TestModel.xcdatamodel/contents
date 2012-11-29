@@ -29,6 +29,7 @@
         <relationship name="item" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="TestItem" inverseName="details" inverseEntity="TestItem" syncable="YES"/>
     </entity>
     <entity name="TestMetro" representedClassName="TestMetroModel" syncable="YES">
+        <attribute name="identifier" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="city" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="TestCity" inverseName="metro" inverseEntity="TestCity" syncable="YES"/>
         <relationship name="items" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TestItem" inverseName="metro" inverseEntity="TestItem" syncable="YES"/>
@@ -39,10 +40,10 @@
         <relationship name="items" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TestItem" inverseName="rubric" inverseEntity="TestItem" syncable="YES"/>
     </entity>
     <elements>
-        <element name="TestRubric" positionX="160" positionY="192" width="128" height="90"/>
-        <element name="TestItem" positionX="160" positionY="192" width="128" height="240"/>
         <element name="TestCity" positionX="160" positionY="192" width="128" height="135"/>
+        <element name="TestItem" positionX="160" positionY="192" width="128" height="240"/>
         <element name="TestItemDetails" positionX="160" positionY="192" width="128" height="90"/>
-        <element name="TestMetro" positionX="160" positionY="192" width="128" height="90"/>
+        <element name="TestMetro" positionX="160" positionY="192" width="128" height="105"/>
+        <element name="TestRubric" positionX="160" positionY="192" width="128" height="90"/>
     </elements>
 </model>
