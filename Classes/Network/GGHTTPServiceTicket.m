@@ -9,21 +9,19 @@
 #import "GGHTTPServiceTicket.h"
 #import "GGHTTPServiceTicket+Private.h"
 
-#import "GGHTTPService.h"
-
 @implementation GGHTTPServiceTicket {
-	GGHTTPServiceCompletionHandler _completionHandler;
+	id _completionHandler;
 	__weak GGHTTPServiceInternalTicket *_internalTicket;
 }
 
 @synthesize query=_query;
 @synthesize used=_used;
 
-- (GGHTTPServiceCompletionHandler)completionHandler {
+- (id)completionHandler {
 	return _completionHandler;
 }
 
-- (void)setCompletionHandler:(GGHTTPServiceCompletionHandler)completionHandler {
+- (void)setCompletionHandler:(id)completionHandler {
 	_completionHandler = [completionHandler copy];
 }
 

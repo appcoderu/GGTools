@@ -1,5 +1,6 @@
 //
 //  GGDataManager.h
+//  GGFramework
 //
 //  Created by Evgeniy Shurakov on 7/31/12.
 //  Copyright (c) 2012 AppCode. All rights reserved.
@@ -7,25 +8,25 @@
 
 #import <Foundation/Foundation.h>
 
-@class GGDataStorage;
+@class GGDataMapper;
 @class GGHTTPService;
+@class GGHTTPServiceTicket;
 @class GGHTTPQuery;
 @class GGHTTPQueryResult;
 @class GGResourceConfig;
-@class GGDataManagerTicket;
 
 @interface GGDataManager : NSObject
 
 @property (nonatomic, readonly, strong) GGHTTPService *apiService;
-@property (nonatomic, readonly, strong) GGDataStorage *dataStorage;
+@property (nonatomic, readonly, strong) GGDataMapper *dataMapper;
 
-- (id)initWithDataStorage:(GGDataStorage *)dataStorage
-			   apiService:(GGHTTPService *)apiService;
+- (id)initWithAPIService:(GGHTTPService *)apiService
+			  dataMapper:(GGDataMapper *)dataMapper;
 
 #pragma mark -
 
 - (void)cancelAllTasks;
-- (void)cancelTaskWithTicket:(id)ticket;
+- (void)cancelTaskWithTicket:(GGHTTPServiceTicket *)ticket;
 
 #pragma mark -
 
@@ -33,12 +34,16 @@
 
 #pragma mark -
 
-- (id)executeQuery:(GGHTTPQuery *)query
-	  clientTicket:(GGDataManagerTicket *)clientTicket
- completionHandler:(void (^)(GGHTTPQueryResult *result, NSArray *clientTickets))handler;
+- (GGHTTPServiceTicket *)executeQuery:(GGHTTPQuery *)query
+					completionHandler:(void (^)(GGHTTPQueryResult *result))handler;
 
-- (id)loadObjectsWithQuery:(GGHTTPQuery *)query
-			resourceConfig:(GGResourceConfig *)config
-		 completionHandler:(void (^)(NSArray *objects, NSError *error))handler;
+- (GGHTTPServiceTicket *)loadObjectsWithQuery:(GGHTTPQuery *)query
+							   resourceConfig:(GGResourceConfig *)config
+							completionHandler:(void (^)(id objects, NSError *error))handler;
+
+#pragma mark - Methods to override
+
+- (void)handleAuthorizationErrorForQuery:(GGHTTPQuery *)query;
+- (NSError *)errorWithQueryResultData:(NSDictionary *)data;
 
 @end

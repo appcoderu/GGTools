@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol GGHTTPFetcherProtocol;
 @class GGHTTPServiceInternalTicket;
 
 @interface GGHTTPServiceTicket (Private)

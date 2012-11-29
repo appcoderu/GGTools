@@ -1,5 +1,6 @@
 //
 //  GGDataStorage.m
+//  GGFramework
 //
 //  Created by Evgeniy Shurakov on 27.02.12.
 //  Copyright (c) 2012 AppCode. All rights reserved.
@@ -105,6 +106,10 @@ static const NSTimeInterval kSaveDelayInterval = 1.0;
 #pragma mark -
 
 - (NSEntityDescription *)entityDescriptionWithName:(NSString *)entityName {
+	if (!entityName) {
+		return nil;
+	}
+	
 	return [NSEntityDescription entityForName:entityName
 					   inManagedObjectContext:_storage];
 }

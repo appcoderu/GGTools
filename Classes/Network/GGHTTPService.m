@@ -408,6 +408,9 @@ enum {
 		return;
 	}
 	
+	clientTicket.used = YES;
+	clientTicket.internalTicket = nil;
+	
 	[ticket removeClientTicket:clientTicket];
 	
 	if (ticket.clientTickets.count > 0) {
@@ -651,13 +654,10 @@ enum {
 									code:[fetcher statusCode]
 							 description:nil
 						   failureReason:nil];
-	} else if (!error) {
-		
-		if ([self canCacheQuery:ticket.query]) {
-			[[self cacheEngineForQuery:ticket.query] storeData:data
-													   headers:[(NSHTTPURLResponse *)response allHeaderFields]
-														forURL:[self URLForQuery:ticket.query]];
-		}
+	} else if (!error && [self canCacheQuery:ticket.query]) {
+		[[self cacheEngineForQuery:ticket.query] storeData:data
+												   headers:[(NSHTTPURLResponse *)response allHeaderFields]
+													forURL:[self URLForQuery:ticket.query]];
 	}
 
 	if (!queryResult.cached) {

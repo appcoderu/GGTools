@@ -1,5 +1,6 @@
 //
 //  GGResourceConfig.m
+//  GGFramework
 //
 //  Created by Evgeniy Shurakov on 11/22/12.
 //  Copyright (c) 2012 AppCode. All rights reserved.

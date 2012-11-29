@@ -1,10 +1,11 @@
 //
 //  GGObjectPropertyInspector.h
+//  GGFramework
 //
 //  Created by Evgeniy Shurakov on 11/23/12.
 //  Copyright (c) 2012 AppCode. All rights reserved.
 //
-//	Code is partially taken from RestKit
+//	Most of the code of this class is taken from RestKit
 //	https://github.com/RestKit/RestKit
 
 #import <Foundation/Foundation.h>
