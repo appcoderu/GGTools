@@ -37,3 +37,14 @@ enum {
 	kGGHTTPAuthorizationErrorAuthorizationFailed = -1001
 };
 
+#pragma mark - cache
+
+typedef enum {
+	GGHTTPCachePolicyDefault,
+	GGHTTPCachePolicyIgnore
+} GGHTTPCachePolicy;
+
+typedef enum {
+	GGHTTPCacheStoragePolicyDefault,
+	GGHTTPCacheStoragePolicyPersistent
+} GGHTTPCacheStoragePolicy;

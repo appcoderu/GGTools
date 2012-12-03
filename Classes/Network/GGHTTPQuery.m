@@ -45,7 +45,9 @@ NSString * const GGHTTPMethodDELETE	= @"DELETE";
 @synthesize expectedResultClass=_expectedResultClass;
 
 @synthesize revalidateInterval=_revalidateInterval;
-@synthesize cachePersistently=_cachePersistently;
+
+@synthesize cachePolicy=_cachePolicy;
+@synthesize cacheStoragePolicy=_cacheStoragePolicy;
 
 @synthesize timeout=_timeout;
 

@@ -33,7 +33,9 @@ extern NSString * const GGHTTPMethodDELETE;
 @property (nonatomic, strong) NSString *httpMethod;
 
 @property (nonatomic, assign) NSTimeInterval revalidateInterval;
-@property (nonatomic, assign) BOOL cachePersistently;
+
+@property (nonatomic, assign) GGHTTPCachePolicy cachePolicy;
+@property (nonatomic, assign) GGHTTPCacheStoragePolicy cacheStoragePolicy;
 
 @property (nonatomic, strong) id bodyObject;
 @property (nonatomic, weak) Class bodyDecoder;

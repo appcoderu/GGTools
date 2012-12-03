@@ -221,7 +221,7 @@ enum {
 	}
 	
 	
-	GGHTTPCacheItem *cacheItem = [self cacheForQuery:query];
+	GGHTTPCacheItem *cacheItem = [self cachedItemForQuery:query];
 	if (cacheItem) {
 		BOOL useCachedItem = NO;
 		
@@ -537,14 +537,14 @@ enum {
 #pragma mark -
 
 - (NSObject <GGHTTPCacheProtocol> *)cacheEngineForQuery:(GGHTTPQuery *)query {
-	if (query.cachePersistently && self.persistentCache) {
+	if (query.cacheStoragePolicy == GGHTTPCacheStoragePolicyPersistent && self.persistentCache) {
 		return self.persistentCache;
 	} else {
 		return self.cache;
 	}
 }
 
-- (GGHTTPCacheItem *)cacheForQuery:(GGHTTPQuery *)query {
+- (GGHTTPCacheItem *)cachedItemForQuery:(GGHTTPQuery *)query {
 	if (![self canCacheQuery:query]) {
 		return nil;
 	}
@@ -552,7 +552,7 @@ enum {
 }
 
 - (BOOL)canCacheQuery:(GGHTTPQuery *)query {
-	if (query &&
+	if (query && query.cachePolicy != GGHTTPCachePolicyIgnore &&
 		(!query.httpMethod ||
 		 (query.httpMethod && [query.httpMethod caseInsensitiveCompare:GGHTTPMethodGET] == NSOrderedSame))) {
 		return YES;
