@@ -7,11 +7,15 @@
 
 #import "GGCacheItem.h"
 
+#include "sys/xattr.h"
+
 enum {
 	GGCacheItemOK = 0U,
 	GGCacheItemNeedsWriteMeta = 1U << 0,
 	GGCacheItemNeedsWriteData = 1U << 1
 };
+
+static NSString * const metaKey = @"appcode.ggcache.meta";
 
 @interface GGCacheItem ()
 @property(nonatomic, strong) NSString *key;
@@ -20,7 +24,6 @@ enum {
 
 @implementation GGCacheItem {
 	NSString *_dataPath;
-	NSString *_metaPath;
 	
 	NSData *_data;
 	NSMutableDictionary *_meta;
@@ -42,10 +45,10 @@ enum {
 }
 
 - (id)init {
-	return [self initWithPath:nil metaExtension:nil];
+	return [self initWithPath:nil];
 }
 
-- (id)initWithPath:(NSString *)path metaExtension:(NSString *)metaExtension {
+- (id)initWithPath:(NSString *)path {
 	self = [super init];
 	if (self) {
 		if (!path || [path length] == 0) {
@@ -53,10 +56,6 @@ enum {
 		}
 		
 		_dataPath = path;
-		
-		if (metaExtension && [metaExtension length] > 0) {
-			_metaPath = [_dataPath stringByAppendingPathExtension:metaExtension];
-		}
 	}
 	return self;
 }
@@ -68,6 +67,10 @@ enum {
 #pragma mark -
 
 - (BOOL)write {
+	if (!_dataPath) {
+		return NO;
+	}
+	
 	if ((state & GGCacheItemNeedsWriteData)) {
 		state &= ~GGCacheItemNeedsWriteData;
 		if (![_data writeToFile:_dataPath atomically:YES]) {
@@ -81,18 +84,20 @@ enum {
 	if ((state & GGCacheItemNeedsWriteMeta)) {
 		state &= ~GGCacheItemNeedsWriteMeta;
 		
-		if (_metaPath) {
-			if (_meta && [_meta count] > 0) {
-				if (![_meta writeToFile:_metaPath atomically:YES]) {
-					state |= GGCacheItemNeedsWriteMeta;
-					return NO;
-				}
-			} else {
-				if (![[NSFileManager defaultManager] removeItemAtPath:_metaPath error:nil]) {
-					state |= GGCacheItemNeedsWriteMeta;
-					return NO;
-				}
-			}
+		NSData *data = nil;
+		if (_meta && [_meta count] > 0) {
+			data = [NSKeyedArchiver archivedDataWithRootObject:_meta];
+		}
+		
+		if (!data) {
+			data = [NSData data];
+		}
+		
+		int result = setxattr([_dataPath fileSystemRepresentation], [metaKey UTF8String], [data bytes], [data length], 0, 0);
+				
+		if (result != 0) {
+			state |= GGCacheItemNeedsWriteMeta;
+			return NO;
 		}
 	}
 	return YES;
@@ -100,8 +105,6 @@ enum {
 
 - (void)delete {
 	[[NSFileManager defaultManager] removeItemAtPath:_dataPath error:nil];
-	[[NSFileManager defaultManager] removeItemAtPath:_metaPath error:nil];
-	
 	_modificationDate = nil;
 }
 
@@ -117,9 +120,7 @@ enum {
 
 - (void)dehydrate {
 	state = GGCacheItemOK;
-	
 	_data = nil;
-	
 	_meta = nil;
 }
 
@@ -241,8 +242,30 @@ enum {
 }
 
 - (NSMutableDictionary *)_meta {
-	if (!_meta && _metaPath) {
-		_meta = [[NSMutableDictionary alloc] initWithContentsOfFile:_metaPath];
+	if (!_meta) {
+		
+		if ([self exists]) {
+			ssize_t bufferLength = getxattr([_dataPath fileSystemRepresentation], [metaKey UTF8String], NULL, 0, 0, 0);
+			
+			if (bufferLength > 0) {
+				char *buffer = malloc(bufferLength);
+				getxattr([_dataPath fileSystemRepresentation], [metaKey UTF8String], buffer, bufferLength, 0, 0);
+				
+				NSData *data = [[NSData alloc] initWithBytesNoCopy:buffer length:bufferLength];
+				
+				if (data) {
+					_meta = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+					if (![_meta isKindOfClass:[NSDictionary class]]) {
+						_meta = nil;
+					} else if (![_meta respondsToSelector:@selector(setObject:forKey:)]) {
+						_meta = [NSMutableDictionary dictionaryWithDictionary:_meta];
+					}
+				}
+				
+				free(buffer);
+			}
+		}
+		
 		if (!_meta) {
 			_meta = [[NSMutableDictionary alloc] initWithCapacity:10];
 		}

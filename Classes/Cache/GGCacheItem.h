@@ -9,7 +9,7 @@
 
 @interface GGCacheItem : NSObject
 
-- (id)initWithPath:(NSString *)path metaExtension:(NSString *)metaExtension;
+- (id)initWithPath:(NSString *)path;
 
 @property(nonatomic, readonly) BOOL exists;
 @property(nonatomic, readonly) NSTimeInterval age;

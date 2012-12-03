@@ -12,7 +12,6 @@ static const NSUInteger GGCacheDefaultCountLimit = 30;
 static const NSTimeInterval GGCacheSaveDelay = 5.0;
 
 static NSString * const GGCacheDefaultFolder = @"shared";
-static NSString * const GGCacheMetaExtension = @"meta";
 
 static GGCache *sharedInstance = nil;
 
@@ -156,7 +155,7 @@ static GGCache *sharedInstance = nil;
 			return nil;
 		}
 		
-		cacheItem = [[GGCacheItem alloc] initWithPath:path metaExtension:GGCacheMetaExtension];
+		cacheItem = [[GGCacheItem alloc] initWithPath:path];
 		cacheItem.key = key;
 		
 		[self _addCacheItem:cacheItem];
@@ -262,13 +261,9 @@ static GGCache *sharedInstance = nil;
 	}
 	
 	for (NSString *fileName in files) {
-		if ([[fileName pathExtension] isEqualToString:GGCacheMetaExtension]) {
-			continue;
-		}
-		
 		NSString *filePath = [_dirPath stringByAppendingPathComponent:fileName];
-		
-		GGCacheItem *cacheItem = [[GGCacheItem alloc] initWithPath:filePath metaExtension:GGCacheMetaExtension];
+
+		GGCacheItem *cacheItem = [[GGCacheItem alloc] initWithPath:filePath];
 		cacheItem.key = fileName;
 		
 		[self _addCacheItem:cacheItem];
