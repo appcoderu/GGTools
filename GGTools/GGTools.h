@@ -30,3 +30,9 @@
 
 #import <GGTools/GGCache.h>
 #import <GGTools/GGCacheItem.h>
+
+#import <GGTools/GGDataMapper.h>
+#import <GGTools/GGDataManager.h>
+#import <GGTools/GGDataStorage.h>
+#import <GGTools/GGResourceAttributeMapping.h>
+#import <GGTools/GGResourceConfig.h>
