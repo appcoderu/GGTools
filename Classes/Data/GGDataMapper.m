@@ -87,11 +87,18 @@ enum {
 															limit:0];
 	}
 	
-	if (existingObjects &&
-		![existingObjects isKindOfClass:[NSSet class]] &&
-		![existingObjects isKindOfClass:[NSArray class]]) {
-		
-		existingObjects = nil;
+	if (existingObjects) {
+		if ([existingObjects isKindOfClass:[NSSet class]]) {
+			if (![existingObjects respondsToSelector:@selector(removeObject:)]) {
+				existingObjects = [NSMutableSet setWithSet:existingObjects];
+			}
+		} else if ([existingObjects isKindOfClass:[NSArray class]]) {
+			if (![existingObjects respondsToSelector:@selector(removeObjectAtIndex:)]) {
+				existingObjects = [NSMutableArray arrayWithArray:existingObjects];
+			}
+		} else {
+			existingObjects = nil;
+		}
 	}
 	
 	GGObjectPropertyInspector *propertyInspector = [GGObjectPropertyInspector inspectorForEntity:[self.dataStorage entityDescriptionWithName:config.entityName]];
