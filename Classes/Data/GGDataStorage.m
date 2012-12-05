@@ -160,17 +160,16 @@ static const NSTimeInterval kSaveDelayInterval = 1.0;
 }
 
 - (id)objectWithIdentifier:(id)identifier entityName:(NSString *)entityName {
-	NSEntityDescription *entity = [self entityDescriptionWithName:entityName];
+	if (!identifier) {
+		return nil;
+	}
 	
+	NSEntityDescription *entity = [self entityDescriptionWithName:entityName];
 	if (!entity) {
 		return nil;
 	}
 	
 	static NSPredicate *fetchPredicate = nil;
-	if (!identifier) {
-		return nil;
-	}
-	
 	if (!fetchPredicate) {
 		fetchPredicate = [NSPredicate predicateWithFormat:@"identifier = $identifier"];
 	}
@@ -193,12 +192,12 @@ static const NSTimeInterval kSaveDelayInterval = 1.0;
 }
 
 - (id)objectWithField:(NSString *)fieldName equalTo:(id)fieldValue entityName:(NSString *)entityName {
-	NSEntityDescription *entity = [self entityDescriptionWithName:entityName];
-	if (!entity) {
+	if (!fieldName || !fieldValue) {
 		return nil;
 	}
 	
-	if (!fieldName || !fieldValue) {
+	NSEntityDescription *entity = [self entityDescriptionWithName:entityName];
+	if (!entity) {
 		return nil;
 	}
 	

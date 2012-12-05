@@ -7,54 +7,58 @@
 //
 
 #import "GGResourceConfig.h"
-#import "GGResourceAttributeMapping.h"
+#import "GGResourcePropertyMapping.h"
 
 @implementation GGResourceConfig {
-	NSMutableArray *_attributeMappings;
+	NSMutableArray *_mappings;
 }
 
 - (id)init {
     self = [super init];
     if (self) {
-        _importPolicy = GGResourceImportPolicySync;
-		_attributeMappings = [[NSMutableArray alloc] initWithCapacity:30];
+        _importPolicy = GGResourceImportPolicyDefault;
+		_mappings = [[NSMutableArray alloc] initWithCapacity:30];
     }
     return self;
 }
 
-- (void)mapKeyPath:(NSString *)sourceKeyPath toAttribute:(NSString *)destinationAttribute {
-	[self mapKeyPath:sourceKeyPath toAttribute:destinationAttribute config:nil];
+- (void)mapKeyPath:(NSString *)sourceKeyPath toProperty:(NSString *)destinationProperty {
+	[self mapKeyPath:sourceKeyPath toProperty:destinationProperty config:nil];
 }
 
-- (void)mapKeyPath:(NSString *)sourceKeyPath toAttribute:(NSString *)destinationAttribute config:(GGResourceConfig *)resourceConfig {
-	if (!sourceKeyPath || !destinationAttribute) {
+- (void)mapKeyPath:(NSString *)sourceKeyPath toProperty:(NSString *)destinationProperty config:(GGResourceConfig *)resourceConfig {
+	if (!sourceKeyPath) {
 		return;
 	}
 	
-	GGResourceAttributeMapping *mapping = [[GGResourceAttributeMapping alloc] init];
+	if (!destinationProperty) {
+		destinationProperty = sourceKeyPath;
+	}
+	
+	GGResourcePropertyMapping *mapping = [[GGResourcePropertyMapping alloc] init];
 	mapping.sourceKeyPath = sourceKeyPath;
-	mapping.destinationKeyPath = destinationAttribute;
+	mapping.destinationKeyPath = destinationProperty;
 	mapping.destinationConfig = resourceConfig;
 	
-	[_attributeMappings addObject:mapping];
+	[_mappings addObject:mapping];
 }
 
-- (void)mapAttributes:(NSString *)attributeKeyPath, ... {
+- (void)mapProperties:(NSString *)propertyKeyPath, ... {
     va_list args;
-    va_start(args, attributeKeyPath);
-    for (NSString *keyPath = attributeKeyPath; keyPath != nil; keyPath = va_arg(args, NSString *)) {
-		[self mapKeyPath:keyPath toAttribute:keyPath];
+    va_start(args, propertyKeyPath);
+    for (NSString *keyPath = propertyKeyPath; keyPath != nil; keyPath = va_arg(args, NSString *)) {
+		[self mapKeyPath:keyPath toProperty:keyPath];
     }
     va_end(args);
 }
 
-- (NSString *)keyPathForAttribute:(NSString *)attributeName {
-	if (!attributeName) {
+- (NSString *)keyPathForProperty:(NSString *)propertyName {
+	if (!propertyName) {
 		return nil;
 	}
 	
-	for (GGResourceAttributeMapping *mapping in _attributeMappings) {
-		if ([mapping.destinationKeyPath isEqualToString:attributeName]) {
+	for (GGResourcePropertyMapping *mapping in _mappings) {
+		if ([mapping.destinationKeyPath isEqualToString:propertyName]) {
 			return mapping.sourceKeyPath;
 		}
 	}

@@ -106,8 +106,6 @@
 	if (!query || !handler) {
 		return nil;
 	}
-	
-	NSAssert(self.apiService, @"ApiService should be set");
 				
 	id serviceCompletionHandler = ^(GGHTTPServiceTicket *ticket, GGHTTPQueryResult *result) {
 		if (result.error) {		
@@ -142,7 +140,6 @@
 - (GGHTTPServiceTicket *)loadObjectsWithQuery:(GGHTTPQuery *)query
 							   resourceConfig:(GGResourceConfig *)config
 							completionHandler:(void (^)(id objects, NSError *error))handler {
-	NSAssert(self.dataMapper, @"DataMapper should be set");
 	
 	return [self executeQuery:query
 			completionHandler:^(GGHTTPQueryResult *result) {
@@ -152,6 +149,8 @@
 					objects = [self.dataMapper mapData:result.data
 										resourceConfig:config
 												 error:&error];
+					result.error = error;
+					
 					if (error) {
 						NSLog(@"%@", error);
 					}
@@ -166,9 +165,7 @@
 #pragma mark -
 
 - (GGHTTPQuery *)queryWithRelativePath:(NSString *)methodName {
-	GGHTTPQuery *query = [GGHTTPQuery queryWithRelativePath:methodName];
-	[query setHTTPHeader:@"application/json" forKey:@"Accept"];
-	return query;
+	return [GGHTTPQuery queryWithRelativePath:methodName];
 }
 
 @end

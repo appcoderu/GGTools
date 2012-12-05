@@ -1,13 +1,13 @@
 //
-//  GGResourceAttributeMapping.m
+//  GGResourcePropertyMapping.m
 //  GGFramework
 //
 //  Created by Evgeniy Shurakov on 11/23/12.
 //  Copyright (c) 2012 AppCode. All rights reserved.
 //
 
-#import "GGResourceAttributeMapping.h"
+#import "GGResourcePropertyMapping.h"
 
-@implementation GGResourceAttributeMapping
+@implementation GGResourcePropertyMapping
 
 @end

@@ -33,6 +33,9 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		1C028E92166FD7BE0076FC85 /* GGDataConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C028E90166FD7BE0076FC85 /* GGDataConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1C028E93166FD7BE0076FC85 /* GGDataConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C028E91166FD7BE0076FC85 /* GGDataConstants.m */; };
+		1C028E96166FD8310076FC85 /* GGConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C028E95166FD7F90076FC85 /* GGConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1C087AC71580FB66001C4060 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C087AAA1580FB1E001C4060 /* UIKit.framework */; };
 		1C087AC81580FB66001C4060 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C087AAC1580FB1E001C4060 /* Foundation.framework */; };
 		1C087AC91580FB66001C4060 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C087AAE1580FB1E001C4060 /* CoreGraphics.framework */; };
@@ -44,8 +47,8 @@
 		1C2F543A1665F572008823F4 /* GGDataStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F542E1665F572008823F4 /* GGDataStorage.m */; };
 		1C2F543B1665F572008823F4 /* GGObjectPropertyInspector.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C2F542F1665F572008823F4 /* GGObjectPropertyInspector.h */; };
 		1C2F543C1665F572008823F4 /* GGObjectPropertyInspector.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F54301665F572008823F4 /* GGObjectPropertyInspector.m */; };
-		1C2F543D1665F572008823F4 /* GGResourceAttributeMapping.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C2F54311665F572008823F4 /* GGResourceAttributeMapping.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		1C2F543E1665F572008823F4 /* GGResourceAttributeMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F54321665F572008823F4 /* GGResourceAttributeMapping.m */; };
+		1C2F543D1665F572008823F4 /* GGResourcePropertyMapping.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C2F54311665F572008823F4 /* GGResourcePropertyMapping.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1C2F543E1665F572008823F4 /* GGResourcePropertyMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F54321665F572008823F4 /* GGResourcePropertyMapping.m */; };
 		1C2F543F1665F572008823F4 /* GGResourceConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C2F54331665F572008823F4 /* GGResourceConfig.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1C2F54401665F572008823F4 /* GGResourceConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F54341665F572008823F4 /* GGResourceConfig.m */; };
 		1C31324615B6C4940099B037 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C31323C15B6C4260099B037 /* CFNetwork.framework */; };
@@ -185,6 +188,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1C028E90166FD7BE0076FC85 /* GGDataConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGDataConstants.h; sourceTree = "<group>"; };
+		1C028E91166FD7BE0076FC85 /* GGDataConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGDataConstants.m; sourceTree = "<group>"; };
+		1C028E95166FD7F90076FC85 /* GGConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GGConstants.h; sourceTree = "<group>"; };
 		1C087AAA1580FB1E001C4060 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		1C087AAC1580FB1E001C4060 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1C087AAE1580FB1E001C4060 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -210,8 +216,8 @@
 		1C2F542E1665F572008823F4 /* GGDataStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGDataStorage.m; sourceTree = "<group>"; };
 		1C2F542F1665F572008823F4 /* GGObjectPropertyInspector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGObjectPropertyInspector.h; sourceTree = "<group>"; };
 		1C2F54301665F572008823F4 /* GGObjectPropertyInspector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGObjectPropertyInspector.m; sourceTree = "<group>"; };
-		1C2F54311665F572008823F4 /* GGResourceAttributeMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGResourceAttributeMapping.h; sourceTree = "<group>"; };
-		1C2F54321665F572008823F4 /* GGResourceAttributeMapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGResourceAttributeMapping.m; sourceTree = "<group>"; };
+		1C2F54311665F572008823F4 /* GGResourcePropertyMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGResourcePropertyMapping.h; sourceTree = "<group>"; };
+		1C2F54321665F572008823F4 /* GGResourcePropertyMapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGResourcePropertyMapping.m; sourceTree = "<group>"; };
 		1C2F54331665F572008823F4 /* GGResourceConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGResourceConfig.h; sourceTree = "<group>"; };
 		1C2F54341665F572008823F4 /* GGResourceConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGResourceConfig.m; sourceTree = "<group>"; };
 		1C31319A15B69B770099B037 /* GGHTTPAuthorizationProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGHTTPAuthorizationProtocol.h; sourceTree = "<group>"; };
@@ -453,6 +459,7 @@
 				1C087ADF1580FDC5001C4060 /* Cache */,
 				1C31319815B69B770099B037 /* Network */,
 				1C2F54281665F572008823F4 /* Data */,
+				1C028E95166FD7F90076FC85 /* GGConstants.h */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -488,12 +495,14 @@
 				1C2F542E1665F572008823F4 /* GGDataStorage.m */,
 				1C2F542F1665F572008823F4 /* GGObjectPropertyInspector.h */,
 				1C2F54301665F572008823F4 /* GGObjectPropertyInspector.m */,
-				1C2F54311665F572008823F4 /* GGResourceAttributeMapping.h */,
-				1C2F54321665F572008823F4 /* GGResourceAttributeMapping.m */,
+				1C2F54311665F572008823F4 /* GGResourcePropertyMapping.h */,
+				1C2F54321665F572008823F4 /* GGResourcePropertyMapping.m */,
 				1C2F54331665F572008823F4 /* GGResourceConfig.h */,
 				1C2F54341665F572008823F4 /* GGResourceConfig.m */,
 				1C46289316665023001FAE72 /* GGObjectPropertyInspectorUnknownClass.h */,
 				1C46289416665023001FAE72 /* GGObjectPropertyInspectorUnknownClass.m */,
+				1C028E90166FD7BE0076FC85 /* GGDataConstants.h */,
+				1C028E91166FD7BE0076FC85 /* GGDataConstants.m */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -817,9 +826,11 @@
 				1C97128C15C291180001A7C9 /* GGNetworkActivityIndicator.h in Headers */,
 				1C2F54351665F572008823F4 /* GGDataManager.h in Headers */,
 				1C2F54391665F572008823F4 /* GGDataStorage.h in Headers */,
-				1C2F543D1665F572008823F4 /* GGResourceAttributeMapping.h in Headers */,
+				1C2F543D1665F572008823F4 /* GGResourcePropertyMapping.h in Headers */,
 				1C2F543F1665F572008823F4 /* GGResourceConfig.h in Headers */,
 				1CD1712C16678036005C3A6C /* GGDataMapper.h in Headers */,
+				1C028E92166FD7BE0076FC85 /* GGDataConstants.h in Headers */,
+				1C028E96166FD8310076FC85 /* GGConstants.h in Headers */,
 				1C5221B815B969BF00E5E7BE /* GGTools-Prefix.pch in Headers */,
 				1C4D897115BAC2BE00FB6CC6 /* GGHTTPGoogleAuthorizationProxy.h in Headers */,
 				1C2DE7DB15C67E45004AC42E /* SBJsonParser.h in Headers */,
@@ -1049,10 +1060,11 @@
 				1C2F54361665F572008823F4 /* GGDataManager.m in Sources */,
 				1C2F543A1665F572008823F4 /* GGDataStorage.m in Sources */,
 				1C2F543C1665F572008823F4 /* GGObjectPropertyInspector.m in Sources */,
-				1C2F543E1665F572008823F4 /* GGResourceAttributeMapping.m in Sources */,
+				1C2F543E1665F572008823F4 /* GGResourcePropertyMapping.m in Sources */,
 				1C2F54401665F572008823F4 /* GGResourceConfig.m in Sources */,
 				1C46289616665023001FAE72 /* GGObjectPropertyInspectorUnknownClass.m in Sources */,
 				1CD1712D16678036005C3A6C /* GGDataMapper.m in Sources */,
+				1C028E93166FD7BE0076FC85 /* GGDataConstants.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

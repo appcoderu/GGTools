@@ -11,13 +11,27 @@
 #import "GGDataStorage.h"
 #import "GGResourceConfig.h"
 #import "GGObjectPropertyInspector.h"
-#import "GGResourceAttributeMapping.h"
+#import "GGResourcePropertyMapping.h"
 
 #import "NSError+GGExtra.h"
 
 #warning implement errors
+#warning implement debug logging
+
+static unsigned int debug = 0U;
+enum {
+	GGDataMapperDebug			= 1U << 1,
+};
 
 @implementation GGDataMapper
+
++ (void)initialize {
+	NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+	
+	if ([ud boolForKey:@"ru.appcode.dataMapper.debug"]) {
+		debug |= GGDataMapperDebug;
+	}
+}
 
 - (id)init {
 	return [self initWithDataStorage:nil];
@@ -33,30 +47,39 @@
 
 - (id)mapData:(id)data resourceConfig:(GGResourceConfig *)config error:(NSError **)error {
 	id result = nil;
-	
+		
 	if ([data isKindOfClass:[NSArray class]]) {
-		result = [self importObjects:data resourceConfig:config];
+		result = [self importObjects:data
+					 existingObjects:nil
+					  resourceConfig:config
+							   error:error];
+		
 	} else if ([data isKindOfClass:[NSDictionary class]]) {
-		result = [self importObjectWithData:data resourceConfig:config];
+		result = [self importObjectWithData:data
+									 object:nil
+							 possibleObject:nil 
+							 resourceConfig:config
+									  error:error];
+		
+	} else if (data && error) {
+		*error = [NSError gg_errorWithDomain:kGGDataMapperErrorDomain
+										code:kGGDataMapperInvalidData
+								 description:nil
+							   failureReason:nil];
 	}
-	
+		
 	return result;
-}
-
-- (NSArray *)importObjects:(NSArray *)objects resourceConfig:(GGResourceConfig *)config {
-	return [self importObjects:objects existingObjects:nil resourceConfig:config];
 }
 
 - (NSArray *)importObjects:(NSArray *)objects
 		   existingObjects:(id)existingObjects
-			resourceConfig:(GGResourceConfig *)config {
+			resourceConfig:(GGResourceConfig *)config
+					 error:(NSError **)error {
 	
 	if (!objects || ![objects isKindOfClass:[NSArray class]] || !config) {
 		return nil;
 	}
-	
-	NSMutableArray *result = [[NSMutableArray alloc] init];
-	
+		
 	if ((config.importPolicy & GGResourceImportPolicyPrefetch) && !existingObjects) {
 		existingObjects = [self.dataStorage objectsWithEntityName:config.entityName
 														predicate:nil
@@ -73,47 +96,76 @@
 	
 	GGObjectPropertyInspector *propertyInspector = [GGObjectPropertyInspector inspectorForEntity:[self.dataStorage entityDescriptionWithName:config.entityName]];
 	
-	NSAssert(propertyInspector, nil);
 	if (!propertyInspector) {
+		if (debug & GGDataMapperDebug) {
+			NSLog(@"No property inspector for entity: %@", config.entityName);
+		}
 		return nil;
 	}
 	
 	Class primaryKeyClass = nil;
 	NSString *primaryKeyPath = nil;
 	if (config.primaryKey) {
-		primaryKeyPath = [config keyPathForAttribute:config.primaryKey];
+		primaryKeyPath = [config keyPathForProperty:config.primaryKey];
 		primaryKeyClass = [propertyInspector classOfProperty:config.primaryKey];
 	}
 	
-	for (id _objectData in objects) {
-		id pk = nil;
-		id object = nil;
-		
-		if (![_objectData isKindOfClass:[NSDictionary class]]) {
-			if (!primaryKeyClass) {
-				continue;
+	Class classToTest = nil;
+	for (id objectData in objects) {
+		if (!classToTest) {
+			classToTest = [objectData class];
+		} else if (![objectData isKindOfClass:classToTest]) {
+			if (debug & GGDataMapperDebug) {
+				NSLog(@"Array contains objects with different classes. Skipping.");
 			}
 			
-			pk = [self convertValue:_objectData
-							toClass:primaryKeyClass];
-			if (!pk) {
+			if (error) {
+				*error = [NSError gg_errorWithDomain:kGGDataMapperErrorDomain
+												code:kGGDataMapperInvalidData
+										 description:nil
+									   failureReason:nil];
+			}
+			return nil;
+		}
+	}
+		
+	NSMutableArray *result = [[NSMutableArray alloc] init];
+	
+	for (id _objectData in objects) {
+		id primaryKeyValue = nil;
+		id object = nil;
+		
+		// determine primary key value
+		if (![_objectData isKindOfClass:[NSDictionary class]]) {
+			if (primaryKeyClass) {
+				primaryKeyValue = [self convertValue:_objectData
+											 toClass:primaryKeyClass];
+			}
+			
+			if (!primaryKeyValue) {
+				if (debug & GGDataMapperDebug) {
+					NSLog(@"Can't get primary key value. %@", _objectData);
+				}
 				continue;
 			}
 			
 		} else if (primaryKeyPath && primaryKeyClass) {
-			pk = [self convertValue:[_objectData valueForKeyPath:primaryKeyPath]
-							toClass:primaryKeyClass];
-			if (!pk) {
+			primaryKeyValue = [self convertValue:[_objectData valueForKeyPath:primaryKeyPath]
+										 toClass:primaryKeyClass];
+			if (!primaryKeyValue) {
+				if (debug & GGDataMapperDebug) {
+					NSLog(@"Can't get primary key value for key path: %@. %@", primaryKeyPath, _objectData);
+				}
 				continue;
 			}
 		}
 		
-		if (pk) {
+		if (primaryKeyValue) {
 			if (existingObjects) {
 				NSUInteger index = 0;
 				for (id existingObject in existingObjects) {
-					id existingPk = [existingObject valueForKey:config.primaryKey];
-					if (existingPk && pk && [pk isEqual:existingPk]) {
+					id existingPrimaryKeyValue = [existingObject valueForKey:config.primaryKey];
+					if (existingPrimaryKeyValue && primaryKeyValue && [primaryKeyValue isEqual:existingPrimaryKeyValue]) {
 						object = existingObject;
 						
 						if ([existingObjects isKindOfClass:[NSSet class]]) {
@@ -127,12 +179,9 @@
 				}
 			}
 			
-#warning 123
-			if (!object && (config.importPolicy & GGResourceImportPolicyFetchByPK) &&
-				(!existingObjects || ![_objectData isKindOfClass:[NSDictionary class]])) {
-				
+			if (!object && (config.importPolicy & GGResourceImportPolicyFetchByPrimaryKey)) {
 				object = [self.dataStorage objectWithField:config.primaryKey
-												   equalTo:pk
+												   equalTo:primaryKeyValue
 												entityName:config.entityName];
 			}
 		}
@@ -146,11 +195,11 @@
 		
 		NSDictionary *objectData = _objectData;
 		
-		if (config.importPolicy == GGResourceImportPolicyIncremental) {
-#warning extract field name
-			id deleted = [self convertValue:[objectData objectForKey:@"deleted"]
-									toClass:[NSNumber class]];
-			if (deleted && [deleted boolValue]) {
+		if (config.propertyToDeleteObject) {
+			id deleted = [objectData objectForKey:config.propertyToDeleteObject];
+			if (([deleted isKindOfClass:[NSNumber class]] && [deleted boolValue]) ||
+				(![deleted isKindOfClass:[NSNumber class]] && deleted)) {
+				
 				[self.dataStorage deleteObject:object];
 				continue;
 			}
@@ -159,7 +208,8 @@
 		object = [self importObjectWithData:objectData
 									 object:object
 							 possibleObject:nil
-							 resourceConfig:config];
+							 resourceConfig:config
+									  error:nil];
 		
 		if (object) {
 			[result addObject:object];
@@ -168,6 +218,7 @@
 	
 	if ((config.importPolicy & GGResourceImportPolicyDelete) &&
 		existingObjects) {
+		
 		for (id existingObject in existingObjects) {
 			[self.dataStorage deleteObject:existingObject];
 		}
@@ -176,17 +227,11 @@
 	return result;
 }
 
-- (id)importObjectWithData:(id)objectData resourceConfig:(GGResourceConfig *)config {
-	return [self importObjectWithData:objectData
-							   object:nil
-					   possibleObject:nil
-					   resourceConfig:config];
-}
-
 - (id)importObjectWithData:(id)objectData
 					object:(id)object
 			possibleObject:(id)possibleObject
-			resourceConfig:(GGResourceConfig *)config {
+			resourceConfig:(GGResourceConfig *)config
+					 error:(NSError **)error {
 	
 	if (!objectData || !config) {
 		return nil;
@@ -204,16 +249,12 @@
 		Class primaryKeyClass = nil;
 		NSString *primaryKeyPath = nil;
 		if (config.primaryKey) {
-			primaryKeyPath = [config keyPathForAttribute:config.primaryKey];
+			primaryKeyPath = [config keyPathForProperty:config.primaryKey];
 			primaryKeyClass = [propertyInspector classOfProperty:config.primaryKey];
 		}
 		
 		id pk = nil;
-		if (![objectData isKindOfClass:[NSDictionary class]]) {
-			if (!primaryKeyClass) {
-				return object;
-			}
-			
+		if (![objectData isKindOfClass:[NSDictionary class]]) {			
 			pk = [self convertValue:objectData
 							toClass:primaryKeyClass];
 			if (!pk) {
@@ -236,7 +277,7 @@
 				}
 			}
 			
-			if (!object && (config.importPolicy & GGResourceImportPolicyFetchByPK)) {
+			if (!object && (config.importPolicy & GGResourceImportPolicyFetchByPrimaryKey)) {
 				object = [self.dataStorage objectWithField:config.primaryKey
 												   equalTo:pk
 												entityName:config.entityName];
@@ -258,41 +299,43 @@
 		return object;
 	}
 	
-	for (GGResourceAttributeMapping *mapping in config.attributeMappings) {
+	for (GGResourcePropertyMapping *mapping in config.mappings) {
 		Class propertyClass = nil;
 		
 		if (propertyInspector) {
 			propertyClass = [propertyInspector classOfProperty:mapping.destinationKeyPath];
 			if (!propertyClass && ![propertyInspector hasProperty:mapping.destinationKeyPath]) {
-#warning error
-				NSAssert(propertyClass, @"Property not found: %@", mapping.destinationKeyPath);
-				NSLog(@"Property not found: %@", mapping.destinationKeyPath);
+				if ((debug & GGDataMapperDebug)) {
+					NSLog(@"Property not found: %@ -> %@", mapping.sourceKeyPath, mapping.destinationKeyPath);
+				}
 				continue;
 			}
 		}
 		
 		id value = nil;
 		if (mapping.destinationConfig) {
-			mapping.destinationConfig.importPolicy = GGResourceImportPolicyFetchByPK |
-			GGResourceImportPolicyAdd;
-			
 			value = [objectDict valueForKeyPath:mapping.sourceKeyPath];
-			
+
 			if (!propertyClass) {
 				value = [self mapData:value
 					   resourceConfig:mapping.destinationConfig
 								error:nil];
 			} else if ([propertyClass isSubclassOfClass:[NSSet class]] ||
-				[propertyClass isSubclassOfClass:[NSArray class]]) {
+					   [propertyClass isSubclassOfClass:[NSArray class]]) {
+				mapping.destinationConfig.importPolicy = GGResourceImportPolicyFetchByPrimaryKey | GGResourceImportPolicyAdd;
 				
 				value = [self importObjects:value
 							existingObjects:[object valueForKey:mapping.destinationKeyPath]
-							 resourceConfig:mapping.destinationConfig];
+							 resourceConfig:mapping.destinationConfig
+									  error:error];
 			} else {
+				mapping.destinationConfig.importPolicy = GGResourceImportPolicyFetchByPrimaryKey | GGResourceImportPolicyAdd;
+				
 				value = [self importObjectWithData:value
 											object:nil
 									possibleObject:[object valueForKey:mapping.destinationKeyPath]
-									resourceConfig:mapping.destinationConfig];
+									resourceConfig:mapping.destinationConfig
+											 error:error];
 			}
 			
 		} else {

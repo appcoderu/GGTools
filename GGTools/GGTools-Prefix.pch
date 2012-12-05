@@ -1,5 +1,5 @@
 
 #ifdef __OBJC__
 	#import <Foundation/Foundation.h>
-	#import "GGHTTPConstants.h"
+	#import "GGConstants.h"
 #endif

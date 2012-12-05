@@ -38,26 +38,26 @@
 	GGResourceConfig *citiesConfig = [[GGResourceConfig alloc] init];
 	[citiesConfig setEntityName:@"TestCity"];
 	[citiesConfig setPrimaryKey:@"identifier"];
-	[citiesConfig mapKeyPath:@"id" toAttribute:@"identifier"];
-	[citiesConfig mapKeyPath:@"location.lat" toAttribute:@"lat"];
-	[citiesConfig mapKeyPath:@"location.lng" toAttribute:@"lon"];
-	[citiesConfig mapAttributes:@"title", nil];
+	[citiesConfig mapKeyPath:@"id" toProperty:@"identifier"];
+	[citiesConfig mapKeyPath:@"location.lat" toProperty:@"lat"];
+	[citiesConfig mapKeyPath:@"location.lng" toProperty:@"lon"];
+	[citiesConfig mapProperties:@"title", nil];
 	
 	GGResourceConfig *metroConfig = [[GGResourceConfig alloc] init];
 	[metroConfig setEntityName:@"TestMetro"];
 	[metroConfig setPrimaryKey:@"identifier"];
-	[metroConfig mapKeyPath:@"id" toAttribute:@"identifier"];
-	[metroConfig mapAttributes:@"title", nil];
+	[metroConfig mapKeyPath:@"id" toProperty:@"identifier"];
+	[metroConfig mapProperties:@"title", nil];
 	
 	GGResourceConfig *metroCityConfig = [[GGResourceConfig alloc] init];
 	[metroCityConfig setEntityName:@"TestCity"];
 	[metroCityConfig setPrimaryKey:@"identifier"];
 	
-	[metroConfig mapKeyPath:@"cityId" toAttribute:@"city" config:metroCityConfig];
+	[metroConfig mapKeyPath:@"cityId" toProperty:@"city" config:metroCityConfig];
 	
 	GGResourceConfig *config = [[GGResourceConfig alloc] init];
-	[config mapKeyPath:@"cities" toAttribute:@"cities" config:citiesConfig];
-	[config mapKeyPath:@"metro" toAttribute:@"metro" config:metroConfig];
+	[config mapKeyPath:@"cities" toProperty:@"cities" config:citiesConfig];
+	[config mapKeyPath:@"metro" toProperty:@"metro" config:metroConfig];
 	
 	return config;
 }
@@ -66,18 +66,18 @@
 	GGResourceConfig *citiesConfig = [[GGResourceConfig alloc] init];
 	[citiesConfig setEntityName:@"TestCity"];
 	[citiesConfig setPrimaryKey:@"identifier"];
-	[citiesConfig mapKeyPath:@"id" toAttribute:@"identifier"];
-	[citiesConfig mapKeyPath:@"location.lat" toAttribute:@"lat"];
-	[citiesConfig mapKeyPath:@"location.lng" toAttribute:@"lon"];
-	[citiesConfig mapAttributes:@"title", nil];
+	[citiesConfig mapKeyPath:@"id" toProperty:@"identifier"];
+	[citiesConfig mapKeyPath:@"location.lat" toProperty:@"lat"];
+	[citiesConfig mapKeyPath:@"location.lng" toProperty:@"lon"];
+	[citiesConfig mapProperties:@"title", nil];
 	
 	GGResourceConfig *metroConfig = [[GGResourceConfig alloc] init];
 	[metroConfig setEntityName:@"TestMetro"];
 	[metroConfig setPrimaryKey:@"identifier"];
-	[metroConfig mapKeyPath:@"id" toAttribute:@"identifier"];
-	[metroConfig mapAttributes:@"title", nil];
+	[metroConfig mapKeyPath:@"id" toProperty:@"identifier"];
+	[metroConfig mapProperties:@"title", nil];
 	
-	[citiesConfig mapKeyPath:@"metro" toAttribute:@"metro" config:metroConfig];
+	[citiesConfig mapKeyPath:@"metro" toProperty:@"metro" config:metroConfig];
 
 	return citiesConfig;
 }
@@ -86,8 +86,8 @@
 	GGResourceConfig *config = [[GGResourceConfig alloc] init];
 	[config setEntityName:@"TestRubric"];
 	[config setPrimaryKey:@"identifier"];
-	[config mapKeyPath:@"id" toAttribute:@"identifier"];
-	[config mapAttributes:@"title", nil];
+	[config mapKeyPath:@"id" toProperty:@"identifier"];
+	[config mapProperties:@"title", nil];
 	return config;
 }
 
@@ -95,23 +95,23 @@
 	GGResourceConfig *config = [[GGResourceConfig alloc] init];
 	[config setEntityName:@"TestItem"];
 	[config setPrimaryKey:@"identifier"];
-	[config mapKeyPath:@"id" toAttribute:@"identifier"];
-	[config mapAttributes:@"title", @"price", @"modified", @"location", @"fields", @"createdDate", @"updatedDate", @"color", nil];
+	[config mapKeyPath:@"id" toProperty:@"identifier"];
+	[config mapProperties:@"title", @"price", @"modified", @"location", @"fields", @"createdDate", @"updatedDate", @"color", nil];
 	
 	GGResourceConfig *metroConfig = [[GGResourceConfig alloc] init];
 	[metroConfig setEntityName:@"TestMetro"];
 	[metroConfig setPrimaryKey:@"identifier"];
-	[config mapKeyPath:@"metro" toAttribute:@"metro" config:metroConfig];
+	[config mapKeyPath:@"metro" toProperty:@"metro" config:metroConfig];
 	
 	GGResourceConfig *cityConfig = [[GGResourceConfig alloc] init];
 	[cityConfig setEntityName:@"TestCity"];
 	[cityConfig setPrimaryKey:@"identifier"];
-	[config mapKeyPath:@"cityId" toAttribute:@"city" config:cityConfig];
+	[config mapKeyPath:@"cityId" toProperty:@"city" config:cityConfig];
 	
 	GGResourceConfig *rubricConfig = [[GGResourceConfig alloc] init];
 	[rubricConfig setEntityName:@"TestRubric"];
 	[rubricConfig setPrimaryKey:@"identifier"];
-	[config mapKeyPath:@"rubricId" toAttribute:@"rubric" config:rubricConfig];
+	[config mapKeyPath:@"rubricId" toProperty:@"rubric" config:rubricConfig];
 	
 	return config;
 }

@@ -10,7 +10,7 @@
 
 #import <GGTools/GGToolsVersion.h>
 
-#import <GGTools/GGHTTPConstants.h>
+#import <GGTools/GGConstants.h>
 
 #import <GGTools/GGHTTPService.h>
 #import <GGTools/GGHTTPServiceTicket.h>

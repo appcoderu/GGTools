@@ -9,19 +9,15 @@
 #import <Foundation/Foundation.h>
 
 typedef enum {
-	GGResourceImportPolicyNone			= 0UL,
-	GGResourceImportPolicyAdd			= 1UL << 0,
-	GGResourceImportPolicyDelete		= 1UL << 1,
-	GGResourceImportPolicyPrefetch		= 1UL << 2,
-	GGResourceImportPolicyFetchByPK		= 1UL << 3,
-	
-	
-	GGResourceImportPolicySync			= (GGResourceImportPolicyAdd |
+	GGResourceImportPolicyNone					= 0UL,
+	GGResourceImportPolicyAdd					= 1UL << 0,
+	GGResourceImportPolicyDelete				= 1UL << 1,
+	GGResourceImportPolicyPrefetch				= 1UL << 2,
+	GGResourceImportPolicyFetchByPrimaryKey		= 1UL << 3,
+		
+	GGResourceImportPolicyDefault		= (GGResourceImportPolicyAdd |
 										   GGResourceImportPolicyDelete |
-										   GGResourceImportPolicyPrefetch),
-	
-	GGResourceImportPolicyIncremental	= (GGResourceImportPolicyAdd |
-										   GGResourceImportPolicyFetchByPK)
+										   GGResourceImportPolicyPrefetch)
 } GGResourceImportPolicy;
 
 @interface GGResourceConfig : NSObject
@@ -29,19 +25,20 @@ typedef enum {
 @property(nonatomic, assign) GGResourceImportPolicy importPolicy;
 @property(nonatomic, strong) NSString *entityName;
 
-@property(nonatomic, strong) NSArray *attributeMappings;
+@property(nonatomic, strong) NSArray *mappings;
 
 @property(nonatomic, strong) NSString *primaryKey;
+@property(nonatomic, strong) NSString *propertyToDeleteObject;
 
 - (void)mapKeyPath:(NSString *)sourceKeyPath
-	   toAttribute:(NSString *)destinationAttribute;
+		toProperty:(NSString *)destinationProperty;
 
 - (void)mapKeyPath:(NSString *)sourceKeyPath
-	   toAttribute:(NSString *)destinationAttribute
+		toProperty:(NSString *)destinationProperty
 			config:(GGResourceConfig *)resourceConfig;
 
-- (void)mapAttributes:(NSString *)attributeKey, ... NS_REQUIRES_NIL_TERMINATION;
+- (void)mapProperties:(NSString *)propertyKey, ... NS_REQUIRES_NIL_TERMINATION;
 
-- (NSString *)keyPathForAttribute:(NSString *)attributeName;
+- (NSString *)keyPathForProperty:(NSString *)attributeName;
 
 @end

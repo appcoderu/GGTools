@@ -1,5 +1,5 @@
 //
-//  GGResourceAttributeMapping.h
+//  GGResourcePropertyMapping.h
 //  GGFramework
 //
 //  Created by Evgeniy Shurakov on 11/23/12.
@@ -10,7 +10,7 @@
 
 @class GGResourceConfig;
 
-@interface GGResourceAttributeMapping : NSObject
+@interface GGResourcePropertyMapping : NSObject
 
 @property(nonatomic, strong) NSString *sourceKeyPath;
 
