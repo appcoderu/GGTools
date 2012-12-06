@@ -15,7 +15,7 @@ enum {
 	GGCacheItemNeedsWriteData = 1U << 1
 };
 
-static NSString * const metaKey = @"appcode.ggcache.meta";
+static const char * const metaKey = "appcode.ggcache.meta";
 
 @interface GGCacheItem ()
 @property(nonatomic, strong) NSString *key;
@@ -93,7 +93,7 @@ static NSString * const metaKey = @"appcode.ggcache.meta";
 			data = [NSData data];
 		}
 		
-		int result = setxattr([_dataPath fileSystemRepresentation], [metaKey UTF8String], [data bytes], [data length], 0, 0);
+		int result = setxattr([_dataPath fileSystemRepresentation], metaKey, [data bytes], [data length], 0, 0);
 				
 		if (result != 0) {
 			state |= GGCacheItemNeedsWriteMeta;
@@ -245,13 +245,17 @@ static NSString * const metaKey = @"appcode.ggcache.meta";
 	if (!_meta) {
 		
 		if ([self exists]) {
-			ssize_t bufferLength = getxattr([_dataPath fileSystemRepresentation], [metaKey UTF8String], NULL, 0, 0, 0);
+			const char *filepath = [_dataPath fileSystemRepresentation];
+			
+			ssize_t bufferLength = getxattr(filepath, metaKey, NULL, 0, 0, 0);
 			
 			if (bufferLength > 0) {
 				char *buffer = malloc(bufferLength);
-				getxattr([_dataPath fileSystemRepresentation], [metaKey UTF8String], buffer, bufferLength, 0, 0);
+				getxattr(filepath, metaKey, buffer, bufferLength, 0, 0);
 				
-				NSData *data = [[NSData alloc] initWithBytesNoCopy:buffer length:bufferLength];
+				NSData *data = [[NSData alloc] initWithBytesNoCopy:buffer
+															length:bufferLength
+													  freeWhenDone:YES];
 				
 				if (data) {
 					_meta = [NSKeyedUnarchiver unarchiveObjectWithData:data];
@@ -261,8 +265,6 @@ static NSString * const metaKey = @"appcode.ggcache.meta";
 						_meta = [NSMutableDictionary dictionaryWithDictionary:_meta];
 					}
 				}
-				
-				free(buffer);
 			}
 		}
 		
