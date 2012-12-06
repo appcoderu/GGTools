@@ -52,6 +52,7 @@
     referenceProperties[@"rubric"] = [TestRubricModel class];
     referenceProperties[@"title"] = [NSString class];
     referenceProperties[@"updatedDate"] = [NSDate class];
+	referenceProperties[@"services"] = [NSSet class];
 	
 	NSEntityDescription *entity = [self.dataStorage entityDescriptionWithName:@"TestItem"];
 	GHAssertNotNil(entity, nil);

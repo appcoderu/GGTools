@@ -11,7 +11,7 @@
 
 #import "GGTestTest.h"
 
-@class TestCityModel, TestItemDetailsModel, TestMetroModel, TestRubricModel;
+@class TestCityModel, TestItemDetailsModel, TestMetroModel, TestRubricModel, TestServiceModel;
 
 @interface TestItemModel : GGTestTest
 
@@ -28,9 +28,15 @@
 @property (nonatomic, retain) TestRubricModel *rubric;
 @property (nonatomic, retain) TestCityModel *city;
 @property (nonatomic, retain) NSSet *metro;
+@property (nonatomic, retain) NSSet *services;
 @end
 
 @interface TestItemModel (CoreDataGeneratedAccessors)
+
+- (void)addServicesObject:(TestServiceModel *)value;
+- (void)removeServicesObject:(TestServiceModel *)value;
+- (void)addServices:(NSSet *)values;
+- (void)removeServices:(NSSet *)values;
 
 - (void)addMetroObject:(TestMetroModel *)value;
 - (void)removeMetroObject:(TestMetroModel *)value;

@@ -201,7 +201,7 @@ static const NSTimeInterval kSaveDelayInterval = 1.0;
 		return nil;
 	}
 	
-	NSPredicate *fetchPredicate = [NSPredicate predicateWithFormat:[fieldName stringByAppendingString:@" = %@"], fieldValue];
+	NSPredicate *fetchPredicate = [NSPredicate predicateWithFormat:@"%K = %@", fieldName, fieldValue];
 		
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 		
@@ -243,7 +243,7 @@ static const NSTimeInterval kSaveDelayInterval = 1.0;
 	if (limit > 0) {
 		[fetchRequest setFetchLimit:limit];
 	}
-	
+		
 	NSError *error = nil;
 	NSArray *result = [_storage executeFetchRequest:fetchRequest error:&error];
 	if (error) {

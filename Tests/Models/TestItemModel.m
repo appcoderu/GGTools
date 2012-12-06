@@ -28,5 +28,6 @@
 @dynamic rubric;
 @dynamic city;
 @dynamic metro;
+@dynamic services;
 
 @end

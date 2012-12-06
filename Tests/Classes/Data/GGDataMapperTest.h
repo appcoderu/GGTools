@@ -6,8 +6,8 @@
 //  Copyright (c) 2012 Evgeniy Shurakov. All rights reserved.
 //
 
-#import "GGDataBaseTestCase.h"
+#import "GGDataMapperBaseTestCase.h"
 
-@interface GGDataMapperTest : GGDataBaseTestCase
+@interface GGDataMapperTest : GGDataMapperBaseTestCase
 
 @end

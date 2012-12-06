@@ -34,5 +34,5 @@
 #import <GGTools/GGDataMapper.h>
 #import <GGTools/GGDataManager.h>
 #import <GGTools/GGDataStorage.h>
-#import <GGTools/GGResourceAttributeMapping.h>
+#import <GGTools/GGResourcePropertyMapping.h>
 #import <GGTools/GGResourceConfig.h>

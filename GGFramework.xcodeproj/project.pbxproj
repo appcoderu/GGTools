@@ -36,6 +36,9 @@
 		1C028E92166FD7BE0076FC85 /* GGDataConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C028E90166FD7BE0076FC85 /* GGDataConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1C028E93166FD7BE0076FC85 /* GGDataConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C028E91166FD7BE0076FC85 /* GGDataConstants.m */; };
 		1C028E96166FD8310076FC85 /* GGConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C028E95166FD7F90076FC85 /* GGConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1C04020B16708EF4001A773B /* GGDataMapperPerformanceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C04020A16708EF4001A773B /* GGDataMapperPerformanceTest.m */; };
+		1C040213167090A3001A773B /* GGDataMapperBaseTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C040212167090A3001A773B /* GGDataMapperBaseTestCase.m */; };
+		1C04021616709279001A773B /* TestServiceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C04021516709279001A773B /* TestServiceModel.m */; };
 		1C087AC71580FB66001C4060 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C087AAA1580FB1E001C4060 /* UIKit.framework */; };
 		1C087AC81580FB66001C4060 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C087AAC1580FB1E001C4060 /* Foundation.framework */; };
 		1C087AC91580FB66001C4060 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C087AAE1580FB1E001C4060 /* CoreGraphics.framework */; };
@@ -152,6 +155,8 @@
 		1C76670315B94ECE002C3F6C /* NSString+GGCrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3131E715B6AACC0099B037 /* NSString+GGCrypto.m */; };
 		1C76670415B94ECE002C3F6C /* GGCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C087AE11580FDC5001C4060 /* GGCache.m */; };
 		1C76670515B94ECE002C3F6C /* GGCacheItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C087AE31580FDC5001C4060 /* GGCacheItem.m */; };
+		1C78F2291670E56D003150DB /* GGDataMapperTask.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C78F2271670E56D003150DB /* GGDataMapperTask.h */; };
+		1C78F22A1670E56D003150DB /* GGDataMapperTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C78F2281670E56D003150DB /* GGDataMapperTask.m */; };
 		1C97128C15C291180001A7C9 /* GGNetworkActivityIndicator.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C97128A15C291180001A7C9 /* GGNetworkActivityIndicator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1C97128D15C291180001A7C9 /* GGNetworkActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C97128B15C291180001A7C9 /* GGNetworkActivityIndicator.m */; };
 		1CA8CC5315B96FBB00EF259E /* libGGTools.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C7666B515B9403E002C3F6C /* libGGTools.a */; };
@@ -191,6 +196,12 @@
 		1C028E90166FD7BE0076FC85 /* GGDataConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGDataConstants.h; sourceTree = "<group>"; };
 		1C028E91166FD7BE0076FC85 /* GGDataConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGDataConstants.m; sourceTree = "<group>"; };
 		1C028E95166FD7F90076FC85 /* GGConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GGConstants.h; sourceTree = "<group>"; };
+		1C04020916708EF4001A773B /* GGDataMapperPerformanceTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGDataMapperPerformanceTest.h; sourceTree = "<group>"; };
+		1C04020A16708EF4001A773B /* GGDataMapperPerformanceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGDataMapperPerformanceTest.m; sourceTree = "<group>"; };
+		1C040211167090A3001A773B /* GGDataMapperBaseTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGDataMapperBaseTestCase.h; sourceTree = "<group>"; };
+		1C040212167090A3001A773B /* GGDataMapperBaseTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGDataMapperBaseTestCase.m; sourceTree = "<group>"; };
+		1C04021416709279001A773B /* TestServiceModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestServiceModel.h; sourceTree = "<group>"; };
+		1C04021516709279001A773B /* TestServiceModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestServiceModel.m; sourceTree = "<group>"; };
 		1C087AAA1580FB1E001C4060 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		1C087AAC1580FB1E001C4060 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1C087AAE1580FB1E001C4060 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -350,6 +361,8 @@
 		1C5221B615B969BF00E5E7BE /* GGTools-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GGTools-Prefix.pch"; sourceTree = "<group>"; };
 		1C5221B715B969BF00E5E7BE /* GGTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGTools.h; sourceTree = "<group>"; };
 		1C7666B515B9403E002C3F6C /* libGGTools.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGGTools.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		1C78F2271670E56D003150DB /* GGDataMapperTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGDataMapperTask.h; sourceTree = "<group>"; };
+		1C78F2281670E56D003150DB /* GGDataMapperTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGDataMapperTask.m; sourceTree = "<group>"; };
 		1C97128A15C291180001A7C9 /* GGNetworkActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGNetworkActivityIndicator.h; sourceTree = "<group>"; };
 		1C97128B15C291180001A7C9 /* GGNetworkActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGNetworkActivityIndicator.m; sourceTree = "<group>"; };
 		1CB31C2C15EB59440033868B /* GGHTTPServiceInternalTicket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGHTTPServiceInternalTicket.h; sourceTree = "<group>"; };
@@ -489,6 +502,8 @@
 			children = (
 				1CD1712A16678036005C3A6C /* GGDataMapper.h */,
 				1CD1712B16678036005C3A6C /* GGDataMapper.m */,
+				1C78F2271670E56D003150DB /* GGDataMapperTask.h */,
+				1C78F2281670E56D003150DB /* GGDataMapperTask.m */,
 				1C2F54291665F572008823F4 /* GGDataManager.h */,
 				1C2F542A1665F572008823F4 /* GGDataManager.m */,
 				1C2F542D1665F572008823F4 /* GGDataStorage.h */,
@@ -621,6 +636,8 @@
 				1C46288A16663BF3001FAE72 /* TestRubricModel.m */,
 				1C46289016664E81001FAE72 /* GGTestTest.h */,
 				1C46289116664E81001FAE72 /* GGTestTest.m */,
+				1C04021416709279001A773B /* TestServiceModel.h */,
+				1C04021516709279001A773B /* TestServiceModel.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -628,8 +645,12 @@
 		1C48508F16661A9600417211 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				1C040211167090A3001A773B /* GGDataMapperBaseTestCase.h */,
+				1C040212167090A3001A773B /* GGDataMapperBaseTestCase.m */,
 				1CD1712F16678AB0005C3A6C /* GGDataMapperTest.h */,
 				1CD1713016678AB0005C3A6C /* GGDataMapperTest.m */,
+				1C04020916708EF4001A773B /* GGDataMapperPerformanceTest.h */,
+				1C04020A16708EF4001A773B /* GGDataMapperPerformanceTest.m */,
 				1C48509116661ADF00417211 /* GGDataStorageTest.h */,
 				1C48509216661ADF00417211 /* GGDataStorageTest.m */,
 				1C48509416661B1300417211 /* GGDataManagerTest.h */,
@@ -838,6 +859,7 @@
 				1CB31C2E15EB59450033868B /* GGHTTPServiceInternalTicket.h in Headers */,
 				1C2F543B1665F572008823F4 /* GGObjectPropertyInspector.h in Headers */,
 				1C46289516665023001FAE72 /* GGObjectPropertyInspectorUnknownClass.h in Headers */,
+				1C78F2291670E56D003150DB /* GGDataMapperTask.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1025,6 +1047,9 @@
 				1C46289216664E81001FAE72 /* GGTestTest.m in Sources */,
 				1C462899166656AC001FAE72 /* GGDataBaseTestCase.m in Sources */,
 				1CD1713116678AB0005C3A6C /* GGDataMapperTest.m in Sources */,
+				1C04020B16708EF4001A773B /* GGDataMapperPerformanceTest.m in Sources */,
+				1C040213167090A3001A773B /* GGDataMapperBaseTestCase.m in Sources */,
+				1C04021616709279001A773B /* TestServiceModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1065,6 +1090,7 @@
 				1C46289616665023001FAE72 /* GGObjectPropertyInspectorUnknownClass.m in Sources */,
 				1CD1712D16678036005C3A6C /* GGDataMapper.m in Sources */,
 				1C028E93166FD7BE0076FC85 /* GGDataConstants.m in Sources */,
+				1C78F22A1670E56D003150DB /* GGDataMapperTask.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1150,6 +1176,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = Tests;
+				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1172,6 +1199,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = Tests;
+				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -1193,6 +1221,7 @@
 				PUBLIC_HEADERS_FOLDER_PATH = "$(TARGET_NAME)Headers";
 				SKIP_INSTALL = YES;
 				STRIP_STYLE = "non-global";
+				VALID_ARCHS = armv7;
 			};
 			name = Debug;
 		};
@@ -1213,6 +1242,7 @@
 				PUBLIC_HEADERS_FOLDER_PATH = "$(TARGET_NAME)Headers";
 				SKIP_INSTALL = YES;
 				STRIP_STYLE = "non-global";
+				VALID_ARCHS = armv7;
 			};
 			name = Release;
 		};
@@ -1221,6 +1251,7 @@
 			buildSettings = {
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = armv7;
 			};
 			name = Debug;
 		};
@@ -1229,6 +1260,7 @@
 			buildSettings = {
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = armv7;
 			};
 			name = Release;
 		};

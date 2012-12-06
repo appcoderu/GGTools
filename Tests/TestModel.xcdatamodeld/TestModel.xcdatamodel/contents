@@ -7,6 +7,11 @@
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="items" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TestItem" inverseName="city" inverseEntity="TestItem" syncable="YES"/>
         <relationship name="metro" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TestMetro" inverseName="city" inverseEntity="TestMetro" syncable="YES"/>
+        <compoundIndexes>
+            <compoundIndex>
+                <index value="identifier"/>
+            </compoundIndex>
+        </compoundIndexes>
     </entity>
     <entity name="TestItem" representedClassName="TestItemModel" syncable="YES">
         <attribute name="color" optional="YES" attributeType="Transformable" syncable="YES"/>
@@ -22,6 +27,12 @@
         <relationship name="details" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="TestItemDetails" inverseName="item" inverseEntity="TestItemDetails" syncable="YES"/>
         <relationship name="metro" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TestMetro" inverseName="items" inverseEntity="TestMetro" syncable="YES"/>
         <relationship name="rubric" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="TestRubric" inverseName="items" inverseEntity="TestRubric" syncable="YES"/>
+        <relationship name="services" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TestService" inverseName="items" inverseEntity="TestService" syncable="YES"/>
+        <compoundIndexes>
+            <compoundIndex>
+                <index value="identifier"/>
+            </compoundIndex>
+        </compoundIndexes>
     </entity>
     <entity name="TestItemDetails" representedClassName="TestItemDetailsModel" syncable="YES">
         <attribute name="imageData" optional="YES" attributeType="Binary" syncable="YES"/>
@@ -33,17 +44,38 @@
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="city" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="TestCity" inverseName="metro" inverseEntity="TestCity" syncable="YES"/>
         <relationship name="items" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TestItem" inverseName="metro" inverseEntity="TestItem" syncable="YES"/>
+        <compoundIndexes>
+            <compoundIndex>
+                <index value="identifier"/>
+            </compoundIndex>
+        </compoundIndexes>
     </entity>
     <entity name="TestRubric" representedClassName="TestRubricModel" syncable="YES">
         <attribute name="identifier" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="items" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TestItem" inverseName="rubric" inverseEntity="TestItem" syncable="YES"/>
+        <compoundIndexes>
+            <compoundIndex>
+                <index value="identifier"/>
+            </compoundIndex>
+        </compoundIndexes>
+    </entity>
+    <entity name="TestService" representedClassName="TestServiceModel" syncable="YES">
+        <attribute name="identifier" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="items" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TestItem" inverseName="services" inverseEntity="TestItem" syncable="YES"/>
+        <compoundIndexes>
+            <compoundIndex>
+                <index value="identifier"/>
+            </compoundIndex>
+        </compoundIndexes>
     </entity>
     <elements>
         <element name="TestCity" positionX="160" positionY="192" width="128" height="135"/>
-        <element name="TestItem" positionX="160" positionY="192" width="128" height="240"/>
+        <element name="TestItem" positionX="160" positionY="192" width="128" height="255"/>
         <element name="TestItemDetails" positionX="160" positionY="192" width="128" height="90"/>
         <element name="TestMetro" positionX="160" positionY="192" width="128" height="105"/>
         <element name="TestRubric" positionX="160" positionY="192" width="128" height="90"/>
+        <element name="TestService" positionX="160" positionY="192" width="128" height="90"/>
     </elements>
 </model>
