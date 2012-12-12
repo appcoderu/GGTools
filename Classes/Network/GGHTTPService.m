@@ -492,7 +492,9 @@ enum {
 			result = [NSURL URLWithString:query.relativePath relativeToURL:self.baseURL];
 		} else {
 			NSMutableArray *pathComponents = [[NSMutableArray alloc] initWithCapacity:1 + [query.queryPathComponents count]];
-			[pathComponents addObject:query.relativePath];
+			NSString *relativePath = [query.relativePath stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"/"]];
+			
+			[pathComponents addObject:relativePath];
 			
 			for (NSString *pathComponent in query.queryPathComponents) {
 				[pathComponents addObject:[NSString gg_stringByURLEncodingForURI:pathComponent]];
