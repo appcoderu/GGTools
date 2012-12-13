@@ -9,15 +9,12 @@
 #import <Foundation/Foundation.h>
 
 typedef enum {
-	GGResourceImportPolicyNone					= 0UL,
-	GGResourceImportPolicyAdd					= 1UL << 0,
-	GGResourceImportPolicyDelete				= 1UL << 1,
-	GGResourceImportPolicyPrefetch				= 1UL << 2,
-	GGResourceImportPolicyFetchByPrimaryKey		= 1UL << 3,
-		
-	GGResourceImportPolicyDefault		= (GGResourceImportPolicyAdd |
-										   GGResourceImportPolicyDelete |
-										   GGResourceImportPolicyPrefetch)
+	GGResourceImportPolicyDefault				= -1,
+	GGResourceImportPolicyNone					= 0U,
+	GGResourceImportPolicyAdd					= 1U << 0,
+	GGResourceImportPolicyDelete				= 1U << 1,
+	GGResourceImportPolicyPrefetch				= 1U << 2,
+	GGResourceImportPolicyFetchByPrimaryKey		= 1U << 3,
 } GGResourceImportPolicy;
 
 @interface GGResourceConfig : NSObject

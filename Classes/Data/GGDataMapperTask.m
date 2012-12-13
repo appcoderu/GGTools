@@ -71,6 +71,12 @@ enum {
 - (id)mapData:(id)data resourceConfig:(GGResourceConfig *)config {
 	id result = nil;
 	
+	if (config.importPolicy == GGResourceImportPolicyDefault) {
+		config.importPolicy = (GGResourceImportPolicyAdd |
+							   GGResourceImportPolicyDelete |
+							   GGResourceImportPolicyPrefetch);
+	}
+		
 	if ([data isKindOfClass:[NSArray class]]) {
 		result = [self importObjects:data
 					  resourceConfig:config];
@@ -439,12 +445,16 @@ enum {
 					   resourceConfig:mapping.destinationConfig];
 			} else if ([propertyClass isSubclassOfClass:[NSSet class]] ||
 					   [propertyClass isSubclassOfClass:[NSArray class]]) {
-				mapping.destinationConfig.importPolicy = GGResourceImportPolicyPrefetch | GGResourceImportPolicyAdd;
-				
+				if (mapping.destinationConfig.importPolicy == GGResourceImportPolicyDefault) {
+					mapping.destinationConfig.importPolicy = GGResourceImportPolicyPrefetch | GGResourceImportPolicyAdd;
+				}
+								
 				value = [self importObjects:value
 							 resourceConfig:mapping.destinationConfig];
 			} else {
-				mapping.destinationConfig.importPolicy = GGResourceImportPolicyFetchByPrimaryKey | GGResourceImportPolicyAdd;
+				if (mapping.destinationConfig.importPolicy == GGResourceImportPolicyDefault) {
+					mapping.destinationConfig.importPolicy = GGResourceImportPolicyFetchByPrimaryKey | GGResourceImportPolicyAdd;
+				}
 				
 				value = [self importObjectWithData:value
 											object:nil
