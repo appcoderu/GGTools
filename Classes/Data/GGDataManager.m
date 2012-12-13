@@ -150,10 +150,6 @@
 										resourceConfig:config
 												 error:&error];
 					result.error = error;
-					
-					if (error) {
-						NSLog(@"%@", error);
-					}
 				}
 				
 				if (handler) {

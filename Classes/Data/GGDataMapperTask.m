@@ -490,9 +490,13 @@ enum {
 		}
 		
 		id value = nil;
-		if (mapping.destinationConfig) {
+		if ([mapping.sourceKeyPath length] > 0) {
 			value = [objectDict valueForKeyPath:mapping.sourceKeyPath];
-			
+		} else {
+			value = objectDict;
+		}
+		
+		if (mapping.destinationConfig) {
 			if (!propertyClass) {
 				value = [self mapData:value
 					   resourceConfig:mapping.destinationConfig];
@@ -514,9 +518,6 @@ enum {
 									possibleObject:[object valueForKey:mapping.destinationKeyPath]
 									resourceConfig:mapping.destinationConfig];
 			}
-			
-		} else {
-			value = [objectDict valueForKeyPath:mapping.sourceKeyPath];
 		}
 		
 		value = [self convertValue:value

@@ -51,10 +51,6 @@ static const NSTimeInterval kSaveDelayInterval = 1.0;
 	NSError *error = nil;
 	
 	[_storage save:&error];
-		
-	if (error) {
-		NSLog(@"%@", error);
-	}
 }
 
 - (void)setNeedsSave {
@@ -185,9 +181,6 @@ static const NSTimeInterval kSaveDelayInterval = 1.0;
 	
 	NSError *error = nil;
 	NSArray *objects = [_storage executeFetchRequest:fetchRequest error:&error];
-	if (error) {
-		NSLog(@"%@", error);
-	}
 	return [objects lastObject];
 }
 
@@ -212,9 +205,6 @@ static const NSTimeInterval kSaveDelayInterval = 1.0;
 	
 	NSError *error = nil;
 	NSArray *objects = [_storage executeFetchRequest:fetchRequest error:&error];
-	if (error) {
-		NSLog(@"%@", error);
-	}
 	return [objects lastObject];	
 }
 
@@ -246,9 +236,6 @@ static const NSTimeInterval kSaveDelayInterval = 1.0;
 		
 	NSError *error = nil;
 	NSArray *result = [_storage executeFetchRequest:fetchRequest error:&error];
-	if (error) {
-		NSLog(@"%@", error);
-	}
 	
 	if (![result isKindOfClass:[NSArray class]]) {
 		result = @[];
