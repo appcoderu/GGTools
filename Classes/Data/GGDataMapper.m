@@ -10,7 +10,7 @@
 
 #import "GGDataStorage.h"
 #import "GGResourceConfig.h"
-#import "GGObjectPropertyInspector.h"
+#import "GGPropertyInspector.h"
 #import "GGResourcePropertyMapping.h"
 
 #import "GGDataMapperTask.h"

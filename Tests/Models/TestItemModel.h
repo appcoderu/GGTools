@@ -9,11 +9,9 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-#import "GGTestTest.h"
-
 @class TestCityModel, TestItemDetailsModel, TestMetroModel, TestRubricModel, TestServiceModel;
 
-@interface TestItemModel : GGTestTest
+@interface TestItemModel : NSManagedObject
 
 @property (nonatomic, retain) NSNumber * identifier;
 @property (nonatomic, retain) NSString * title;

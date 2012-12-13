@@ -36,3 +36,4 @@
 #import <GGTools/GGDataStorage.h>
 #import <GGTools/GGResourcePropertyMapping.h>
 #import <GGTools/GGResourceConfig.h>
+#import <GGTools/GGPropertyInspector.h>

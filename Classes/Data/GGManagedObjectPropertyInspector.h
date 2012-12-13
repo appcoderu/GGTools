@@ -1,5 +1,5 @@
 //
-//  GGObjectPropertyInspector.h
+//  GGManagedObjectPropertyInspector.h
 //  GGFramework
 //
 //  Created by Evgeniy Shurakov on 12/13/12.
@@ -10,8 +10,10 @@
 
 #import "GGPropertyInspector.h"
 
-@interface GGObjectPropertyInspector : GGPropertyInspector
+@class NSEntityDescription;
 
-- (id)initWithClass:(Class)aClass;
+@interface GGManagedObjectPropertyInspector : GGPropertyInspector
+
+- (id)initWithEntity:(NSEntityDescription *)entity;
 
 @end

@@ -48,8 +48,8 @@
 		1C2F54361665F572008823F4 /* GGDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F542A1665F572008823F4 /* GGDataManager.m */; };
 		1C2F54391665F572008823F4 /* GGDataStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C2F542D1665F572008823F4 /* GGDataStorage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1C2F543A1665F572008823F4 /* GGDataStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F542E1665F572008823F4 /* GGDataStorage.m */; };
-		1C2F543B1665F572008823F4 /* GGObjectPropertyInspector.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C2F542F1665F572008823F4 /* GGObjectPropertyInspector.h */; };
-		1C2F543C1665F572008823F4 /* GGObjectPropertyInspector.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F54301665F572008823F4 /* GGObjectPropertyInspector.m */; };
+		1C2F543B1665F572008823F4 /* GGPropertyInspector.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C2F542F1665F572008823F4 /* GGPropertyInspector.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1C2F543C1665F572008823F4 /* GGPropertyInspector.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F54301665F572008823F4 /* GGPropertyInspector.m */; };
 		1C2F543D1665F572008823F4 /* GGResourcePropertyMapping.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C2F54311665F572008823F4 /* GGResourcePropertyMapping.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1C2F543E1665F572008823F4 /* GGResourcePropertyMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F54321665F572008823F4 /* GGResourcePropertyMapping.m */; };
 		1C2F543F1665F572008823F4 /* GGResourceConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C2F54331665F572008823F4 /* GGResourceConfig.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -64,13 +64,12 @@
 		1C46288D16663BF3001FAE72 /* TestItemModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C46288616663BF2001FAE72 /* TestItemModel.m */; };
 		1C46288E16663BF3001FAE72 /* TestMetroModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C46288816663BF2001FAE72 /* TestMetroModel.m */; };
 		1C46288F16663BF3001FAE72 /* TestRubricModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C46288A16663BF3001FAE72 /* TestRubricModel.m */; };
-		1C46289216664E81001FAE72 /* GGTestTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C46289116664E81001FAE72 /* GGTestTest.m */; };
-		1C46289516665023001FAE72 /* GGObjectPropertyInspectorUnknownClass.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C46289316665023001FAE72 /* GGObjectPropertyInspectorUnknownClass.h */; };
-		1C46289616665023001FAE72 /* GGObjectPropertyInspectorUnknownClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C46289416665023001FAE72 /* GGObjectPropertyInspectorUnknownClass.m */; };
+		1C46289516665023001FAE72 /* GGPropertyInspectorUnknownClass.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C46289316665023001FAE72 /* GGPropertyInspectorUnknownClass.h */; };
+		1C46289616665023001FAE72 /* GGPropertyInspectorUnknownClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C46289416665023001FAE72 /* GGPropertyInspectorUnknownClass.m */; };
 		1C462899166656AC001FAE72 /* GGDataBaseTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C462898166656AC001FAE72 /* GGDataBaseTestCase.m */; };
 		1C48509316661ADF00417211 /* GGDataStorageTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C48509216661ADF00417211 /* GGDataStorageTest.m */; };
 		1C48509616661B1300417211 /* GGDataManagerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C48509516661B1300417211 /* GGDataManagerTest.m */; };
-		1C48509916661B4400417211 /* GGObjectPropertyInspectorTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C48509816661B4400417211 /* GGObjectPropertyInspectorTest.m */; };
+		1C48509916661B4400417211 /* GGPropertyInspectorTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C48509816661B4400417211 /* GGPropertyInspectorTest.m */; };
 		1C48509B16662B6000417211 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C48509A16662B6000417211 /* CoreData.framework */; };
 		1C4D897115BAC2BE00FB6CC6 /* GGHTTPGoogleAuthorizationProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C4D896F15BAC2BE00FB6CC6 /* GGHTTPGoogleAuthorizationProxy.h */; };
 		1C4D897215BAC2BE00FB6CC6 /* GGHTTPGoogleAuthorizationProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C4D897015BAC2BE00FB6CC6 /* GGHTTPGoogleAuthorizationProxy.m */; };
@@ -104,6 +103,10 @@
 		1C5221B415B968B700E5E7BE /* GHUnitIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C5221B315B968B700E5E7BE /* GHUnitIOS.framework */; };
 		1C5221B815B969BF00E5E7BE /* GGTools-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 1C5221B615B969BF00E5E7BE /* GGTools-Prefix.pch */; };
 		1C5221B915B969BF00E5E7BE /* GGTools.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C5221B715B969BF00E5E7BE /* GGTools.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1C55F1141679BC5700E5AF40 /* GGObjectPropertyInspector.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C55F1121679BC5700E5AF40 /* GGObjectPropertyInspector.h */; };
+		1C55F1151679BC5700E5AF40 /* GGObjectPropertyInspector.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C55F1131679BC5700E5AF40 /* GGObjectPropertyInspector.m */; };
+		1C55F1191679BCA500E5AF40 /* GGManagedObjectPropertyInspector.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C55F1171679BCA500E5AF40 /* GGManagedObjectPropertyInspector.h */; };
+		1C55F11A1679BCA500E5AF40 /* GGManagedObjectPropertyInspector.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C55F1181679BCA500E5AF40 /* GGManagedObjectPropertyInspector.m */; };
 		1C7666B615B9403E002C3F6C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C087AAC1580FB1E001C4060 /* Foundation.framework */; };
 		1C7666C715B9447F002C3F6C /* GGHTTPCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C31319D15B69B770099B037 /* GGHTTPCache.m */; };
 		1C7666C815B9447F002C3F6C /* GGHTTPCacheItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C31319F15B69B770099B037 /* GGHTTPCacheItem.m */; };
@@ -225,8 +228,8 @@
 		1C2F542A1665F572008823F4 /* GGDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGDataManager.m; sourceTree = "<group>"; };
 		1C2F542D1665F572008823F4 /* GGDataStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGDataStorage.h; sourceTree = "<group>"; };
 		1C2F542E1665F572008823F4 /* GGDataStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGDataStorage.m; sourceTree = "<group>"; };
-		1C2F542F1665F572008823F4 /* GGObjectPropertyInspector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGObjectPropertyInspector.h; sourceTree = "<group>"; };
-		1C2F54301665F572008823F4 /* GGObjectPropertyInspector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGObjectPropertyInspector.m; sourceTree = "<group>"; };
+		1C2F542F1665F572008823F4 /* GGPropertyInspector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGPropertyInspector.h; sourceTree = "<group>"; };
+		1C2F54301665F572008823F4 /* GGPropertyInspector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGPropertyInspector.m; sourceTree = "<group>"; };
 		1C2F54311665F572008823F4 /* GGResourcePropertyMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGResourcePropertyMapping.h; sourceTree = "<group>"; };
 		1C2F54321665F572008823F4 /* GGResourcePropertyMapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGResourcePropertyMapping.m; sourceTree = "<group>"; };
 		1C2F54331665F572008823F4 /* GGResourceConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGResourceConfig.h; sourceTree = "<group>"; };
@@ -285,18 +288,16 @@
 		1C46288816663BF2001FAE72 /* TestMetroModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestMetroModel.m; sourceTree = "<group>"; };
 		1C46288916663BF2001FAE72 /* TestRubricModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestRubricModel.h; sourceTree = "<group>"; };
 		1C46288A16663BF3001FAE72 /* TestRubricModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestRubricModel.m; sourceTree = "<group>"; };
-		1C46289016664E81001FAE72 /* GGTestTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGTestTest.h; sourceTree = "<group>"; };
-		1C46289116664E81001FAE72 /* GGTestTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGTestTest.m; sourceTree = "<group>"; };
-		1C46289316665023001FAE72 /* GGObjectPropertyInspectorUnknownClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGObjectPropertyInspectorUnknownClass.h; sourceTree = "<group>"; };
-		1C46289416665023001FAE72 /* GGObjectPropertyInspectorUnknownClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGObjectPropertyInspectorUnknownClass.m; sourceTree = "<group>"; };
+		1C46289316665023001FAE72 /* GGPropertyInspectorUnknownClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGPropertyInspectorUnknownClass.h; sourceTree = "<group>"; };
+		1C46289416665023001FAE72 /* GGPropertyInspectorUnknownClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGPropertyInspectorUnknownClass.m; sourceTree = "<group>"; };
 		1C462897166656AC001FAE72 /* GGDataBaseTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGDataBaseTestCase.h; sourceTree = "<group>"; };
 		1C462898166656AC001FAE72 /* GGDataBaseTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGDataBaseTestCase.m; sourceTree = "<group>"; };
 		1C48509116661ADF00417211 /* GGDataStorageTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGDataStorageTest.h; sourceTree = "<group>"; };
 		1C48509216661ADF00417211 /* GGDataStorageTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGDataStorageTest.m; sourceTree = "<group>"; };
 		1C48509416661B1300417211 /* GGDataManagerTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGDataManagerTest.h; sourceTree = "<group>"; };
 		1C48509516661B1300417211 /* GGDataManagerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGDataManagerTest.m; sourceTree = "<group>"; };
-		1C48509716661B4400417211 /* GGObjectPropertyInspectorTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGObjectPropertyInspectorTest.h; sourceTree = "<group>"; };
-		1C48509816661B4400417211 /* GGObjectPropertyInspectorTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGObjectPropertyInspectorTest.m; sourceTree = "<group>"; };
+		1C48509716661B4400417211 /* GGPropertyInspectorTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGPropertyInspectorTest.h; sourceTree = "<group>"; };
+		1C48509816661B4400417211 /* GGPropertyInspectorTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGPropertyInspectorTest.m; sourceTree = "<group>"; };
 		1C48509A16662B6000417211 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		1C4D896F15BAC2BE00FB6CC6 /* GGHTTPGoogleAuthorizationProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGHTTPGoogleAuthorizationProxy.h; sourceTree = "<group>"; };
 		1C4D897015BAC2BE00FB6CC6 /* GGHTTPGoogleAuthorizationProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGHTTPGoogleAuthorizationProxy.m; sourceTree = "<group>"; };
@@ -360,6 +361,11 @@
 		1C5221B315B968B700E5E7BE /* GHUnitIOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GHUnitIOS.framework; path = External/GHUnitIOS.framework; sourceTree = "<group>"; };
 		1C5221B615B969BF00E5E7BE /* GGTools-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GGTools-Prefix.pch"; sourceTree = "<group>"; };
 		1C5221B715B969BF00E5E7BE /* GGTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGTools.h; sourceTree = "<group>"; };
+		1C55F1121679BC5700E5AF40 /* GGObjectPropertyInspector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGObjectPropertyInspector.h; sourceTree = "<group>"; };
+		1C55F1131679BC5700E5AF40 /* GGObjectPropertyInspector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGObjectPropertyInspector.m; sourceTree = "<group>"; };
+		1C55F1171679BCA500E5AF40 /* GGManagedObjectPropertyInspector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGManagedObjectPropertyInspector.h; sourceTree = "<group>"; };
+		1C55F1181679BCA500E5AF40 /* GGManagedObjectPropertyInspector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGManagedObjectPropertyInspector.m; sourceTree = "<group>"; };
+		1C55F11B1679CBD400E5AF40 /* GGPropertyInspector+Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GGPropertyInspector+Protected.h"; sourceTree = "<group>"; };
 		1C7666B515B9403E002C3F6C /* libGGTools.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGGTools.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		1C78F2271670E56D003150DB /* GGDataMapperTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGDataMapperTask.h; sourceTree = "<group>"; };
 		1C78F2281670E56D003150DB /* GGDataMapperTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGDataMapperTask.m; sourceTree = "<group>"; };
@@ -508,16 +514,21 @@
 				1C2F542A1665F572008823F4 /* GGDataManager.m */,
 				1C2F542D1665F572008823F4 /* GGDataStorage.h */,
 				1C2F542E1665F572008823F4 /* GGDataStorage.m */,
-				1C2F542F1665F572008823F4 /* GGObjectPropertyInspector.h */,
-				1C2F54301665F572008823F4 /* GGObjectPropertyInspector.m */,
 				1C2F54311665F572008823F4 /* GGResourcePropertyMapping.h */,
 				1C2F54321665F572008823F4 /* GGResourcePropertyMapping.m */,
 				1C2F54331665F572008823F4 /* GGResourceConfig.h */,
 				1C2F54341665F572008823F4 /* GGResourceConfig.m */,
-				1C46289316665023001FAE72 /* GGObjectPropertyInspectorUnknownClass.h */,
-				1C46289416665023001FAE72 /* GGObjectPropertyInspectorUnknownClass.m */,
 				1C028E90166FD7BE0076FC85 /* GGDataConstants.h */,
 				1C028E91166FD7BE0076FC85 /* GGDataConstants.m */,
+				1C2F542F1665F572008823F4 /* GGPropertyInspector.h */,
+				1C2F54301665F572008823F4 /* GGPropertyInspector.m */,
+				1C55F11B1679CBD400E5AF40 /* GGPropertyInspector+Protected.h */,
+				1C55F1121679BC5700E5AF40 /* GGObjectPropertyInspector.h */,
+				1C55F1131679BC5700E5AF40 /* GGObjectPropertyInspector.m */,
+				1C55F1171679BCA500E5AF40 /* GGManagedObjectPropertyInspector.h */,
+				1C55F1181679BCA500E5AF40 /* GGManagedObjectPropertyInspector.m */,
+				1C46289316665023001FAE72 /* GGPropertyInspectorUnknownClass.h */,
+				1C46289416665023001FAE72 /* GGPropertyInspectorUnknownClass.m */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -634,8 +645,6 @@
 				1C46288816663BF2001FAE72 /* TestMetroModel.m */,
 				1C46288916663BF2001FAE72 /* TestRubricModel.h */,
 				1C46288A16663BF3001FAE72 /* TestRubricModel.m */,
-				1C46289016664E81001FAE72 /* GGTestTest.h */,
-				1C46289116664E81001FAE72 /* GGTestTest.m */,
 				1C04021416709279001A773B /* TestServiceModel.h */,
 				1C04021516709279001A773B /* TestServiceModel.m */,
 			);
@@ -655,8 +664,8 @@
 				1C48509216661ADF00417211 /* GGDataStorageTest.m */,
 				1C48509416661B1300417211 /* GGDataManagerTest.h */,
 				1C48509516661B1300417211 /* GGDataManagerTest.m */,
-				1C48509716661B4400417211 /* GGObjectPropertyInspectorTest.h */,
-				1C48509816661B4400417211 /* GGObjectPropertyInspectorTest.m */,
+				1C48509716661B4400417211 /* GGPropertyInspectorTest.h */,
+				1C48509816661B4400417211 /* GGPropertyInspectorTest.m */,
 				1C462897166656AC001FAE72 /* GGDataBaseTestCase.h */,
 				1C462898166656AC001FAE72 /* GGDataBaseTestCase.m */,
 			);
@@ -851,15 +860,17 @@
 				1C2F543F1665F572008823F4 /* GGResourceConfig.h in Headers */,
 				1CD1712C16678036005C3A6C /* GGDataMapper.h in Headers */,
 				1C028E92166FD7BE0076FC85 /* GGDataConstants.h in Headers */,
+				1C2F543B1665F572008823F4 /* GGPropertyInspector.h in Headers */,
 				1C028E96166FD8310076FC85 /* GGConstants.h in Headers */,
 				1C5221B815B969BF00E5E7BE /* GGTools-Prefix.pch in Headers */,
 				1C4D897115BAC2BE00FB6CC6 /* GGHTTPGoogleAuthorizationProxy.h in Headers */,
 				1C2DE7DB15C67E45004AC42E /* SBJsonParser.h in Headers */,
 				1C2DE7DC15C67E45004AC42E /* SBJsonWriter.h in Headers */,
 				1CB31C2E15EB59450033868B /* GGHTTPServiceInternalTicket.h in Headers */,
-				1C2F543B1665F572008823F4 /* GGObjectPropertyInspector.h in Headers */,
-				1C46289516665023001FAE72 /* GGObjectPropertyInspectorUnknownClass.h in Headers */,
+				1C46289516665023001FAE72 /* GGPropertyInspectorUnknownClass.h in Headers */,
 				1C78F2291670E56D003150DB /* GGDataMapperTask.h in Headers */,
+				1C55F1141679BC5700E5AF40 /* GGObjectPropertyInspector.h in Headers */,
+				1C55F1191679BCA500E5AF40 /* GGManagedObjectPropertyInspector.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1037,14 +1048,13 @@
 				1C5221B115B9685500E5E7BE /* main.m in Sources */,
 				1C48509316661ADF00417211 /* GGDataStorageTest.m in Sources */,
 				1C48509616661B1300417211 /* GGDataManagerTest.m in Sources */,
-				1C48509916661B4400417211 /* GGObjectPropertyInspectorTest.m in Sources */,
+				1C48509916661B4400417211 /* GGPropertyInspectorTest.m in Sources */,
 				1C46287016663551001FAE72 /* TestModel.xcdatamodeld in Sources */,
 				1C46288B16663BF3001FAE72 /* TestCityModel.m in Sources */,
 				1C46288C16663BF3001FAE72 /* TestItemDetailsModel.m in Sources */,
 				1C46288D16663BF3001FAE72 /* TestItemModel.m in Sources */,
 				1C46288E16663BF3001FAE72 /* TestMetroModel.m in Sources */,
 				1C46288F16663BF3001FAE72 /* TestRubricModel.m in Sources */,
-				1C46289216664E81001FAE72 /* GGTestTest.m in Sources */,
 				1C462899166656AC001FAE72 /* GGDataBaseTestCase.m in Sources */,
 				1CD1713116678AB0005C3A6C /* GGDataMapperTest.m in Sources */,
 				1C04020B16708EF4001A773B /* GGDataMapperPerformanceTest.m in Sources */,
@@ -1084,13 +1094,15 @@
 				1CB31C3015EB59450033868B /* GGHTTPServiceInternalTicket.m in Sources */,
 				1C2F54361665F572008823F4 /* GGDataManager.m in Sources */,
 				1C2F543A1665F572008823F4 /* GGDataStorage.m in Sources */,
-				1C2F543C1665F572008823F4 /* GGObjectPropertyInspector.m in Sources */,
+				1C2F543C1665F572008823F4 /* GGPropertyInspector.m in Sources */,
 				1C2F543E1665F572008823F4 /* GGResourcePropertyMapping.m in Sources */,
 				1C2F54401665F572008823F4 /* GGResourceConfig.m in Sources */,
-				1C46289616665023001FAE72 /* GGObjectPropertyInspectorUnknownClass.m in Sources */,
+				1C46289616665023001FAE72 /* GGPropertyInspectorUnknownClass.m in Sources */,
 				1CD1712D16678036005C3A6C /* GGDataMapper.m in Sources */,
 				1C028E93166FD7BE0076FC85 /* GGDataConstants.m in Sources */,
 				1C78F22A1670E56D003150DB /* GGDataMapperTask.m in Sources */,
+				1C55F1151679BC5700E5AF40 /* GGObjectPropertyInspector.m in Sources */,
+				1C55F11A1679BCA500E5AF40 /* GGManagedObjectPropertyInspector.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,7 +9,7 @@
 #import "GGDataMapperTask.h"
 #import "GGResourceConfig.h"
 #import "GGDataStorage.h"
-#import "GGObjectPropertyInspector.h"
+#import "GGPropertyInspector.h"
 #import "GGResourcePropertyMapping.h"
 
 #import "NSError+GGExtra.h"
@@ -156,7 +156,7 @@ enum {
 	}
 	*/
 	 
-	GGObjectPropertyInspector *propertyInspector = [GGObjectPropertyInspector inspectorForEntity:[self.dataStorage entityDescriptionWithName:config.entityName]];
+	GGPropertyInspector *propertyInspector = [GGPropertyInspector inspectorForEntity:[self.dataStorage entityDescriptionWithName:config.entityName]];
 	
 	if (!propertyInspector) {
 		if (debug & GGDataMapperDebug) {
@@ -352,10 +352,10 @@ enum {
 		return nil;
 	}
 	
-	GGObjectPropertyInspector *propertyInspector = nil;
+	GGPropertyInspector *propertyInspector = nil;
 	
 	if (config.entityName) {
-		propertyInspector = [GGObjectPropertyInspector inspectorForEntity:[self.dataStorage entityDescriptionWithName:config.entityName]];
+		propertyInspector = [GGPropertyInspector inspectorForEntity:[self.dataStorage entityDescriptionWithName:config.entityName]];
 	} else if (!object) {
 		object = [NSMutableDictionary dictionary];
 	}

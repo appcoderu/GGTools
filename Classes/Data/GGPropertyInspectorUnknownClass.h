@@ -1,15 +1,13 @@
 //
-//  GGTestTest.h
+//  GGPropertyInspectorUnknownClass.h
 //  GGFramework
 //
 //  Created by Evgeniy Shurakov on 11/28/12.
 //  Copyright (c) 2012 Evgeniy Shurakov. All rights reserved.
 //
 
-#import <CoreData/CoreData.h>
+#import <Foundation/Foundation.h>
 
-@interface GGTestTest : NSManagedObject
-
-@property(nonatomic, strong) NSString *testPr;
+@interface GGPropertyInspectorUnknownClass : NSObject
 
 @end
