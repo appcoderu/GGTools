@@ -8,19 +8,20 @@
 
 #import <Foundation/Foundation.h>
 
-typedef enum {
+enum {
 	GGResourceImportPolicyDefault				= -1,
 	GGResourceImportPolicyNone					= 0U,
 	GGResourceImportPolicyAdd					= 1U << 0,
 	GGResourceImportPolicyDelete				= 1U << 1,
 	GGResourceImportPolicyPrefetch				= 1U << 2,
 	GGResourceImportPolicyFetchByPrimaryKey		= 1U << 3,
-} GGResourceImportPolicy;
+};
 
 @interface GGResourceConfig : NSObject
 
-@property(nonatomic, assign) GGResourceImportPolicy importPolicy;
+@property(nonatomic, assign) int importPolicy;
 @property(nonatomic, strong) NSString *entityName;
+@property(nonatomic, strong) Class modelClass;
 
 @property(nonatomic, strong) NSArray *mappings;
 

@@ -42,6 +42,7 @@
 		1C087AC71580FB66001C4060 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C087AAA1580FB1E001C4060 /* UIKit.framework */; };
 		1C087AC81580FB66001C4060 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C087AAC1580FB1E001C4060 /* Foundation.framework */; };
 		1C087AC91580FB66001C4060 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C087AAE1580FB1E001C4060 /* CoreGraphics.framework */; };
+		1C2315E7167A1EC70085FC1B /* TestMasterModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2315E6167A1EC70085FC1B /* TestMasterModel.m */; };
 		1C2DE7DB15C67E45004AC42E /* SBJsonParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C2DE7D815C67BAD004AC42E /* SBJsonParser.h */; };
 		1C2DE7DC15C67E45004AC42E /* SBJsonWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C2DE7D915C67BAD004AC42E /* SBJsonWriter.h */; };
 		1C2F54351665F572008823F4 /* GGDataManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C2F54291665F572008823F4 /* GGDataManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -222,6 +223,8 @@
 		1C137C8515B828160033FE44 /* GGHTTPQueryResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGHTTPQueryResult.h; sourceTree = "<group>"; };
 		1C137C8615B828180033FE44 /* GGHTTPQueryResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGHTTPQueryResult.m; sourceTree = "<group>"; };
 		1C137C8915B82EB30033FE44 /* GGHTTPServiceTicket+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GGHTTPServiceTicket+Private.h"; sourceTree = "<group>"; };
+		1C2315E5167A1EC70085FC1B /* TestMasterModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestMasterModel.h; sourceTree = "<group>"; };
+		1C2315E6167A1EC70085FC1B /* TestMasterModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestMasterModel.m; sourceTree = "<group>"; };
 		1C2DE7D815C67BAD004AC42E /* SBJsonParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SBJsonParser.h; sourceTree = "<group>"; };
 		1C2DE7D915C67BAD004AC42E /* SBJsonWriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
 		1C2F54291665F572008823F4 /* GGDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGDataManager.h; sourceTree = "<group>"; };
@@ -647,6 +650,8 @@
 				1C46288A16663BF3001FAE72 /* TestRubricModel.m */,
 				1C04021416709279001A773B /* TestServiceModel.h */,
 				1C04021516709279001A773B /* TestServiceModel.m */,
+				1C2315E5167A1EC70085FC1B /* TestMasterModel.h */,
+				1C2315E6167A1EC70085FC1B /* TestMasterModel.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1060,6 +1065,7 @@
 				1C04020B16708EF4001A773B /* GGDataMapperPerformanceTest.m in Sources */,
 				1C040213167090A3001A773B /* GGDataMapperBaseTestCase.m in Sources */,
 				1C04021616709279001A773B /* TestServiceModel.m in Sources */,
+				1C2315E7167A1EC70085FC1B /* TestMasterModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

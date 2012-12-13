@@ -16,6 +16,7 @@
 #import "TestRubricModel.h"
 #import "TestItemModel.h"
 #import "TestItemDetailsModel.h"
+#import "TestMasterModel.h"
 
 @implementation GGDataMapperTest
 
@@ -217,6 +218,22 @@
 	GHAssertEquals([itemObj.city.identifier integerValue], (NSInteger)1, nil);
 	GHAssertEquals([itemObj.rubric.identifier integerValue], (NSInteger)2, nil);
 	GHAssertEquals([itemObj.metro count], (NSUInteger)3, nil);
+	
+	GHAssertNotNil(itemObj.master, nil);
+	GHAssertTrue([itemObj.master isKindOfClass:[TestMasterModel class]], nil);
+	GHAssertEqualObjects(itemObj.master.name, @"master 1", nil);
+	GHAssertEqualObjects(itemObj.master.photo, @"http://photo1", nil);
+	GHAssertEqualObjects(itemObj.master.age, @(32), nil);
+	
+	GHAssertNotNil(itemObj.masters, nil);
+	GHAssertEquals([itemObj.masters count], (NSUInteger)3, nil);
+	int i = 1;
+	for (TestMasterModel *master in itemObj.masters) {
+		GHAssertEqualObjects(master.name, ([NSString stringWithFormat:@"master %d", i]), nil);
+		GHAssertEqualObjects(master.photo, ([NSString stringWithFormat:@"http://photo%d", i]), nil);
+		GHAssertEqualObjects(master.age, @(31 + i), nil);
+		++i;
+	}
 	
 	itemObj = items[2];
 	GHAssertNotNil(itemObj, nil);

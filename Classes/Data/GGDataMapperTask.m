@@ -14,6 +14,8 @@
 
 #import "NSError+GGExtra.h"
 
+#import <CoreData/CoreData.h>
+
 #warning implement errors
 #warning implement debug logging
 
@@ -133,10 +135,14 @@ enum {
 - (NSArray *)importObjects:(NSArray *)objects
 			resourceConfig:(GGResourceConfig *)config {
 	
-	if (!objects || ![objects isKindOfClass:[NSArray class]] || !config || !config.entityName) {
+	if (!objects || ![objects isKindOfClass:[NSArray class]] || !config) {
 		return nil;
 	}
 		
+	if (!config.entityName && !config.modelClass) {
+		return nil;
+	}
+	
 	Class objectsClass = Nil;
 	for (id objectData in objects) {
 		if (!objectsClass) {
@@ -161,12 +167,24 @@ enum {
 												 limit:0];
 	}
 	*/
-	 
-	GGPropertyInspector *propertyInspector = [GGPropertyInspector inspectorForEntity:[self.dataStorage entityDescriptionWithName:config.entityName]];
 	
+	int importPolicy = config.importPolicy;
+	
+	GGPropertyInspector *propertyInspector = nil;
+	if (config.modelClass) {
+		propertyInspector = [GGPropertyInspector inspectorForClass:config.modelClass];
+		importPolicy = GGResourceImportPolicyAdd;
+	} else {
+		propertyInspector = [GGPropertyInspector inspectorForEntity:[self.dataStorage entityDescriptionWithName:config.entityName]];
+	}
+		
 	if (!propertyInspector) {
 		if (debug & GGDataMapperDebug) {
-			NSLog(@"No property inspector for entity: %@", config.entityName);
+			if (config.modelClass) {
+				NSLog(@"No property inspector for class: %@", config.modelClass);
+			} else {
+				NSLog(@"No property inspector for entity: %@", config.entityName);
+			}
 		}
 		return nil;
 	}
@@ -179,12 +197,12 @@ enum {
 	}
 	
 	id existingObjects = nil;
-	if ((config.importPolicy & GGResourceImportPolicyPrefetch)) {
+	if ((importPolicy & GGResourceImportPolicyPrefetch)) {
 		existingObjects = [self existingObjectsForConfig:config];
 		if (existingObjects && [existingObjects count] == 0) {
 			existingObjects = nil;
 		}
-		if (existingObjects && (config.importPolicy & GGResourceImportPolicyDelete)) {
+		if (existingObjects && (importPolicy & GGResourceImportPolicyDelete)) {
 			existingObjects = [NSMutableArray arrayWithArray:existingObjects];
 		}
 	}
@@ -288,7 +306,6 @@ enum {
 		}
 		
 		if (primaryKeyValue) {
-			
 			if (existingObjects) {
 				NSUInteger index = 0;
 				for (id existingObject in existingObjects) {
@@ -308,14 +325,14 @@ enum {
 					
 					object = existingObject;
 					
-					if ((config.importPolicy & GGResourceImportPolicyDelete)) {
+					if ((importPolicy & GGResourceImportPolicyDelete)) {
 						[existingObjects removeObjectAtIndex:index];
 					}
 					break;
 				}
 			}
 			
-			if (!object && (config.importPolicy & GGResourceImportPolicyFetchByPrimaryKey)) {
+			if (!object && (importPolicy & GGResourceImportPolicyFetchByPrimaryKey)) {
 				object = [self.dataStorage objectWithField:config.primaryKey
 												   equalTo:primaryKeyValue
 												entityName:config.entityName];
@@ -355,7 +372,7 @@ enum {
 		}
 	}
 	
-	if ((config.importPolicy & GGResourceImportPolicyDelete) &&
+	if ((importPolicy & GGResourceImportPolicyDelete) &&
 		existingObjects) {
 		
 		for (id existingObject in existingObjects) {
@@ -375,10 +392,20 @@ enum {
 		return nil;
 	}
 	
+	int importPolicy = config.importPolicy;
 	GGPropertyInspector *propertyInspector = nil;
 	
-	if (config.entityName) {
+	if (config.modelClass) {
+		propertyInspector = [GGPropertyInspector inspectorForClass:config.modelClass];
+		if (!propertyInspector) {
+			return nil;
+		}
+		importPolicy = GGResourceImportPolicyAdd;
+	} else if (config.entityName) {
 		propertyInspector = [GGPropertyInspector inspectorForEntity:[self.dataStorage entityDescriptionWithName:config.entityName]];
+		if (!propertyInspector) {
+			return nil;
+		}
 	} else if (!object) {
 		object = [NSMutableDictionary dictionary];
 	}
@@ -418,7 +445,7 @@ enum {
 				}
 			}
 			
-			if (!object && (config.importPolicy & GGResourceImportPolicyFetchByPrimaryKey)) {
+			if (!object && (importPolicy & GGResourceImportPolicyFetchByPrimaryKey)) {
 				object = [self.dataStorage objectWithField:config.primaryKey
 												   equalTo:pk
 												entityName:config.entityName];
@@ -432,8 +459,17 @@ enum {
 	
 	NSDictionary *objectDict = objectData;
 	
-	if (!object && (config.importPolicy & GGResourceImportPolicyAdd)) {
-		object = [self.dataStorage newObjectWithEntityName:config.entityName];
+	if (!object && (importPolicy & GGResourceImportPolicyAdd)) {
+		if (config.modelClass) {
+			if (config.entityName) {
+				NSEntityDescription *entity = [self.dataStorage entityDescriptionWithName:config.entityName];
+				object = [[config.modelClass alloc] initWithEntity:entity insertIntoManagedObjectContext:nil];
+			} else {
+				object = [[config.modelClass alloc] init];
+			}
+		} else if (config.entityName) {
+			object = [self.dataStorage newObjectWithEntityName:config.entityName];
+		}
 	}
 	
 	if (!object) {

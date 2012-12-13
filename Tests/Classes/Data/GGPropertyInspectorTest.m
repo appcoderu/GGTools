@@ -12,6 +12,7 @@
 #import "GGPropertyInspectorUnknownClass.h"
 
 #import "TestItemModel.h"
+#import "TestMasterModel.h"
 
 #import <CoreData/CoreData.h>
 
@@ -55,6 +56,8 @@
     referenceProperties[@"title"] = [NSString class];
     referenceProperties[@"updatedDate"] = [NSDate class];
 	referenceProperties[@"services"] = [NSSet class];
+	referenceProperties[@"master"] = [TestMasterModel class];
+	referenceProperties[@"masters"] = [NSArray class];
 	
 	NSEntityDescription *entity = [self.dataStorage entityDescriptionWithName:@"TestItem"];
 	GHAssertNotNil(entity, nil);
@@ -92,6 +95,8 @@
     referenceProperties[@"title"] = [NSString class];
     referenceProperties[@"updatedDate"] = [NSDate class];
 	referenceProperties[@"services"] = [NSSet class];
+	referenceProperties[@"master"] = [TestMasterModel class];
+	referenceProperties[@"masters"] = [NSArray class];
 		
 	GGPropertyInspector *inspector = [GGPropertyInspector inspectorForClass:[TestItemModel class]];
 	GHAssertNotNil(inspector, nil);

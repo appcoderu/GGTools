@@ -15,7 +15,29 @@
 		1,
 		2,
 		3
-	]	
+	],
+	 "master": {
+		"name": "master 1",
+		"age" : 32,
+		"photo": "http://photo1"
+	 },
+	"masters": [
+				{
+				"name": "master 1",
+				"age" : 32,
+				"photo": "http://photo1"
+				},
+				{
+				"name": "master 2",
+				"age" : 33,
+				"photo": "http://photo2"
+				},
+				{
+				"name": "master 3",
+				"age" : 34,
+				"photo": "http://photo3"
+				}
+	]
 },
 {
 	"id" : 2,

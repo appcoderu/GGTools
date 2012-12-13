@@ -104,7 +104,12 @@ Class RKKeyValueCodingClassForObjCType(const char *type)
 		
 	id obj = [self cachedInspectorForKey:entity.name];
 	if (!obj) {
-		obj = [[GGManagedObjectPropertyInspector alloc] initWithEntity:entity];
+		if ([entity.managedObjectClassName isEqualToString:@"NSManagedObject"]) {
+			obj = [[GGManagedObjectPropertyInspector alloc] initWithEntity:entity];
+		} else {
+			obj = [[GGObjectPropertyInspector alloc] initWithClass:NSClassFromString(entity.managedObjectClassName)];
+		}
+		
 		[self cacheInspector:obj forKey:entity.name];
 	}
 	

@@ -10,6 +10,7 @@
 #import <CoreData/CoreData.h>
 
 @class TestCityModel, TestItemDetailsModel, TestMetroModel, TestRubricModel, TestServiceModel;
+@class TestMasterModel;
 
 @interface TestItemModel : NSManagedObject
 
@@ -27,6 +28,10 @@
 @property (nonatomic, retain) TestCityModel *city;
 @property (nonatomic, retain) NSSet *metro;
 @property (nonatomic, retain) NSSet *services;
+
+@property (nonatomic, strong) TestMasterModel *master;
+@property (nonatomic, strong) NSArray *masters;
+
 @end
 
 @interface TestItemModel (CoreDataGeneratedAccessors)

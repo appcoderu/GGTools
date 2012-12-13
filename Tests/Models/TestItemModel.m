@@ -30,4 +30,7 @@
 @dynamic metro;
 @dynamic services;
 
+@synthesize master=_master;
+@synthesize masters=_masters;
+
 @end

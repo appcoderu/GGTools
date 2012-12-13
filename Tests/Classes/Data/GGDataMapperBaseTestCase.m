@@ -9,6 +9,8 @@
 #import "GGDataMapperBaseTestCase.h"
 
 #import "GGResourceConfig.h"
+#import "TestMasterModel.h"
+
 
 @implementation GGDataMapperBaseTestCase
 
@@ -120,6 +122,16 @@
 	[serviceConfig setEntityName:@"TestService"];
 	[serviceConfig setPrimaryKey:@"identifier"];
 	[config mapKeyPath:@"services" toProperty:@"services" config:serviceConfig];
+	
+	GGResourceConfig *masterConfig = [[GGResourceConfig alloc] init];
+	[masterConfig setModelClass:[TestMasterModel class]];
+	[masterConfig mapProperties:@"name", @"age", @"photo", nil];
+	[config mapKeyPath:@"master" toProperty:@"master" config:masterConfig];
+	
+	GGResourceConfig *mastersConfig = [[GGResourceConfig alloc] init];
+	[mastersConfig setModelClass:[TestMasterModel class]];
+	[mastersConfig mapProperties:@"name", @"age", @"photo", nil];
+	[config mapKeyPath:@"masters" toProperty:@"masters" config:mastersConfig];
 	
 	return config;
 }
