@@ -15,5 +15,6 @@
 @dynamic identifier;
 @dynamic title;
 @dynamic items;
+@dynamic order;
 
 @end

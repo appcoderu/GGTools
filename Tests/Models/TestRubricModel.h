@@ -15,6 +15,7 @@
 
 @property (nonatomic, retain) NSNumber * identifier;
 @property (nonatomic, retain) NSString * title;
+@property (nonatomic, retain) NSNumber * order;
 @property (nonatomic, retain) NSSet *items;
 @end
 

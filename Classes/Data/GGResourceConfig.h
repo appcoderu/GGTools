@@ -25,7 +25,8 @@ typedef enum {
 @property(nonatomic, strong) NSArray *mappings;
 
 @property(nonatomic, strong) NSString *primaryKey;
-@property(nonatomic, strong) NSString *propertyToDeleteObject;
+@property(nonatomic, strong) NSString *deleteObjectProperty;
+@property(nonatomic, strong) NSString *autoOrderProperty;
 
 - (void)mapKeyPath:(NSString *)sourceKeyPath
 		toProperty:(NSString *)destinationProperty;

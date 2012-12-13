@@ -81,6 +81,7 @@
 	[config setPrimaryKey:@"identifier"];
 	[config mapKeyPath:@"id" toProperty:@"identifier"];
 	[config mapProperties:@"title", nil];
+	[config setAutoOrderProperty:@"order"];
 	return config;
 }
 

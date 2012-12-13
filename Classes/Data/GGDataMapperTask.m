@@ -137,7 +137,7 @@ enum {
 		return nil;
 	}
 		
-	Class objectsClass = nil;
+	Class objectsClass = Nil;
 	for (id objectData in objects) {
 		if (!objectsClass) {
 			objectsClass = [objectData class];
@@ -171,7 +171,7 @@ enum {
 		return nil;
 	}
 	
-	Class primaryKeyClass = nil;
+	Class primaryKeyClass = Nil;
 	NSString *primaryKeyPath = nil;
 	if (config.primaryKey) {
 		primaryKeyPath = [config keyPathForProperty:config.primaryKey];
@@ -181,7 +181,10 @@ enum {
 	id existingObjects = nil;
 	if ((config.importPolicy & GGResourceImportPolicyPrefetch)) {
 		existingObjects = [self existingObjectsForConfig:config];
-		if ((config.importPolicy & GGResourceImportPolicyDelete)) {
+		if (existingObjects && [existingObjects count] == 0) {
+			existingObjects = nil;
+		}
+		if (existingObjects && (config.importPolicy & GGResourceImportPolicyDelete)) {
 			existingObjects = [NSMutableArray arrayWithArray:existingObjects];
 		}
 	}
@@ -244,7 +247,17 @@ enum {
 		
 		return result;
 	}
-		
+	
+	BOOL autoOrder = NO;
+	NSUInteger order = 0;
+	if (config.autoOrderProperty) {
+		autoOrder = YES;
+		Class orderPropertyClass = [propertyInspector classOfProperty:config.autoOrderProperty];
+		if (![orderPropertyClass isSubclassOfClass:[NSNumber class]]) {
+			autoOrder = NO;
+		}
+	}
+	
 	for (id _objectData in objects) {
 		id primaryKeyValue = nil;
 		id object = nil;
@@ -318,8 +331,8 @@ enum {
 		
 		NSDictionary *objectData = _objectData;
 		
-		if (config.propertyToDeleteObject) {
-			id deleted = [objectData objectForKey:config.propertyToDeleteObject];
+		if (config.deleteObjectProperty) {
+			id deleted = [objectData objectForKey:config.deleteObjectProperty];
 			if (([deleted isKindOfClass:[NSNumber class]] && [deleted boolValue]) ||
 				(![deleted isKindOfClass:[NSNumber class]] && deleted)) {
 				
@@ -334,6 +347,10 @@ enum {
 							 resourceConfig:config];
 		
 		if (object) {
+			if (autoOrder) {
+				[object setValue:@(order++) forKey:config.autoOrderProperty];
+			}
+			
 			[result addObject:object];
 		}
 	}

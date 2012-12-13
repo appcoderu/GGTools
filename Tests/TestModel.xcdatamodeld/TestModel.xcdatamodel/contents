@@ -52,6 +52,7 @@
     </entity>
     <entity name="TestRubric" representedClassName="TestRubricModel" syncable="YES">
         <attribute name="identifier" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="order" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="items" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TestItem" inverseName="rubric" inverseEntity="TestItem" syncable="YES"/>
         <compoundIndexes>
@@ -75,7 +76,7 @@
         <element name="TestItem" positionX="160" positionY="192" width="128" height="255"/>
         <element name="TestItemDetails" positionX="160" positionY="192" width="128" height="90"/>
         <element name="TestMetro" positionX="160" positionY="192" width="128" height="105"/>
-        <element name="TestRubric" positionX="160" positionY="192" width="128" height="90"/>
+        <element name="TestRubric" positionX="160" positionY="192" width="128" height="105"/>
         <element name="TestService" positionX="160" positionY="192" width="128" height="90"/>
     </elements>
 </model>

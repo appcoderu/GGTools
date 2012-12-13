@@ -173,6 +173,7 @@
 		GHAssertEqualObjects(rubricObj.identifier, @(i+1), nil);
 		NSString *title = [NSString stringWithFormat:@"rubric %u", (i+1)];
 		GHAssertEqualObjects(rubricObj.title, title, nil);
+		GHAssertEqualObjects(rubricObj.order, @(i), nil);
 	}
 }
 
