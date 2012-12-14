@@ -20,14 +20,14 @@
 	}
 
 	dispatch_sync(queue, ^{
-		if(visible) {
+		if (visible) {
 			networkActivityIndicatorVisibleCounter++;
-			if(networkActivityIndicatorVisibleCounter == 1) {
+			if (networkActivityIndicatorVisibleCounter == 1) {
 				[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 			}
 		} else {
 			networkActivityIndicatorVisibleCounter--;
-			if(networkActivityIndicatorVisibleCounter < 1) {
+			if (networkActivityIndicatorVisibleCounter < 1) {
 				[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 				networkActivityIndicatorVisibleCounter = 0;
 			}

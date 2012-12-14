@@ -137,9 +137,9 @@
 
 #pragma mark -
 
-- (GGHTTPServiceTicket *)loadObjectsWithQuery:(GGHTTPQuery *)query
-							   resourceConfig:(GGResourceConfig *)config
-							completionHandler:(void (^)(id objects, NSError *error))handler {
+- (GGHTTPServiceTicket *)executeQuery:(GGHTTPQuery *)query
+					   resourceConfig:(GGResourceConfig *)config
+					completionHandler:(void (^)(id mappedObjects, NSError *error))handler {
 	
 	return [self executeQuery:query
 			completionHandler:^(GGHTTPQueryResult *result) {

@@ -32,6 +32,8 @@
 - (NSEntityDescription *)entityDescriptionWithName:(NSString *)entityName;
 
 - (id)newObjectWithEntityName:(NSString *)entityName;
+- (id)newTemporaryObjectWithEntityName:(NSString *)entityName;
+
 - (id)objectWithIdentifier:(id)identifier entityName:(NSString *)entityName;
 
 - (id)objectWithField:(NSString *)fieldName equalTo:(id)fieldValue entityName:(NSString *)entityName;

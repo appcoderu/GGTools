@@ -110,14 +110,22 @@ static const NSTimeInterval kSaveDelayInterval = 1.0;
 					   inManagedObjectContext:_storage];
 }
 
+- (id)newTemporaryObjectWithEntityName:(NSString *)entityName {
+	return [self newObjectWithEntityName:entityName shouldInsertIntoContext:NO];
+}
+
 - (id)newObjectWithEntityName:(NSString *)entityName {
+	return [self newObjectWithEntityName:entityName shouldInsertIntoContext:YES];
+}
+
+- (id)newObjectWithEntityName:(NSString *)entityName shouldInsertIntoContext:(BOOL)shouldInsert {
 	NSEntityDescription *entity = [self entityDescriptionWithName:entityName];
 	if (!entity) {
 		return nil;
 	}
 	
 	return [[NSManagedObject alloc] initWithEntity:entity
-					insertIntoManagedObjectContext:_storage];
+					insertIntoManagedObjectContext:(shouldInsert ? _storage : nil)];
 }
 
 - (void)deleteObjectsWithEntityName:(NSString *)entityName {

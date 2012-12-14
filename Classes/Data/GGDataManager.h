@@ -37,9 +37,9 @@
 - (GGHTTPServiceTicket *)executeQuery:(GGHTTPQuery *)query
 					completionHandler:(void (^)(GGHTTPQueryResult *result))handler;
 
-- (GGHTTPServiceTicket *)loadObjectsWithQuery:(GGHTTPQuery *)query
-							   resourceConfig:(GGResourceConfig *)config
-							completionHandler:(void (^)(id objects, NSError *error))handler;
+- (GGHTTPServiceTicket *)executeQuery:(GGHTTPQuery *)query
+					   resourceConfig:(GGResourceConfig *)config
+					completionHandler:(void (^)(id mappedObjects, NSError *error))handler;
 
 #pragma mark - Methods to override
 
