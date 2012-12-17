@@ -238,6 +238,11 @@
 		++i;
 	}
 	
+	itemObj = items[1];
+	GHAssertNotNil(itemObj, nil);
+	GHAssertEqualObjects(itemObj.identifier, @(2), nil);
+	GHAssertNotNil(itemObj.color, nil);
+	
 	itemObj = items[2];
 	GHAssertNotNil(itemObj, nil);
 	GHAssertEqualObjects(itemObj.identifier, @(3), nil);

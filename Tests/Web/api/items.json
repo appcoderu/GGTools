@@ -41,7 +41,7 @@
 },
 {
 	"id" : 2,
-	"color" : "",
+	"color" : "6A6A6A",
 	"createdDate" : 12300000,
 	"updatedDate" : 12310000,
 	"fields" : ["field3"],

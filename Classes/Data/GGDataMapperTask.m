@@ -577,6 +577,19 @@ enum {
 									   green:green
 										blue:blue
 									   alpha:alpha];
+			} else if ([colorComponents count] == 1 && [value length] <= 7) {
+				NSScanner *scanner = [NSScanner scannerWithString:value];
+				unsigned int hexColor = 0;
+				if ([value hasPrefix:@"#"]) {
+					[scanner setScanLocation:1];
+				}
+								
+				if ([scanner scanHexInt:&hexColor]) {
+					return [UIColor colorWithRed:((float)((hexColor & 0xFF0000) >> 16)) / 255.0f
+										   green:((float)((hexColor & 0xFF00) >> 8)) / 255.0f
+											blue:((float)(hexColor & 0xFF)) / 255.0f
+										   alpha:1.0f];
+				}
 			}
 		}
 	}
