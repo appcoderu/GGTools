@@ -15,6 +15,7 @@
 #import "NSError+GGExtra.h"
 
 #import <CoreData/CoreData.h>
+#import <UIKit/UIKit.h>
 
 #warning implement errors
 #warning implement debug logging
@@ -550,6 +551,33 @@ enum {
 	} else if ([class isSubclassOfClass:[NSDate class]]) {
 		if ([value isKindOfClass:[NSNumber class]]) {
 			return [NSDate dateWithTimeIntervalSince1970:[value doubleValue]];
+		} else if ([value isKindOfClass:[NSString class]]) {
+			static NSDateFormatter *dateFormatter = nil;
+			if (!dateFormatter) {
+				dateFormatter = [[NSDateFormatter alloc] init];
+				dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+				dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+			}
+			NSDate *date = [dateFormatter dateFromString:value];
+			return date;
+		}
+	} else if ([class isSubclassOfClass:[UIColor class]]) {
+		if ([value isKindOfClass:[NSString class]]) {
+			NSArray *colorComponents = [value componentsSeparatedByString:@","];
+			if ([colorComponents count] >= 3) {
+				float red = [colorComponents[0] intValue] / 255.0f;
+				float green = (float)[colorComponents[1] intValue] / 255.0f;
+				float blue = (float)[colorComponents[2] intValue] / 255.0f;
+				float alpha = 1.0f;
+				if ([colorComponents count] > 3) {
+					alpha = (float)[colorComponents[3] intValue] / 255.0f;
+				}
+				
+				return [UIColor colorWithRed:red
+									   green:green
+										blue:blue
+									   alpha:alpha];
+			}
 		}
 	}
 	

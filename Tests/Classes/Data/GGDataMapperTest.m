@@ -208,8 +208,11 @@
 	GHAssertNotNil(itemObj, nil);
 	GHAssertEqualObjects(itemObj.identifier, @(1), nil);
 	GHAssertEqualObjects(itemObj.title, @"item 1", nil);
+	GHAssertNotNil(itemObj.color, nil);
+	GHAssertEqualObjects(([UIColor colorWithRed:(100.0f/255.0f) green:(100.0f/255.0f) blue:(100.0f/255.0f) alpha:1.0f]), itemObj.color, nil);
 	GHAssertNotNil(itemObj.createdDate, nil);
 	GHAssertNotNil(itemObj.updatedDate, nil);
+	GHAssertEqualObjects(([NSDate dateWithTimeIntervalSince1970:1356069683]), itemObj.updatedDate, nil);
 	GHAssertNotNil(itemObj.location, nil);
 	GHAssertTrue([itemObj.modified boolValue], nil);
 	GHAssertNotNil(itemObj.fields, nil);
