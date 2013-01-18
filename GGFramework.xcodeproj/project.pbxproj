@@ -59,6 +59,13 @@
 		1C31324715B6C4940099B037 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C31323F15B6C4280099B037 /* Security.framework */; };
 		1C31324815B6C4940099B037 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C31324015B6C4290099B037 /* SystemConfiguration.framework */; };
 		1C31324B15B6C4A20099B037 /* libz.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C31323D15B6C4270099B037 /* libz.1.dylib */; };
+		1C3B136F16A96663000AD958 /* GGStoreManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C3B136A16A96663000AD958 /* GGStoreManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1C3B137016A96663000AD958 /* GGStoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3B136B16A96663000AD958 /* GGStoreManager.m */; };
+		1C3B137116A96663000AD958 /* GGStoreManagerDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C3B136C16A96663000AD958 /* GGStoreManagerDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1C3B137216A96663000AD958 /* GGStoreProduct.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C3B136D16A96663000AD958 /* GGStoreProduct.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1C3B137316A96663000AD958 /* GGStoreProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3B136E16A96663000AD958 /* GGStoreProduct.m */; };
+		1C3B137716A96B24000AD958 /* NSData+GGBase64.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C3B137516A96B24000AD958 /* NSData+GGBase64.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1C3B137816A96B24000AD958 /* NSData+GGBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3B137616A96B24000AD958 /* NSData+GGBase64.m */; };
 		1C46287016663551001FAE72 /* TestModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1C46286E16663551001FAE72 /* TestModel.xcdatamodeld */; };
 		1C46288B16663BF3001FAE72 /* TestCityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C46288216663BF2001FAE72 /* TestCityModel.m */; };
 		1C46288C16663BF3001FAE72 /* TestItemDetailsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C46288416663BF2001FAE72 /* TestItemDetailsModel.m */; };
@@ -280,6 +287,13 @@
 		1C31323E15B6C4280099B037 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		1C31323F15B6C4280099B037 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		1C31324015B6C4290099B037 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		1C3B136A16A96663000AD958 /* GGStoreManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGStoreManager.h; sourceTree = "<group>"; };
+		1C3B136B16A96663000AD958 /* GGStoreManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGStoreManager.m; sourceTree = "<group>"; };
+		1C3B136C16A96663000AD958 /* GGStoreManagerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGStoreManagerDelegate.h; sourceTree = "<group>"; };
+		1C3B136D16A96663000AD958 /* GGStoreProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGStoreProduct.h; sourceTree = "<group>"; };
+		1C3B136E16A96663000AD958 /* GGStoreProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGStoreProduct.m; sourceTree = "<group>"; };
+		1C3B137516A96B24000AD958 /* NSData+GGBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+GGBase64.h"; sourceTree = "<group>"; };
+		1C3B137616A96B24000AD958 /* NSData+GGBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+GGBase64.m"; sourceTree = "<group>"; };
 		1C46286F16663551001FAE72 /* TestModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TestModel.xcdatamodel; sourceTree = "<group>"; };
 		1C46288116663BF2001FAE72 /* TestCityModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestCityModel.h; sourceTree = "<group>"; };
 		1C46288216663BF2001FAE72 /* TestCityModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestCityModel.m; sourceTree = "<group>"; };
@@ -481,6 +495,7 @@
 				1C087ADF1580FDC5001C4060 /* Cache */,
 				1C31319815B69B770099B037 /* Network */,
 				1C2F54281665F572008823F4 /* Data */,
+				1C3B136916A96663000AD958 /* Store */,
 				1C028E95166FD7F90076FC85 /* GGConstants.h */,
 			);
 			path = Classes;
@@ -604,6 +619,8 @@
 		1C3131E515B6AACC0099B037 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				1C3B137516A96B24000AD958 /* NSData+GGBase64.h */,
+				1C3B137616A96B24000AD958 /* NSData+GGBase64.m */,
 				1C31322915B6ADAE0099B037 /* NSDate+GGExtra.h */,
 				1C31322A15B6ADAE0099B037 /* NSDate+GGExtra.m */,
 				1C31322B15B6ADAE0099B037 /* NSURL+GGQueryParameters.h */,
@@ -633,6 +650,18 @@
 				1C137C7A15B717B00033FE44 /* GGHTTPGoogleFetcher.m */,
 			);
 			name = Fetcher;
+			sourceTree = "<group>";
+		};
+		1C3B136916A96663000AD958 /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				1C3B136A16A96663000AD958 /* GGStoreManager.h */,
+				1C3B136B16A96663000AD958 /* GGStoreManager.m */,
+				1C3B136C16A96663000AD958 /* GGStoreManagerDelegate.h */,
+				1C3B136D16A96663000AD958 /* GGStoreProduct.h */,
+				1C3B136E16A96663000AD958 /* GGStoreProduct.m */,
+			);
+			path = Store;
 			sourceTree = "<group>";
 		};
 		1C46287116663B9D001FAE72 /* Models */ = {
@@ -867,6 +896,10 @@
 				1C028E92166FD7BE0076FC85 /* GGDataConstants.h in Headers */,
 				1C2F543B1665F572008823F4 /* GGPropertyInspector.h in Headers */,
 				1C028E96166FD8310076FC85 /* GGConstants.h in Headers */,
+				1C3B136F16A96663000AD958 /* GGStoreManager.h in Headers */,
+				1C3B137116A96663000AD958 /* GGStoreManagerDelegate.h in Headers */,
+				1C3B137216A96663000AD958 /* GGStoreProduct.h in Headers */,
+				1C3B137716A96B24000AD958 /* NSData+GGBase64.h in Headers */,
 				1C5221B815B969BF00E5E7BE /* GGTools-Prefix.pch in Headers */,
 				1C4D897115BAC2BE00FB6CC6 /* GGHTTPGoogleAuthorizationProxy.h in Headers */,
 				1C2DE7DB15C67E45004AC42E /* SBJsonParser.h in Headers */,
@@ -1109,6 +1142,9 @@
 				1C78F22A1670E56D003150DB /* GGDataMapperTask.m in Sources */,
 				1C55F1151679BC5700E5AF40 /* GGObjectPropertyInspector.m in Sources */,
 				1C55F11A1679BCA500E5AF40 /* GGManagedObjectPropertyInspector.m in Sources */,
+				1C3B137016A96663000AD958 /* GGStoreManager.m in Sources */,
+				1C3B137316A96663000AD958 /* GGStoreProduct.m in Sources */,
+				1C3B137816A96B24000AD958 /* NSData+GGBase64.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
