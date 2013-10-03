@@ -46,17 +46,15 @@ static const NSTimeInterval kSaveDelayInterval = 1.0;
 
 #pragma mark -
 
-- (void)save {
-	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(save) object:nil];
-	NSError *error = nil;
-	
-	[_storage save:&error];
-}
+	- (void)save {
+		[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(save) object:nil];
+		[_storage save:nil];
+	}
 
-- (void)setNeedsSave {
-	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(save) object:nil];
-	[self performSelector:@selector(save) withObject:nil afterDelay:kSaveDelayInterval];
-}
+	- (void)setNeedsSave {
+		[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(save) object:nil];
+		[self performSelector:@selector(save) withObject:nil afterDelay:1.0];
+	}
 
 #pragma mark - Meta
 

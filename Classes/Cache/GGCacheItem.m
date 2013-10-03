@@ -264,7 +264,9 @@ static const char * const metaKey = "appcode.ggcache.meta";
 					} else if (![_meta respondsToSelector:@selector(setObject:forKey:)]) {
 						_meta = [NSMutableDictionary dictionaryWithDictionary:_meta];
 					}
-				}
+				} else {
+                    free(buffer);
+                }
 			}
 		}
 		
